@@ -1,20 +1,12 @@
-import { auth } from "@/lib/auth"
-import { redirect } from "next/navigation"
 import { sql } from "@/lib/db"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { UserNav } from "@/components/user-nav"
+import { Navigation } from "@/components/navigation"
 import Link from "next/link"
 import { Plus } from "lucide-react"
 
 export default async function CollectionPage() {
-  const session = await auth()
-
-  if (!session) {
-    redirect("/auth/signin")
-  }
-
   const userCards = await sql`
     SELECT 
       uc.*,
@@ -35,7 +27,6 @@ export default async function CollectionPage() {
     JOIN languages l ON uc.language_id = l.id
     JOIN variants v ON uc.variant_id = v.id
     JOIN conditions cond ON uc.condition_id = cond.id
-    WHERE uc.user_id = ${session.user.id}
     ORDER BY ser.name, s.name, c.number::integer
   `
 
@@ -53,22 +44,22 @@ export default async function CollectionPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">My Collection</h1>
-          <div className="flex items-center gap-4">
-            <Link href="/collection/add">
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Add Cards
-              </Button>
-            </Link>
-            <UserNav user={session.user} />
-          </div>
-        </div>
-      </header>
+      <Navigation />
 
       <main className="container mx-auto px-4 py-8">
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">My Collection</h1>
+            <p className="text-gray-600">Track and manage your Pokémon card collection</p>
+          </div>
+          <Link href="/collection/add">
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Cards
+            </Button>
+          </Link>
+        </div>
+
         {Object.keys(groupedCards).length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>

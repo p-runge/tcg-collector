@@ -1,25 +1,17 @@
-import { auth } from "@/lib/auth"
-import { redirect } from "next/navigation"
 import { sql } from "@/lib/db"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { UserNav } from "@/components/user-nav"
+import { Navigation } from "@/components/navigation"
 
 export default async function SettingsPage() {
-  const session = await auth()
-
-  if (!session) {
-    redirect("/auth/signin")
-  }
-
-  const [user, languages] = await Promise.all([
-    sql`SELECT * FROM users WHERE id = ${session.user.id}`,
+  const [currentSettings, languages] = await Promise.all([
+    sql`SELECT * FROM app_settings WHERE setting_key = 'favorite_language_id'`,
     sql`SELECT * FROM languages ORDER BY name`,
   ])
 
-  const currentUser = user[0]
+  const favoriteLanguageId = currentSettings[0]?.setting_value
 
   async function updateFavoriteLanguage(formData: FormData) {
     "use server"
@@ -27,23 +19,23 @@ export default async function SettingsPage() {
 
     if (languageId) {
       await sql`
-        UPDATE users 
-        SET favorite_language_id = ${languageId}
-        WHERE id = ${session.user.id}
+        UPDATE app_settings 
+        SET setting_value = ${languageId}, updated_at = CURRENT_TIMESTAMP
+        WHERE setting_key = 'favorite_language_id'
       `
     }
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-          <UserNav user={session.user} />
-        </div>
-      </header>
+      <Navigation />
 
       <main className="container mx-auto px-4 py-8 max-w-2xl">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
+          <p className="text-gray-600">Configure your collection preferences</p>
+        </div>
+
         <div className="space-y-6">
           <Card>
             <CardHeader>
@@ -54,7 +46,7 @@ export default async function SettingsPage() {
               <form action={updateFavoriteLanguage} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="language">Favorite Language</Label>
-                  <Select name="language_id" defaultValue={currentUser.favorite_language_id?.toString()}>
+                  <Select name="language_id" defaultValue={favoriteLanguageId}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select your favorite language" />
                     </SelectTrigger>
@@ -77,22 +69,24 @@ export default async function SettingsPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Account Information</CardTitle>
-              <CardDescription>Your account details from Discord</CardDescription>
+              <CardTitle>About</CardTitle>
+              <CardDescription>Information about your collection tracker</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <Label>Username</Label>
-                  <p className="text-sm text-gray-600 mt-1">{currentUser.username}</p>
+                  <Label>Version</Label>
+                  <p className="text-sm text-gray-600 mt-1">1.0.0</p>
                 </div>
                 <div>
-                  <Label>Discord ID</Label>
-                  <p className="text-sm text-gray-600 mt-1">{currentUser.discord_id}</p>
+                  <Label>Database</Label>
+                  <p className="text-sm text-gray-600 mt-1">PostgreSQL with comprehensive Pokémon card data</p>
                 </div>
                 <div>
-                  <Label>Member Since</Label>
-                  <p className="text-sm text-gray-600 mt-1">{new Date(currentUser.created_at).toLocaleDateString()}</p>
+                  <Label>Features</Label>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Track cards by language, variant, condition, and quantity. Mark sets as actively collecting.
+                  </p>
                 </div>
               </div>
             </CardContent>

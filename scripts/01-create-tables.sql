@@ -1,4 +1,4 @@
--- Create tables for Pokemon card collection tracker
+-- Create tables for Pokemon card collection tracker (without auth)
 
 -- Series (e.g., Base Set, Neo, E-Card, etc.)
 CREATE TABLE IF NOT EXISTS series (
@@ -53,29 +53,9 @@ CREATE TABLE IF NOT EXISTS cards (
     UNIQUE(set_id, number)
 );
 
--- Users
-CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    discord_id VARCHAR(100) UNIQUE,
-    username VARCHAR(100),
-    avatar_url TEXT,
-    favorite_language_id INTEGER REFERENCES languages(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Sets that users are actively collecting
-CREATE TABLE IF NOT EXISTS user_collecting_sets (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    set_id INTEGER REFERENCES sets(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(user_id, set_id)
-);
-
--- User's owned cards
+-- User's owned cards (simplified without user auth)
 CREATE TABLE IF NOT EXISTS user_cards (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
     card_id INTEGER REFERENCES cards(id),
     language_id INTEGER REFERENCES languages(id),
     variant_id INTEGER REFERENCES variants(id),
@@ -86,8 +66,25 @@ CREATE TABLE IF NOT EXISTS user_cards (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Sets being actively collected (simplified without user auth)
+CREATE TABLE IF NOT EXISTS collecting_sets (
+    id SERIAL PRIMARY KEY,
+    set_id INTEGER REFERENCES sets(id) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- App settings (simplified without user auth)
+CREATE TABLE IF NOT EXISTS app_settings (
+    id SERIAL PRIMARY KEY,
+    setting_key VARCHAR(100) UNIQUE NOT NULL,
+    setting_value TEXT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert default favorite language setting
+INSERT INTO app_settings (setting_key, setting_value) VALUES ('favorite_language_id', '1') ON CONFLICT (setting_key) DO NOTHING;
+
 -- Indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_user_cards_user_id ON user_cards(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_cards_card_id ON user_cards(card_id);
 CREATE INDEX IF NOT EXISTS idx_cards_set_id ON cards(set_id);
 CREATE INDEX IF NOT EXISTS idx_sets_series_id ON sets(series_id);

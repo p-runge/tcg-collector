@@ -1,34 +1,15 @@
-import { auth } from "@/lib/auth"
-import { redirect } from "next/navigation"
 import { sql } from "@/lib/db"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { UserNav } from "@/components/user-nav"
+import { Navigation } from "@/components/navigation"
 
 export default async function Dashboard() {
-  const session = await auth()
-
-  if (!session?.user) {
-    redirect("/auth/signin")
-  }
-
-  // Get user stats
+  // Get collection stats
   const [userCards, collectingSets, totalSets] = await Promise.all([
-    sql`
-      SELECT COUNT(*) as count 
-      FROM user_cards 
-      WHERE user_id = ${session.user.id}
-    `,
-    sql`
-      SELECT COUNT(*) as count 
-      FROM user_collecting_sets 
-      WHERE user_id = ${session.user.id}
-    `,
-    sql`
-      SELECT COUNT(*) as count 
-      FROM sets
-    `,
+    sql`SELECT COUNT(*) as count FROM user_cards`,
+    sql`SELECT COUNT(*) as count FROM collecting_sets`,
+    sql`SELECT COUNT(*) as count FROM sets`,
   ])
 
   const recentCards = await sql`
@@ -47,21 +28,20 @@ export default async function Dashboard() {
     JOIN languages l ON uc.language_id = l.id
     JOIN variants v ON uc.variant_id = v.id
     JOIN conditions cond ON uc.condition_id = cond.id
-    WHERE uc.user_id = ${session.user.id}
     ORDER BY uc.created_at DESC
     LIMIT 5
   `
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <UserNav user={session.user} />
-        </div>
-      </header>
+      <Navigation />
 
       <main className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
+          <p className="text-gray-600">Overview of your Pokémon card collection</p>
+        </div>
+
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <Card>
             <CardHeader>

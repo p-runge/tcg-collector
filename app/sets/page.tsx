@@ -1,42 +1,30 @@
-import { auth } from "@/lib/auth"
-import { redirect } from "next/navigation"
 import { sql } from "@/lib/db"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { UserNav } from "@/components/user-nav"
+import { Navigation } from "@/components/navigation"
 import Link from "next/link"
 import { Heart, Star } from "lucide-react"
 
 export default async function SetsPage() {
-  const session = await auth()
-
-  if (!session) {
-    redirect("/auth/signin")
-  }
-
   const sets = await sql`
     SELECT 
       s.*,
       ser.name as series_name,
-      CASE WHEN ucs.id IS NOT NULL THEN true ELSE false END as is_collecting
+      CASE WHEN cs.id IS NOT NULL THEN true ELSE false END as is_collecting
     FROM sets s
     JOIN series ser ON s.series_id = ser.id
-    LEFT JOIN user_collecting_sets ucs ON s.id = ucs.set_id AND ucs.user_id = ${session.user.id}
+    LEFT JOIN collecting_sets cs ON s.id = cs.set_id
     ORDER BY s.release_date DESC, s.name
   `
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Browse Sets</h1>
-          <UserNav user={session.user} />
-        </div>
-      </header>
+      <Navigation />
 
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-6">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Browse Sets</h1>
           <p className="text-gray-600">
             Browse all available Pokémon card sets. Click on a set to view its cards or mark sets you're actively
             collecting.
@@ -79,16 +67,13 @@ export default async function SetsPage() {
                       action={async () => {
                         "use server"
                         if (set.is_collecting) {
-                          await sql`
-                          DELETE FROM user_collecting_sets 
-                          WHERE user_id = ${session.user.id} AND set_id = ${set.id}
-                        `
+                          await sql`DELETE FROM collecting_sets WHERE set_id = ${set.id}`
                         } else {
                           await sql`
-                          INSERT INTO user_collecting_sets (user_id, set_id)
-                          VALUES (${session.user.id}, ${set.id})
-                          ON CONFLICT (user_id, set_id) DO NOTHING
-                        `
+                            INSERT INTO collecting_sets (set_id)
+                            VALUES (${set.id})
+                            ON CONFLICT (set_id) DO NOTHING
+                          `
                         }
                       }}
                     >

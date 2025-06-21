@@ -12,7 +12,7 @@ export default function Home() {
             Keep track of your Pokémon card collection with detailed information about sets, languages, variants, and
             conditions. Never lose track of what you own again!
           </p>
-          <Link href="/auth/signin">
+          <Link href="/dashboard">
             <Button size="lg" className="text-lg px-8 py-3">
               Get Started
             </Button>
