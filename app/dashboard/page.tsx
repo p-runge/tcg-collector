@@ -985,180 +985,199 @@ export default function PokemonCollectionManager() {
                               </div>
 
                               {/* Individual Card Entries */}
-                              {entries.map((entry) => {
-                                const conditionInfo = getConditionInfo(
-                                  entry.condition
-                                );
-                                const languageInfo = getLanguageInfo(
-                                  entry.language
-                                );
-                                return (
-                                  <div
-                                    key={entry.id}
-                                    className="flex items-center gap-2 p-2 bg-white rounded border ml-4"
-                                  >
-                                    <Badge
-                                      variant="outline"
-                                      className="text-xs"
+                              {entries
+                                .sort((a, b) => {
+                                  // sort by condition
+                                  const conditionOrder = cardConditions.map(
+                                    (c) => c.value
+                                  );
+                                  return (
+                                    conditionOrder.indexOf(a.condition) -
+                                    conditionOrder.indexOf(b.condition)
+                                  );
+                                })
+                                .map((entry) => {
+                                  const conditionInfo = getConditionInfo(
+                                    entry.condition
+                                  );
+                                  const languageInfo = getLanguageInfo(
+                                    entry.language
+                                  );
+                                  return (
+                                    <div
+                                      key={entry.id}
+                                      className="flex items-center gap-2 p-2 bg-white rounded border ml-4"
                                     >
-                                      {languageInfo.flag}{" "}
-                                      {languageInfo.code.toUpperCase()}
-                                    </Badge>
+                                      <Badge
+                                        variant="outline"
+                                        className="text-xs"
+                                      >
+                                        {languageInfo.flag}{" "}
+                                        {languageInfo.code.toUpperCase()}
+                                      </Badge>
 
-                                    <Badge
-                                      className={`text-xs ${conditionInfo.color} border`}
-                                    >
-                                      {conditionInfo.label}
-                                    </Badge>
+                                      <Badge
+                                        className={`text-xs ${conditionInfo.color} border`}
+                                      >
+                                        {conditionInfo.label}
+                                      </Badge>
 
-                                    <div className="flex items-center gap-1 ml-auto">
-                                      {entry.photos.length > 0 && (
-                                        <Button
-                                          size="sm"
-                                          variant="ghost"
-                                          onClick={() =>
-                                            setViewingPhotos(entry.photos)
-                                          }
-                                          className="h-6 w-6 p-0"
-                                        >
-                                          <Eye className="h-3 w-3 text-blue-600" />
-                                        </Button>
-                                      )}
-
-                                      <Dialog>
-                                        <DialogTrigger asChild>
+                                      <div className="flex items-center gap-1 ml-auto">
+                                        {entry.photos.length > 0 && (
                                           <Button
                                             size="sm"
                                             variant="ghost"
                                             onClick={() =>
-                                              startEditingCard(
-                                                card.id,
-                                                variant,
-                                                entry.id
-                                              )
+                                              setViewingPhotos(entry.photos)
                                             }
                                             className="h-6 w-6 p-0"
                                           >
-                                            <Edit3
-                                              className={`h-3 w-3 ${
-                                                entry.note ||
-                                                entry.photos.length > 0
-                                                  ? "text-blue-600"
-                                                  : "text-gray-400"
-                                              }`}
-                                            />
+                                            <Eye className="h-3 w-3 text-blue-600" />
                                           </Button>
-                                        </DialogTrigger>
-                                        <DialogContent className="max-w-2xl">
-                                          <DialogHeader>
-                                            <DialogTitle>
-                                              Edit Card - {card.name} ({variant}{" "}
-                                              - {conditionInfo.label} -{" "}
-                                              {languageInfo.name})
-                                            </DialogTitle>
-                                          </DialogHeader>
-                                          <div className="space-y-4">
-                                            <div>
-                                              <Label htmlFor="note">Note</Label>
-                                              <Textarea
-                                                id="note"
-                                                value={editForm.note}
-                                                onChange={(e) =>
-                                                  setEditForm((prev) => ({
-                                                    ...prev,
-                                                    note: e.target.value,
-                                                  }))
-                                                }
-                                                placeholder="Add a note about this specific card..."
-                                                rows={3}
+                                        )}
+
+                                        <Dialog>
+                                          <DialogTrigger asChild>
+                                            <Button
+                                              size="sm"
+                                              variant="ghost"
+                                              onClick={() =>
+                                                startEditingCard(
+                                                  card.id,
+                                                  variant,
+                                                  entry.id
+                                                )
+                                              }
+                                              className="h-6 w-6 p-0"
+                                            >
+                                              <Edit3
+                                                className={`h-3 w-3 ${
+                                                  entry.note ||
+                                                  entry.photos.length > 0
+                                                    ? "text-blue-600"
+                                                    : "text-gray-400"
+                                                }`}
                                               />
-                                            </div>
-
-                                            <div>
-                                              <Label>Photos</Label>
-                                              <div className="space-y-2">
-                                                <Input
-                                                  type="file"
-                                                  accept="image/*"
-                                                  multiple
-                                                  onChange={handlePhotoUpload}
-                                                  className="cursor-pointer"
+                                            </Button>
+                                          </DialogTrigger>
+                                          <DialogContent className="max-w-2xl">
+                                            <DialogHeader>
+                                              <DialogTitle>
+                                                Edit Card - {card.name} (
+                                                {variant} -{" "}
+                                                {conditionInfo.label} -{" "}
+                                                {languageInfo.name})
+                                              </DialogTitle>
+                                            </DialogHeader>
+                                            <div className="space-y-4">
+                                              <div>
+                                                <Label htmlFor="note">
+                                                  Note
+                                                </Label>
+                                                <Textarea
+                                                  id="note"
+                                                  value={editForm.note}
+                                                  onChange={(e) =>
+                                                    setEditForm((prev) => ({
+                                                      ...prev,
+                                                      note: e.target.value,
+                                                    }))
+                                                  }
+                                                  placeholder="Add a note about this specific card..."
+                                                  rows={3}
                                                 />
-                                                {editForm.photos.length > 0 && (
-                                                  <div className="grid grid-cols-3 gap-2">
-                                                    {editForm.photos.map(
-                                                      (photo, index) => (
-                                                        <div
-                                                          key={index}
-                                                          className="relative"
-                                                        >
-                                                          <img
-                                                            src={
-                                                              photo ||
-                                                              "/placeholder.svg"
-                                                            }
-                                                            alt={`Photo ${
-                                                              index + 1
-                                                            }`}
-                                                            className="w-full h-20 object-cover rounded border"
-                                                          />
-                                                          <Button
-                                                            size="sm"
-                                                            variant="destructive"
-                                                            onClick={() =>
-                                                              removePhoto(index)
-                                                            }
-                                                            className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full"
+                                              </div>
+
+                                              <div>
+                                                <Label>Photos</Label>
+                                                <div className="space-y-2">
+                                                  <Input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    multiple
+                                                    onChange={handlePhotoUpload}
+                                                    className="cursor-pointer"
+                                                  />
+                                                  {editForm.photos.length >
+                                                    0 && (
+                                                    <div className="grid grid-cols-3 gap-2">
+                                                      {editForm.photos.map(
+                                                        (photo, index) => (
+                                                          <div
+                                                            key={index}
+                                                            className="relative"
                                                           >
-                                                            <X className="h-3 w-3" />
-                                                          </Button>
-                                                        </div>
-                                                      )
-                                                    )}
-                                                  </div>
-                                                )}
+                                                            <img
+                                                              src={
+                                                                photo ||
+                                                                "/placeholder.svg"
+                                                              }
+                                                              alt={`Photo ${
+                                                                index + 1
+                                                              }`}
+                                                              className="w-full h-20 object-cover rounded border"
+                                                            />
+                                                            <Button
+                                                              size="sm"
+                                                              variant="destructive"
+                                                              onClick={() =>
+                                                                removePhoto(
+                                                                  index
+                                                                )
+                                                              }
+                                                              className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full"
+                                                            >
+                                                              <X className="h-3 w-3" />
+                                                            </Button>
+                                                          </div>
+                                                        )
+                                                      )}
+                                                    </div>
+                                                  )}
+                                                </div>
                                               </div>
-                                            </div>
 
-                                            <div className="flex gap-2 justify-between">
-                                              <Button
-                                                variant="destructive"
-                                                onClick={() => {
-                                                  removeCardEntry(
-                                                    card.id,
-                                                    variant,
-                                                    entry.id
-                                                  );
-                                                  cancelCardEdit();
-                                                }}
-                                              >
-                                                Remove Card
-                                              </Button>
-                                              <div className="flex gap-2">
+                                              <div className="flex gap-2 justify-between">
                                                 <Button
-                                                  variant="outline"
-                                                  onClick={cancelCardEdit}
+                                                  variant="destructive"
+                                                  onClick={() => {
+                                                    removeCardEntry(
+                                                      card.id,
+                                                      variant,
+                                                      entry.id
+                                                    );
+                                                    cancelCardEdit();
+                                                  }}
                                                 >
-                                                  Cancel
+                                                  Remove Card
                                                 </Button>
-                                                <Button onClick={saveCardEdit}>
-                                                  Save Changes
-                                                </Button>
+                                                <div className="flex gap-2">
+                                                  <Button
+                                                    variant="outline"
+                                                    onClick={cancelCardEdit}
+                                                  >
+                                                    Cancel
+                                                  </Button>
+                                                  <Button
+                                                    onClick={saveCardEdit}
+                                                  >
+                                                    Save Changes
+                                                  </Button>
+                                                </div>
                                               </div>
                                             </div>
-                                          </div>
-                                        </DialogContent>
-                                      </Dialog>
-                                    </div>
-
-                                    {entry.note && (
-                                      <div className="w-full text-xs text-gray-600 bg-yellow-50 p-1 rounded mt-1">
-                                        {entry.note}
+                                          </DialogContent>
+                                        </Dialog>
                                       </div>
-                                    )}
-                                  </div>
-                                );
-                              })}
+
+                                      {entry.note && (
+                                        <div className="w-full text-xs text-gray-600 bg-yellow-50 p-1 rounded mt-1">
+                                          {entry.note}
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
                             </div>
                           );
                         })}
