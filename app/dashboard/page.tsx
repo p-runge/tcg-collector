@@ -36,6 +36,9 @@ import {
   Info,
   Users,
   User,
+  CircleIcon,
+  DiamondIcon,
+  StarIcon,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -124,8 +127,19 @@ const pokemonSets = [
   },
 ];
 
+type Rarity = "Common" | "Uncommon" | "Rare" | "Rare Holo";
+
+type Card = {
+  id: number;
+  name: string;
+  number: string;
+  rarity: Rarity;
+  imageUrl: string;
+  smallImageUrl: string;
+};
+
 // Mock cards with Pokemon TCG API image URLs
-const mockCards = [
+const mockCards: Card[] = [
   {
     id: 1,
     name: "Charizard",
@@ -856,7 +870,41 @@ export default function PokemonCollectionManager() {
 
                       <div className="flex items-center gap-2 mb-3">
                         <Badge variant="secondary" className="text-xs">
-                          {card.rarity}
+                          {
+                            {
+                              Common: (
+                                <CircleIcon
+                                  style={{
+                                    fill: "black",
+                                  }}
+                                />
+                              ),
+                              Uncommon: (
+                                <DiamondIcon
+                                  style={{
+                                    fill: "black",
+                                  }}
+                                />
+                              ),
+                              Rare: (
+                                <StarIcon
+                                  style={{
+                                    fill: "black",
+                                  }}
+                                />
+                              ),
+                              "Rare Holo": (
+                                <>
+                                  <StarIcon
+                                    style={{
+                                      fill: "black",
+                                    }}
+                                  />
+                                  H
+                                </>
+                              ),
+                            }[card.rarity]
+                          }
                         </Badge>
                       </div>
 
