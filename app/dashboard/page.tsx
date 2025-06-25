@@ -865,11 +865,6 @@ export default function PokemonCollectionManager() {
                         <h3 className="font-semibold truncate">{card.name}</h3>
                         <Badge variant="outline" className="text-xs">
                           {card.number}
-                        </Badge>
-                      </div>
-
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge variant="secondary" className="text-xs">
                           {
                             {
                               Common: (
