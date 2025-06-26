@@ -127,7 +127,8 @@ const pokemonSets = [
   },
 ];
 
-type Rarity = "Common" | "Uncommon" | "Rare" | "Rare Holo";
+const Rarity = ["Common", "Uncommon", "Rare", "Rare Holo"] as const;
+type Rarity = (typeof Rarity)[number];
 
 type Card = {
   id: number;
@@ -298,7 +299,7 @@ export default function PokemonCollectionManager() {
   const [selectedCards, setSelectedCards] = useState<Set<number>>(new Set());
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [addingMode, setAddingMode] = useState<AddingMode>("individual");
-  const [filterRarity, setFilterRarity] = useState<string>("all");
+  const [filterRarity, setFilterRarity] = useState<Rarity | "all">("all");
   const [bulkVariant, setBulkVariant] = useState("");
   const [bulkCondition, setBulkCondition] = useState("NM");
   const [bulkLanguage, setBulkLanguage] = useState("en");
@@ -646,16 +647,22 @@ export default function PokemonCollectionManager() {
                     />
                   </div>
 
-                  <Select value={filterRarity} onValueChange={setFilterRarity}>
+                  <Select
+                    value={filterRarity}
+                    onValueChange={(rarity) =>
+                      setFilterRarity(rarity as typeof filterRarity)
+                    }
+                  >
                     <SelectTrigger className="w-40">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Rarities</SelectItem>
-                      <SelectItem value="Common">Common</SelectItem>
-                      <SelectItem value="Uncommon">Uncommon</SelectItem>
-                      <SelectItem value="Rare">Rare</SelectItem>
-                      <SelectItem value="Rare Holo">Rare Holo</SelectItem>
+                      {Object.values(Rarity).map((rarity) => (
+                        <SelectItem key={rarity} value={rarity}>
+                          {rarity}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
