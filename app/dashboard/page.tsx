@@ -51,6 +51,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 // Available languages for Pokemon cards
 const cardLanguages = [
@@ -837,405 +838,413 @@ export default function PokemonCollectionManager() {
             }
           >
             {filteredCards.map((card) => (
-              <Card
+              <label
                 key={card.id}
-                className={`transition-all ${
-                  selectedCards.has(card.id) ? "ring-2 ring-blue-500" : ""
-                } ${viewMode === "list" ? "p-2" : ""}`}
+                className={cn(addingMode === "bulk" && "cursor-pointer")}
               >
-                <CardContent className={viewMode === "grid" ? "p-4" : "p-2"}>
-                  <div className="flex items-start gap-3">
-                    {/* Checkbox - Only show in bulk mode */}
-                    {addingMode === "bulk" && (
-                      <Checkbox
-                        checked={selectedCards.has(card.id)}
-                        onCheckedChange={() => toggleCardSelection(card.id)}
-                      />
-                    )}
+                <Card
+                  className={`transition-all ${
+                    selectedCards.has(card.id) ? "ring-2 ring-blue-500" : ""
+                  } ${viewMode === "list" ? "p-2" : ""}`}
+                >
+                  <CardContent className={viewMode === "grid" ? "p-4" : "p-2"}>
+                    <div className="flex items-start gap-3">
+                      {/* Checkbox - Only show in bulk mode */}
+                      {addingMode === "bulk" && (
+                        <Checkbox
+                          checked={selectedCards.has(card.id)}
+                          onCheckedChange={() => toggleCardSelection(card.id)}
+                        />
+                      )}
 
-                    {/* Card Thumbnail */}
-                    <div className="flex-shrink-0">
-                      <img
-                        src={card.smallImageUrl || "/placeholder.svg"}
-                        alt={card.name}
-                        className="w-16 h-22 object-cover rounded border shadow-sm"
-                        onError={(e) => {
-                          e.currentTarget.src = `/placeholder.svg?height=88&width=64&text=${encodeURIComponent(
-                            card.name
-                          )}`;
-                        }}
-                      />
-                    </div>
+                      {/* Card Thumbnail */}
+                      <div className="flex-shrink-0">
+                        <img
+                          src={card.smallImageUrl || "/placeholder.svg"}
+                          alt={card.name}
+                          className="w-16 h-22 object-cover rounded border shadow-sm"
+                          onError={(e) => {
+                            e.currentTarget.src = `/placeholder.svg?height=88&width=64&text=${encodeURIComponent(
+                              card.name
+                            )}`;
+                          }}
+                        />
+                      </div>
 
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold truncate">{card.name}</h3>
-                        <Badge variant="outline" className="text-xs">
-                          {card.number}
-                          {
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="font-semibold truncate">
+                            {card.name}
+                          </h3>
+                          <Badge variant="outline" className="text-xs">
+                            {card.number}
                             {
-                              Common: (
-                                <CircleIcon
-                                  style={{
-                                    fill: "black",
-                                  }}
-                                />
-                              ),
-                              Uncommon: (
-                                <DiamondIcon
-                                  style={{
-                                    fill: "black",
-                                  }}
-                                />
-                              ),
-                              Rare: (
-                                <StarIcon
-                                  style={{
-                                    fill: "black",
-                                  }}
-                                />
-                              ),
-                              "Rare Holo": (
-                                <>
+                              {
+                                Common: (
+                                  <CircleIcon
+                                    style={{
+                                      fill: "black",
+                                    }}
+                                  />
+                                ),
+                                Uncommon: (
+                                  <DiamondIcon
+                                    style={{
+                                      fill: "black",
+                                    }}
+                                  />
+                                ),
+                                Rare: (
                                   <StarIcon
                                     style={{
                                       fill: "black",
                                     }}
                                   />
-                                  H
-                                </>
-                              ),
-                            }[card.rarity]
-                          }
-                        </Badge>
-                      </div>
+                                ),
+                                "Rare Holo": (
+                                  <>
+                                    <StarIcon
+                                      style={{
+                                        fill: "black",
+                                      }}
+                                    />
+                                    H
+                                  </>
+                                ),
+                              }[card.rarity]
+                            }
+                          </Badge>
+                        </div>
 
-                      {/* Variants */}
-                      <div className="space-y-2">
-                        {selectedSet.variants.map((variant) => {
-                          const entries = getCardEntries(card.id, variant);
-                          const totalQuantity = getTotalQuantity(
-                            card.id,
-                            variant
-                          );
+                        {/* Variants */}
+                        <div className="space-y-2">
+                          {selectedSet.variants.map((variant) => {
+                            const entries = getCardEntries(card.id, variant);
+                            const totalQuantity = getTotalQuantity(
+                              card.id,
+                              variant
+                            );
 
-                          return (
-                            <div key={variant} className="space-y-1">
-                              <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                                <span className="text-sm font-medium">
-                                  {variant}
-                                </span>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-sm text-gray-600">
-                                    Total: {totalQuantity}
+                            return (
+                              <div key={variant} className="space-y-1">
+                                <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                  <span className="text-sm font-medium">
+                                    {variant}
                                   </span>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-sm text-gray-600">
+                                      Total: {totalQuantity}
+                                    </span>
 
-                                  {/* Individual Add Dropdown - Only show in individual mode */}
-                                  {addingMode === "individual" && (
-                                    <DropdownMenu>
-                                      <DropdownMenuTrigger asChild>
-                                        <Button
-                                          size="sm"
-                                          variant="outline"
-                                          className="h-6 px-2"
-                                        >
-                                          <Plus className="h-3 w-3" />
-                                        </Button>
-                                      </DropdownMenuTrigger>
-                                      <DropdownMenuContent className="w-80 p-3">
-                                        <div className="space-y-3">
-                                          <div className="text-sm font-medium text-center">
-                                            Add Card
-                                          </div>
-
-                                          <div className="border-t pt-3">
-                                            <div className="text-xs text-gray-600 mb-2">
-                                              Select Language:
-                                            </div>
-                                            <div className="text-xs text-gray-500 mb-2 italic">
-                                              Choose language, then click
-                                              condition to add
-                                            </div>
-                                            <div className="grid grid-cols-5 gap-1 mb-3">
-                                              {cardLanguages
-                                                .slice(0, 10)
-                                                .map((language) => (
-                                                  <label
-                                                    key={language.code}
-                                                    className={`flex items-center justify-center h-8 p-1 text-xs border rounded cursor-pointer transition-colors ${
-                                                      selectedQuickLanguage ===
-                                                      language.code
-                                                        ? "bg-blue-100 border-blue-500 text-blue-700"
-                                                        : "bg-white border-gray-300 hover:bg-gray-50"
-                                                    }`}
-                                                    title={language.name}
-                                                  >
-                                                    <input
-                                                      type="radio"
-                                                      name="language"
-                                                      value={language.code}
-                                                      checked={
-                                                        selectedQuickLanguage ===
-                                                        language.code
-                                                      }
-                                                      onChange={() =>
-                                                        setSelectedQuickLanguage(
-                                                          language.code
-                                                        )
-                                                      }
-                                                      className="sr-only"
-                                                    />
-                                                    {language.flag}
-                                                  </label>
-                                                ))}
-                                            </div>
-
-                                            <div className="text-xs text-gray-600 mb-2">
-                                              Add Card with Condition:
-                                            </div>
-                                            <div className="grid grid-cols-4 gap-1">
-                                              {cardConditions.map(
-                                                (condition) => (
-                                                  <Button
-                                                    key={condition.value}
-                                                    size="sm"
-                                                    variant="outline"
-                                                    onClick={() => {
-                                                      addCardEntry(
-                                                        card.id,
-                                                        variant,
-                                                        condition.value,
-                                                        selectedQuickLanguage
-                                                      );
-                                                    }}
-                                                    className="h-8 text-xs justify-start"
-                                                  >
-                                                    <div className="flex items-center gap-1">
-                                                      <div
-                                                        className={`w-2 h-2 rounded-full ${
-                                                          condition.color.split(
-                                                            " "
-                                                          )[0]
-                                                        }`}
-                                                      />
-                                                      <span>
-                                                        {condition.value}
-                                                      </span>
-                                                    </div>
-                                                  </Button>
-                                                )
-                                              )}
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </DropdownMenuContent>
-                                    </DropdownMenu>
-                                  )}
-                                </div>
-                              </div>
-
-                              {/* Individual Card Entries */}
-                              {entries
-                                .sort((a, b) => {
-                                  // sort by condition
-                                  const conditionOrder = cardConditions.map(
-                                    (c) => c.value
-                                  );
-                                  return (
-                                    conditionOrder.indexOf(a.condition) -
-                                    conditionOrder.indexOf(b.condition)
-                                  );
-                                })
-                                .map((entry) => {
-                                  const conditionInfo = getConditionInfo(
-                                    entry.condition
-                                  );
-                                  const languageInfo = getLanguageInfo(
-                                    entry.language
-                                  );
-                                  return (
-                                    <div
-                                      key={entry.id}
-                                      className="flex items-center gap-2 p-2 bg-white rounded border ml-4"
-                                    >
-                                      <Badge
-                                        variant="outline"
-                                        className="text-xs"
-                                      >
-                                        {languageInfo.flag}{" "}
-                                        {languageInfo.code.toUpperCase()}
-                                      </Badge>
-
-                                      <Badge
-                                        className={`text-xs ${conditionInfo.color} border`}
-                                      >
-                                        {conditionInfo.label}
-                                      </Badge>
-
-                                      <div className="flex items-center gap-1 ml-auto">
-                                        {entry.photos.length > 0 && (
+                                    {/* Individual Add Dropdown - Only show in individual mode */}
+                                    {addingMode === "individual" && (
+                                      <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
                                           <Button
                                             size="sm"
-                                            variant="ghost"
-                                            onClick={() =>
-                                              setViewingPhotos(entry.photos)
-                                            }
-                                            className="h-6 w-6 p-0"
+                                            variant="outline"
+                                            className="h-6 px-2"
                                           >
-                                            <Eye className="h-3 w-3 text-blue-600" />
+                                            <Plus className="h-3 w-3" />
                                           </Button>
-                                        )}
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent className="w-80 p-3">
+                                          <div className="space-y-3">
+                                            <div className="text-sm font-medium text-center">
+                                              Add Card
+                                            </div>
 
-                                        <Dialog>
-                                          <DialogTrigger asChild>
+                                            <div className="border-t pt-3">
+                                              <div className="text-xs text-gray-600 mb-2">
+                                                Select Language:
+                                              </div>
+                                              <div className="text-xs text-gray-500 mb-2 italic">
+                                                Choose language, then click
+                                                condition to add
+                                              </div>
+                                              <div className="grid grid-cols-5 gap-1 mb-3">
+                                                {cardLanguages
+                                                  .slice(0, 10)
+                                                  .map((language) => (
+                                                    <label
+                                                      key={language.code}
+                                                      className={`flex items-center justify-center h-8 p-1 text-xs border rounded cursor-pointer transition-colors ${
+                                                        selectedQuickLanguage ===
+                                                        language.code
+                                                          ? "bg-blue-100 border-blue-500 text-blue-700"
+                                                          : "bg-white border-gray-300 hover:bg-gray-50"
+                                                      }`}
+                                                      title={language.name}
+                                                    >
+                                                      <input
+                                                        type="radio"
+                                                        name="language"
+                                                        value={language.code}
+                                                        checked={
+                                                          selectedQuickLanguage ===
+                                                          language.code
+                                                        }
+                                                        onChange={() =>
+                                                          setSelectedQuickLanguage(
+                                                            language.code
+                                                          )
+                                                        }
+                                                        className="sr-only"
+                                                      />
+                                                      {language.flag}
+                                                    </label>
+                                                  ))}
+                                              </div>
+
+                                              <div className="text-xs text-gray-600 mb-2">
+                                                Add Card with Condition:
+                                              </div>
+                                              <div className="grid grid-cols-4 gap-1">
+                                                {cardConditions.map(
+                                                  (condition) => (
+                                                    <Button
+                                                      key={condition.value}
+                                                      size="sm"
+                                                      variant="outline"
+                                                      onClick={() => {
+                                                        addCardEntry(
+                                                          card.id,
+                                                          variant,
+                                                          condition.value,
+                                                          selectedQuickLanguage
+                                                        );
+                                                      }}
+                                                      className="h-8 text-xs justify-start"
+                                                    >
+                                                      <div className="flex items-center gap-1">
+                                                        <div
+                                                          className={`w-2 h-2 rounded-full ${
+                                                            condition.color.split(
+                                                              " "
+                                                            )[0]
+                                                          }`}
+                                                        />
+                                                        <span>
+                                                          {condition.value}
+                                                        </span>
+                                                      </div>
+                                                    </Button>
+                                                  )
+                                                )}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </DropdownMenuContent>
+                                      </DropdownMenu>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {/* Individual Card Entries */}
+                                {entries
+                                  .sort((a, b) => {
+                                    // sort by condition
+                                    const conditionOrder = cardConditions.map(
+                                      (c) => c.value
+                                    );
+                                    return (
+                                      conditionOrder.indexOf(a.condition) -
+                                      conditionOrder.indexOf(b.condition)
+                                    );
+                                  })
+                                  .map((entry) => {
+                                    const conditionInfo = getConditionInfo(
+                                      entry.condition
+                                    );
+                                    const languageInfo = getLanguageInfo(
+                                      entry.language
+                                    );
+                                    return (
+                                      <div
+                                        key={entry.id}
+                                        className="flex items-center gap-2 p-2 bg-white rounded border ml-4"
+                                      >
+                                        <Badge
+                                          variant="outline"
+                                          className="text-xs"
+                                        >
+                                          {languageInfo.flag}{" "}
+                                          {languageInfo.code.toUpperCase()}
+                                        </Badge>
+
+                                        <Badge
+                                          className={`text-xs ${conditionInfo.color} border`}
+                                        >
+                                          {conditionInfo.label}
+                                        </Badge>
+
+                                        <div className="flex items-center gap-1 ml-auto">
+                                          {entry.photos.length > 0 && (
                                             <Button
                                               size="sm"
                                               variant="ghost"
                                               onClick={() =>
-                                                startEditingCard(
-                                                  card.id,
-                                                  variant,
-                                                  entry.id
-                                                )
+                                                setViewingPhotos(entry.photos)
                                               }
                                               className="h-6 w-6 p-0"
                                             >
-                                              <Edit3
-                                                className={`h-3 w-3 ${
-                                                  entry.note ||
-                                                  entry.photos.length > 0
-                                                    ? "text-blue-600"
-                                                    : "text-gray-400"
-                                                }`}
-                                              />
+                                              <Eye className="h-3 w-3 text-blue-600" />
                                             </Button>
-                                          </DialogTrigger>
-                                          <DialogContent className="max-w-2xl">
-                                            <DialogHeader>
-                                              <DialogTitle>
-                                                Edit Card - {card.name} (
-                                                {variant} -{" "}
-                                                {conditionInfo.label} -{" "}
-                                                {languageInfo.name})
-                                              </DialogTitle>
-                                            </DialogHeader>
-                                            <div className="space-y-4">
-                                              <div>
-                                                <Label htmlFor="note">
-                                                  Note
-                                                </Label>
-                                                <Textarea
-                                                  id="note"
-                                                  value={editForm.note}
-                                                  onChange={(e) =>
-                                                    setEditForm((prev) => ({
-                                                      ...prev,
-                                                      note: e.target.value,
-                                                    }))
-                                                  }
-                                                  placeholder="Add a note about this specific card..."
-                                                  rows={3}
+                                          )}
+
+                                          <Dialog>
+                                            <DialogTrigger asChild>
+                                              <Button
+                                                size="sm"
+                                                variant="ghost"
+                                                onClick={() =>
+                                                  startEditingCard(
+                                                    card.id,
+                                                    variant,
+                                                    entry.id
+                                                  )
+                                                }
+                                                className="h-6 w-6 p-0"
+                                              >
+                                                <Edit3
+                                                  className={`h-3 w-3 ${
+                                                    entry.note ||
+                                                    entry.photos.length > 0
+                                                      ? "text-blue-600"
+                                                      : "text-gray-400"
+                                                  }`}
                                                 />
-                                              </div>
-
-                                              <div>
-                                                <Label>Photos</Label>
-                                                <div className="space-y-2">
-                                                  <Input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    multiple
-                                                    onChange={handlePhotoUpload}
-                                                    className="cursor-pointer"
+                                              </Button>
+                                            </DialogTrigger>
+                                            <DialogContent className="max-w-2xl">
+                                              <DialogHeader>
+                                                <DialogTitle>
+                                                  Edit Card - {card.name} (
+                                                  {variant} -{" "}
+                                                  {conditionInfo.label} -{" "}
+                                                  {languageInfo.name})
+                                                </DialogTitle>
+                                              </DialogHeader>
+                                              <div className="space-y-4">
+                                                <div>
+                                                  <Label htmlFor="note">
+                                                    Note
+                                                  </Label>
+                                                  <Textarea
+                                                    id="note"
+                                                    value={editForm.note}
+                                                    onChange={(e) =>
+                                                      setEditForm((prev) => ({
+                                                        ...prev,
+                                                        note: e.target.value,
+                                                      }))
+                                                    }
+                                                    placeholder="Add a note about this specific card..."
+                                                    rows={3}
                                                   />
-                                                  {editForm.photos.length >
-                                                    0 && (
-                                                    <div className="grid grid-cols-3 gap-2">
-                                                      {editForm.photos.map(
-                                                        (photo, index) => (
-                                                          <div
-                                                            key={index}
-                                                            className="relative"
-                                                          >
-                                                            <img
-                                                              src={
-                                                                photo ||
-                                                                "/placeholder.svg"
-                                                              }
-                                                              alt={`Photo ${
-                                                                index + 1
-                                                              }`}
-                                                              className="w-full h-20 object-cover rounded border"
-                                                            />
-                                                            <Button
-                                                              size="sm"
-                                                              variant="destructive"
-                                                              onClick={() =>
-                                                                removePhoto(
-                                                                  index
-                                                                )
-                                                              }
-                                                              className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full"
+                                                </div>
+
+                                                <div>
+                                                  <Label>Photos</Label>
+                                                  <div className="space-y-2">
+                                                    <Input
+                                                      type="file"
+                                                      accept="image/*"
+                                                      multiple
+                                                      onChange={
+                                                        handlePhotoUpload
+                                                      }
+                                                      className="cursor-pointer"
+                                                    />
+                                                    {editForm.photos.length >
+                                                      0 && (
+                                                      <div className="grid grid-cols-3 gap-2">
+                                                        {editForm.photos.map(
+                                                          (photo, index) => (
+                                                            <div
+                                                              key={index}
+                                                              className="relative"
                                                             >
-                                                              <X className="h-3 w-3" />
-                                                            </Button>
-                                                          </div>
-                                                        )
-                                                      )}
-                                                    </div>
-                                                  )}
+                                                              <img
+                                                                src={
+                                                                  photo ||
+                                                                  "/placeholder.svg"
+                                                                }
+                                                                alt={`Photo ${
+                                                                  index + 1
+                                                                }`}
+                                                                className="w-full h-20 object-cover rounded border"
+                                                              />
+                                                              <Button
+                                                                size="sm"
+                                                                variant="destructive"
+                                                                onClick={() =>
+                                                                  removePhoto(
+                                                                    index
+                                                                  )
+                                                                }
+                                                                className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full"
+                                                              >
+                                                                <X className="h-3 w-3" />
+                                                              </Button>
+                                                            </div>
+                                                          )
+                                                        )}
+                                                      </div>
+                                                    )}
+                                                  </div>
+                                                </div>
+
+                                                <div className="flex gap-2 justify-between">
+                                                  <Button
+                                                    variant="destructive"
+                                                    onClick={() => {
+                                                      removeCardEntry(
+                                                        card.id,
+                                                        variant,
+                                                        entry.id
+                                                      );
+                                                      cancelCardEdit();
+                                                    }}
+                                                  >
+                                                    Remove Card
+                                                  </Button>
+                                                  <div className="flex gap-2">
+                                                    <Button
+                                                      variant="outline"
+                                                      onClick={cancelCardEdit}
+                                                    >
+                                                      Cancel
+                                                    </Button>
+                                                    <Button
+                                                      onClick={saveCardEdit}
+                                                    >
+                                                      Save Changes
+                                                    </Button>
+                                                  </div>
                                                 </div>
                                               </div>
-
-                                              <div className="flex gap-2 justify-between">
-                                                <Button
-                                                  variant="destructive"
-                                                  onClick={() => {
-                                                    removeCardEntry(
-                                                      card.id,
-                                                      variant,
-                                                      entry.id
-                                                    );
-                                                    cancelCardEdit();
-                                                  }}
-                                                >
-                                                  Remove Card
-                                                </Button>
-                                                <div className="flex gap-2">
-                                                  <Button
-                                                    variant="outline"
-                                                    onClick={cancelCardEdit}
-                                                  >
-                                                    Cancel
-                                                  </Button>
-                                                  <Button
-                                                    onClick={saveCardEdit}
-                                                  >
-                                                    Save Changes
-                                                  </Button>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </DialogContent>
-                                        </Dialog>
-                                      </div>
-
-                                      {entry.note && (
-                                        <div className="w-full text-xs text-gray-600 bg-yellow-50 p-1 rounded mt-1">
-                                          {entry.note}
+                                            </DialogContent>
+                                          </Dialog>
                                         </div>
-                                      )}
-                                    </div>
-                                  );
-                                })}
-                            </div>
-                          );
-                        })}
+
+                                        {entry.note && (
+                                          <div className="w-full text-xs text-gray-600 bg-yellow-50 p-1 rounded mt-1">
+                                            {entry.note}
+                                          </div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </label>
             ))}
           </div>
 
