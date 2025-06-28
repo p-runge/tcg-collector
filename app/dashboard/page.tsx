@@ -531,12 +531,14 @@ export default function PokemonCollectionManager() {
               </DialogHeader>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="defaultLanguage">Default Language</Label>
+                  <Label htmlFor="defaultLanguage" className="mb-2">
+                    Default Language
+                  </Label>
                   <Select
                     value={defaultLanguage}
                     onValueChange={setDefaultLanguage}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger id="defaultLanguage">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
