@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -294,8 +294,21 @@ function AddCardForm({
 }
 
 export default function PokemonCollectionManager() {
-  const [selectedSet, setSelectedSet] = useState(pokemonSets[0]);
   const [collection, setCollection] = useState<CardCollection>({});
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    setCollection(JSON.parse(localStorage.getItem("collection") ?? "{}"));
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    localStorage.setItem("collection", JSON.stringify(collection));
+  }, [collection]);
+
+  const [selectedSet, setSelectedSet] = useState(pokemonSets[0]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCards, setSelectedCards] = useState<Set<number>>(new Set());
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
