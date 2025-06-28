@@ -1157,12 +1157,6 @@ export default function PokemonCollectionManager() {
                                                   </Button>
                                                   <div className="flex gap-2">
                                                     <Button
-                                                      variant="outline"
-                                                      onClick={cancelCardEdit}
-                                                    >
-                                                      Cancel
-                                                    </Button>
-                                                    <Button
                                                       onClick={saveCardEdit}
                                                     >
                                                       Save Changes
