@@ -141,72 +141,14 @@ type Card = {
 };
 
 // Mock cards with Pokemon TCG API image URLs
-const mockCards: Card[] = [
-  {
-    id: 1,
-    name: "Charizard",
-    number: "4/102",
-    rarity: "Rare Holo",
-    imageUrl: "https://images.pokemontcg.io/base1/4_hires.png",
-    smallImageUrl: "https://images.pokemontcg.io/base1/4.png",
-  },
-  {
-    id: 2,
-    name: "Blastoise",
-    number: "2/102",
-    rarity: "Rare Holo",
-    imageUrl: "https://images.pokemontcg.io/base1/2_hires.png",
-    smallImageUrl: "https://images.pokemontcg.io/base1/2.png",
-  },
-  {
-    id: 3,
-    name: "Venusaur",
-    number: "15/102",
-    rarity: "Rare Holo",
-    imageUrl: "https://images.pokemontcg.io/base1/15_hires.png",
-    smallImageUrl: "https://images.pokemontcg.io/base1/15.png",
-  },
-  {
-    id: 4,
-    name: "Pikachu",
-    number: "58/102",
-    rarity: "Common",
-    imageUrl: "https://images.pokemontcg.io/base1/58_hires.png",
-    smallImageUrl: "https://images.pokemontcg.io/base1/58.png",
-  },
-  {
-    id: 5,
-    name: "Alakazam",
-    number: "1/102",
-    rarity: "Rare Holo",
-    imageUrl: "https://images.pokemontcg.io/base1/1_hires.png",
-    smallImageUrl: "https://images.pokemontcg.io/base1/1.png",
-  },
-  {
-    id: 6,
-    name: "Machamp",
-    number: "8/102",
-    rarity: "Rare Holo",
-    imageUrl: "https://images.pokemontcg.io/base1/8_hires.png",
-    smallImageUrl: "https://images.pokemontcg.io/base1/8.png",
-  },
-  {
-    id: 7,
-    name: "Poliwrath",
-    number: "13/102",
-    rarity: "Rare Holo",
-    imageUrl: "https://images.pokemontcg.io/base1/13_hires.png",
-    smallImageUrl: "https://images.pokemontcg.io/base1/13.png",
-  },
-  {
-    id: 8,
-    name: "Raichu",
-    number: "14/102",
-    rarity: "Rare Holo",
-    imageUrl: "https://images.pokemontcg.io/base1/14_hires.png",
-    smallImageUrl: "https://images.pokemontcg.io/base1/14.png",
-  },
-];
+const mockCards: Card[] = [...Array(102)].map((_, i) => ({
+  id: i,
+  name: `Pokémon ${i + 1}`,
+  number: `${i + 1}/102`,
+  rarity: "Rare Holo",
+  imageUrl: `https://images.pokemontcg.io/base1/${i + 1}_hires.png`,
+  smallImageUrl: `https://images.pokemontcg.io/base1/${i + 1}.png`,
+}));
 
 type CardEntry = {
   id: string; // Unique ID for each individual card
