@@ -225,74 +225,6 @@ type CardCollection = {
 
 type AddingMode = "individual" | "bulk";
 
-interface AddCardFormProps {
-  onAdd: (condition: string, language: string) => void;
-  defaultCondition: string;
-  defaultLanguage: string;
-}
-
-function AddCardForm({
-  onAdd,
-  defaultCondition,
-  defaultLanguage,
-}: AddCardFormProps) {
-  const [selectedCondition, setSelectedCondition] = useState(defaultCondition);
-  const [selectedLanguage, setSelectedLanguage] = useState(defaultLanguage);
-  const [isOpen, setIsOpen] = useState(true);
-
-  const handleAdd = () => {
-    onAdd(selectedCondition, selectedLanguage);
-    setIsOpen(false);
-  };
-
-  return (
-    <div className="space-y-4">
-      <div>
-        <Label>Condition</Label>
-        <Select value={selectedCondition} onValueChange={setSelectedCondition}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {cardConditions.map((condition) => (
-              <SelectItem key={condition.value} value={condition.value}>
-                <div className="flex items-center gap-2">
-                  <div
-                    className={`w-3 h-3 rounded-full ${
-                      condition.color.split(" ")[0]
-                    }`}
-                  />
-                  {condition.label}
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div>
-        <Label>Language</Label>
-        <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {cardLanguages.map((language) => (
-              <SelectItem key={language.code} value={language.code}>
-                {language.flag} {language.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex gap-2 justify-end">
-        <Button onClick={handleAdd}>Add Card</Button>
-      </div>
-    </div>
-  );
-}
-
 export default function PokemonCollectionManager() {
   const [collection, setCollection] = useState<CardCollection>({});
 
@@ -332,7 +264,6 @@ export default function PokemonCollectionManager() {
 
   const [selectedQuickLanguage, setSelectedQuickLanguage] =
     useState(defaultLanguage);
-  const [selectedQuickCondition, setSelectedQuickCondition] = useState("NM");
 
   const filteredCards = mockCards.filter((card) => {
     const matchesSearch =
