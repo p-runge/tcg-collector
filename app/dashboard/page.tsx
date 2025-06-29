@@ -52,6 +52,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { pokemonAPI, PokemonCard } from "@/lib/pokemon-api";
 
 // Available languages for Pokemon cards
 const cardLanguages = [
@@ -107,48 +108,25 @@ const cardConditions = [
 ];
 
 // Mock data for Pokemon sets and cards
-const pokemonSets = [
-  {
-    id: "base1",
-    name: "Base Set",
-    variants: ["Normal", "1st Edition", "Shadowless"],
-    totalCards: 102,
-  },
-  {
-    id: "jungle",
-    name: "Jungle",
-    variants: ["Normal", "1st Edition"],
-    totalCards: 64,
-  },
-  {
-    id: "fossil",
-    name: "Fossil",
-    variants: ["Normal", "1st Edition"],
-    totalCards: 62,
-  },
-];
+const pokemonSets = (await pokemonAPI.getSets()).map((set) => ({
+  id: set.id,
+  name: set.name,
+  totalCards: set.totalCards,
+  variants: set.variants,
+}));
 
 const Rarity = ["Common", "Uncommon", "Rare", "Rare Holo"] as const;
 type Rarity = (typeof Rarity)[number];
 
-type Card = {
-  id: number;
-  name: string;
-  number: string;
-  rarity: Rarity;
-  imageUrl: string;
-  smallImageUrl: string;
-};
-
 // Mock cards with Pokemon TCG API image URLs
-const mockCards: Card[] = [...Array(102)].map((_, i) => ({
-  id: i,
-  name: `Pokémon ${i + 1}`,
-  number: `${i + 1}/102`,
-  rarity: "Rare Holo",
-  imageUrl: `https://images.pokemontcg.io/base1/${i + 1}_hires.png`,
-  smallImageUrl: `https://images.pokemontcg.io/base1/${i + 1}.png`,
-}));
+// const cards: Card[] = [...Array(102)].map((_, i) => ({
+//   id: i,
+//   name: `Pokémon ${i + 1}`,
+//   number: `${i + 1}/102`,
+//   rarity: "Rare Holo",
+//   imageUrl: `https://images.pokemontcg.io/base1/${i + 1}_hires.png`,
+//   smallImageUrl: `https://images.pokemontcg.io/base1/${i + 1}.png`,
+// }));
 
 type CardEntry = {
   id: string; // Unique ID for each individual card
@@ -160,7 +138,7 @@ type CardEntry = {
 };
 
 type CardCollection = {
-  [cardId: number]: {
+  [cardId: string]: {
     [variant: string]: CardEntry[];
   };
 };
@@ -183,8 +161,30 @@ export default function PokemonCollectionManager() {
   }, [collection]);
 
   const [selectedSet, setSelectedSet] = useState(pokemonSets[0]);
+  const [cards, setCards] = useState<PokemonCard[]>([]);
+  useEffect(() => {
+    pokemonAPI.getCardsForSet(selectedSet.id).then((fetchedCards) => {
+      console.log("fetchedCards", fetchedCards);
+      setCards(
+        fetchedCards.map((card) => ({
+          id: card.id,
+          name: card.name,
+          number: card.number,
+          rarity: card.rarity as Rarity,
+          set: { id: selectedSet.id, name: selectedSet.name },
+          images: {
+            small: card.images.small,
+            large: card.images.large,
+          },
+          supertype: card.supertype,
+          subtypes: card.subtypes || [],
+        }))
+      );
+    });
+  }, [selectedSet]);
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCards, setSelectedCards] = useState<Set<number>>(new Set());
+  const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [addingMode, setAddingMode] = useState<AddingMode>("individual");
   const [filterRarity, setFilterRarity] = useState<Rarity | "all">("all");
@@ -193,7 +193,7 @@ export default function PokemonCollectionManager() {
   const [bulkLanguage, setBulkLanguage] = useState("en");
   const [defaultLanguage, setDefaultLanguage] = useState("en");
   const [editingCard, setEditingCard] = useState<{
-    cardId: number;
+    cardId: string;
     variant: string;
     entryId: string;
   } | null>(null);
@@ -207,7 +207,7 @@ export default function PokemonCollectionManager() {
   const [selectedQuickLanguage, setSelectedQuickLanguage] =
     useState(defaultLanguage);
 
-  const filteredCards = mockCards.filter((card) => {
+  const filteredCards = cards.filter((card) => {
     const matchesSearch =
       card.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       card.number.includes(searchTerm);
@@ -216,16 +216,16 @@ export default function PokemonCollectionManager() {
     return matchesSearch && matchesRarity;
   });
 
-  const getCardEntries = (cardId: number, variant: string): CardEntry[] => {
+  const getCardEntries = (cardId: string, variant: string): CardEntry[] => {
     return collection[cardId]?.[variant] || [];
   };
 
-  const getTotalQuantity = (cardId: number, variant: string) => {
+  const getTotalQuantity = (cardId: string, variant: string) => {
     return getCardEntries(cardId, variant).length;
   };
 
   const addCardEntry = (
-    cardId: number,
+    cardId: string,
     variant: string,
     condition: string,
     language: string
@@ -248,7 +248,7 @@ export default function PokemonCollectionManager() {
   };
 
   const updateCardEntry = (
-    cardId: number,
+    cardId: string,
     variant: string,
     entryId: string,
     updates: Partial<CardEntry>
@@ -272,7 +272,7 @@ export default function PokemonCollectionManager() {
   };
 
   const removeCardEntry = (
-    cardId: number,
+    cardId: string,
     variant: string,
     entryId: string
   ) => {
@@ -291,7 +291,7 @@ export default function PokemonCollectionManager() {
     });
   };
 
-  const toggleCardSelection = (cardId: number) => {
+  const toggleCardSelection = (cardId: string) => {
     setSelectedCards((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(cardId)) {
@@ -340,7 +340,7 @@ export default function PokemonCollectionManager() {
   };
 
   const startEditingCard = (
-    cardId: number,
+    cardId: string,
     variant: string,
     entryId: string
   ) => {
