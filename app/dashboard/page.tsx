@@ -748,7 +748,7 @@ export default function PokemonCollectionManager() {
                       {/* Card Thumbnail */}
                       <div className="flex-shrink-0">
                         <img
-                          src={card.smallImageUrl || "/placeholder.svg"}
+                          src={card.images.small || "/placeholder.svg"}
                           alt={card.name}
                           className="w-16 h-22 object-cover rounded border shadow-sm"
                           onError={(e) => {
