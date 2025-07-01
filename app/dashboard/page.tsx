@@ -52,7 +52,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { pokemonAPI, PokemonCard } from "@/lib/pokemon-api";
+import { pokemonAPI, PokemonCard, PokemonSet } from "@/lib/pokemon-api";
 
 // Available languages for Pokemon cards
 const cardLanguages = [
@@ -107,14 +107,6 @@ const cardConditions = [
   },
 ];
 
-// Mock data for Pokemon sets and cards
-const pokemonSets = (await pokemonAPI.getSets()).map((set) => ({
-  id: set.id,
-  name: set.name,
-  totalCards: set.totalCards,
-  variants: set.variants,
-}));
-
 const Rarity = ["Common", "Uncommon", "Rare", "Rare Holo"] as const;
 type Rarity = (typeof Rarity)[number];
 
@@ -148,6 +140,20 @@ type AddingMode = "individual" | "bulk";
 export default function PokemonCollectionManager() {
   const [collection, setCollection] = useState<CardCollection>({});
 
+  const [pokemonSets, setPokemonSets] = useState<PokemonSet[]>([]);
+  useEffect(() => {
+    const pokemonSets = pokemonAPI.getSets().then((sets) =>
+      sets.map((set) => ({
+        id: set.id,
+        name: set.name,
+        totalCards: set.totalCards,
+        variants: set.variants,
+      }))
+    );
+    setPokemonSets(pokemonSets);
+    console.log("pokemonSets", pokemonSets);
+  }, []);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -163,24 +169,24 @@ export default function PokemonCollectionManager() {
   const [selectedSet, setSelectedSet] = useState(pokemonSets[0]);
   const [cards, setCards] = useState<PokemonCard[]>([]);
   useEffect(() => {
-    pokemonAPI.getCardsForSet(selectedSet.id).then((fetchedCards) => {
-      console.log("fetchedCards", fetchedCards);
-      setCards(
-        fetchedCards.map((card) => ({
-          id: card.id,
-          name: card.name,
-          number: card.number,
-          rarity: card.rarity as Rarity,
-          set: { id: selectedSet.id, name: selectedSet.name },
-          images: {
-            small: card.images.small,
-            large: card.images.large,
-          },
-          supertype: card.supertype,
-          subtypes: card.subtypes || [],
-        }))
-      );
-    });
+    // pokemonAPI.getCardsForSet(selectedSet.id).then((fetchedCards) => {
+    //   console.log("fetchedCards", fetchedCards);
+    //   setCards(
+    //     fetchedCards.map((card) => ({
+    //       id: card.id,
+    //       name: card.name,
+    //       number: card.number,
+    //       rarity: card.rarity as Rarity,
+    //       set: { id: selectedSet.id, name: selectedSet.name },
+    //       images: {
+    //         small: card.images.small,
+    //         large: card.images.large,
+    //       },
+    //       supertype: card.supertype,
+    //       subtypes: card.subtypes || [],
+    //     }))
+    //   );
+    // });
   }, [selectedSet]);
 
   const [searchTerm, setSearchTerm] = useState("");
