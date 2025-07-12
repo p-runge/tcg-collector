@@ -142,12 +142,13 @@ export default function PokemonCollectionManager() {
 
   const [pokemonSets, setPokemonSets] = useState<PokemonSet[]>([]);
   useEffect(() => {
-    const pokemonSets = pokemonAPI.getSets().then((sets) =>
+    const pokemonSets = pokemonAPI.getAllSets().then((sets) =>
       sets.map((set) => ({
         id: set.id,
         name: set.name,
-        totalCards: set.totalCards,
-        variants: set.variants,
+        totalCards: set.total,
+        releaseDate: set.releaseDate,
+        series: set.series,
       }))
     );
     setPokemonSets(pokemonSets);

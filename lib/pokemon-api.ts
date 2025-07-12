@@ -16,11 +16,11 @@ export type PokemonSet = {
   id: string;
   name: string;
   series: string;
-  logo: string;
-  symbol: string;
+  // logo: string;
+  // symbol: string;
   releaseDate: string;
   totalCards: number;
-  variants: string[];
+  // variants: string[];
 };
 
 export type PokemonCard = {
