@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
 import {
-  pokemonAPI,
-  type PokemonSet,
   type PokemonCard,
+  type PokemonSet,
   getVariants,
 } from "@/lib/pokemon-api";
+import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
+import { useCallback, useEffect, useState } from "react";
 
 export function usePokemonSets() {
   const [sets, setSets] = useState<PokemonSet[]>([]);
@@ -18,7 +18,7 @@ export function usePokemonSets() {
     try {
       setLoading(true);
       setError(null);
-      const setsData = await pokemonAPI.getAllSets().then((sets) =>
+      const setsData = await PokemonTCG.getAllSets().then((sets) =>
         sets.map(
           (set) =>
             ({
@@ -63,28 +63,25 @@ export function usePokemonCards(setId: string | null) {
       try {
         setLoading(true);
         setError(null);
-        const cardsData = await pokemonAPI
-          .getAllCards({ q: `set.id:${setId}` })
-          .then((cards) =>
-            cards.map(
-              (card) =>
-                ({
-                  id: card.id,
-                  name: card.name,
-                  number: card.number,
-                  rarity: card.rarity,
-                  set: { id: card.set.id, name: card.set.name },
-                  images: {
-                    small: card.images.small,
-                    large: card.images.large,
-                  },
-                } satisfies PokemonCard)
-            )
-          );
+        const cardsData = await PokemonTCG.findCardsByQueries({
+          q: `set.id:${setId}`,
+        }).then((cards) =>
+          cards.map(
+            (card) =>
+              ({
+                id: card.id,
+                name: card.name,
+                number: card.number,
+                rarity: card.rarity,
+                set: { id: card.set.id, name: card.set.name },
+                images: {
+                  small: card.images.small,
+                  large: card.images.large,
+                },
+              } satisfies PokemonCard)
+          )
+        );
         setCards(cardsData);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch cards");
-        console.error("Error loading cards:", err);
       } finally {
         setLoading(false);
       }

@@ -34,12 +34,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  getVariants,
-  pokemonAPI,
-  PokemonCard,
-  PokemonSet,
-} from "@/lib/pokemon-api";
+import { getVariants, PokemonCard, PokemonSet } from "@/lib/pokemon-api";
 import { cn } from "@/lib/utils";
 import {
   CircleIcon,
@@ -57,6 +52,7 @@ import {
   Users,
   X,
 } from "lucide-react";
+import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 import { useEffect, useState } from "react";
 
 // Available languages for Pokemon cards
@@ -147,8 +143,7 @@ export default function PokemonCollectionManager() {
 
   const [pokemonSets, setPokemonSets] = useState<PokemonSet[]>([]);
   useEffect(() => {
-    pokemonAPI
-      .getAllSets()
+    PokemonTCG.getAllSets()
       .then((sets) =>
         sets.map(
           (set) =>
@@ -180,8 +175,7 @@ export default function PokemonCollectionManager() {
   const [selectedSet, setSelectedSet] = useState(pokemonSets[0]);
   const [cards] = useState<PokemonCard[]>([]);
   useEffect(() => {
-    // pokemonAPI.getCardsForSet(selectedSet.id).then((fetchedCards) => {
-    //   console.log("fetchedCards", fetchedCards);
+    // PokemonTCG.getCardsForSet(selectedSet.id).then((fetchedCards) => {
     //   setCards(
     //     fetchedCards.map((card) => ({
     //       id: card.id,

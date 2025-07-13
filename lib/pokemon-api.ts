@@ -43,5 +43,3 @@ export function getVariants(_setId: string): string[] {
   // TODO: add map for setId to variants
   return ["Normal", "1st Edition", "Shadowless", "Reverse Holo"];
 }
-
-export const pokemonAPI = PokemonTCG;

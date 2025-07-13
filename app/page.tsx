@@ -221,10 +221,10 @@ export default function PokemonCollectionManager() {
 
   // Set the first set as selected when sets load
   useEffect(() => {
-    if (sets.length > 0 && !selectedSet) {
+    if (sets.length > 0) {
       setSelectedSet(sets[0] ?? null);
     }
-  }, [sets, selectedSet]);
+  }, [sets]);
 
   // Reset bulk variant when set changes
   useEffect(() => {
@@ -488,7 +488,7 @@ export default function PokemonCollectionManager() {
               </div>
               <div className="flex flex-wrap gap-4 items-center">
                 <Select
-                  value={selectedSet?.id || ""}
+                  value={selectedSet?.id}
                   onValueChange={(value) => {
                     const set = sets.find((s) => s.id === value);
                     if (set) setSelectedSet(set);
