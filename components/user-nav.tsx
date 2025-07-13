@@ -1,5 +1,4 @@
-import { signOut } from "@/auth"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,16 +6,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Link from "next/link"
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
 
 interface UserNavProps {
   user: {
-    name?: string | null
-    email?: string | null
-    image?: string | null
-  }
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
 }
 
 export function UserNav({ user }: UserNavProps) {
@@ -34,7 +33,9 @@ export function UserNav({ user }: UserNavProps) {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user.name}</p>
-            <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {user.email}
+            </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -54,8 +55,8 @@ export function UserNav({ user }: UserNavProps) {
         <DropdownMenuItem asChild>
           <form
             action={async () => {
-              "use server"
-              await signOut({ redirectTo: "/" })
+              "use server";
+              // await signOut({ redirectTo: "/" });
             }}
           >
             <button type="submit" className="w-full text-left">
@@ -65,5 +66,5 @@ export function UserNav({ user }: UserNavProps) {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

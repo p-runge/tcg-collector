@@ -4,11 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "prebuild": "pnpm fetch-tcg-data",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "fetch-tcg-data": "ts-node -P tsconfig.scripts.json scripts/generate-card-data.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
@@ -29,7 +27,6 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.517.0",
     "next": "15.3.4",
-    "next-auth": "^4.24.11",
     "pokemon-tcg-sdk-typescript": "^1.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
