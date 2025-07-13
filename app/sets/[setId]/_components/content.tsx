@@ -308,8 +308,34 @@ export default function Content({ sets, selectedSet, cards }: Props) {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl font-bold">
-              Pokemon Card Collection Manager
+            <CardTitle>
+              <div className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 flex items-center">
+                <Image
+                  src={selectedSet.logo}
+                  alt={selectedSet.name}
+                  width={64}
+                  height={64}
+                  className="inline-block w-16 h-16 object-contain object-center mr-3"
+                />
+
+                <div className="text-2xl font-bold">
+                  <div className="mb-1">
+                    <span>{selectedSet.name}</span>
+
+                    <span className="text-gray-500 ml-2">
+                      ({new Date(selectedSet.releaseDate).getFullYear()})
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <Badge variant="secondary">
+                      {getUniqueCardsOwned()}/{selectedSet.totalCards} Cards
+                    </Badge>
+                    <Badge variant="outline">
+                      {getTotalOwned()} Total Cards
+                    </Badge>
+                  </div>
+                </div>
+              </div>
             </CardTitle>
             <div className="flex gap-2">
               <Button
@@ -322,6 +348,9 @@ export default function Content({ sets, selectedSet, cards }: Props) {
               </Button>
             </div>
           </div>
+
+          {/* // TODO: add collection stats here */}
+
           <div className="flex flex-wrap gap-4 items-center">
             <Select
               value={selectedSet.id}
@@ -347,20 +376,6 @@ export default function Content({ sets, selectedSet, cards }: Props) {
                 </ScrollArea>
               </SelectContent>
             </Select>
-
-            {selectedSet && (
-              <div className="flex gap-2">
-                <Badge variant="secondary">
-                  {getUniqueCardsOwned()}/{selectedSet.totalCards} Cards
-                </Badge>
-                <Badge variant="outline">{getTotalOwned()} Total Cards</Badge>
-                <Badge variant="outline">
-                  Default:{" "}
-                  {pokemonAPI.getCardLanguageInfo(defaultLanguage).flag}{" "}
-                  {pokemonAPI.getCardLanguageInfo(defaultLanguage).name}
-                </Badge>
-              </div>
-            )}
           </div>
         </CardHeader>
       </Card>
