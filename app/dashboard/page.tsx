@@ -2,19 +2,9 @@
 
 import type React from "react";
 
-import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
@@ -23,36 +13,51 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import {
-  Search,
-  Plus,
-  Edit3,
-  Grid,
-  List,
-  Settings,
-  X,
-  Eye,
-  Info,
-  Users,
-  User,
-  CircleIcon,
-  DiamondIcon,
-  StarIcon,
-} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  getVariants,
+  pokemonAPI,
+  PokemonCard,
+  PokemonSet,
+} from "@/lib/pokemon-api";
 import { cn } from "@/lib/utils";
-import { pokemonAPI, PokemonCard, PokemonSet } from "@/lib/pokemon-api";
+import {
+  CircleIcon,
+  DiamondIcon,
+  Edit3,
+  Eye,
+  Grid,
+  Info,
+  List,
+  Plus,
+  Search,
+  Settings,
+  StarIcon,
+  User,
+  Users,
+  X,
+} from "lucide-react";
+import { useEffect, useState } from "react";
 
 // Available languages for Pokemon cards
 const cardLanguages = [
@@ -142,17 +147,22 @@ export default function PokemonCollectionManager() {
 
   const [pokemonSets, setPokemonSets] = useState<PokemonSet[]>([]);
   useEffect(() => {
-    const pokemonSets = pokemonAPI.getAllSets().then((sets) =>
-      sets.map((set) => ({
-        id: set.id,
-        name: set.name,
-        totalCards: set.total,
-        releaseDate: set.releaseDate,
-        series: set.series,
-      }))
-    );
-    setPokemonSets(pokemonSets);
-    console.log("pokemonSets", pokemonSets);
+    pokemonAPI
+      .getAllSets()
+      .then((sets) =>
+        sets.map(
+          (set) =>
+            ({
+              id: set.id,
+              name: set.name,
+              totalCards: set.total,
+              releaseDate: set.releaseDate,
+              series: set.series,
+              variants: getVariants(set.id),
+            } satisfies PokemonSet)
+        )
+      )
+      .then((sets) => setPokemonSets(sets));
   }, []);
 
   useEffect(() => {
@@ -168,7 +178,7 @@ export default function PokemonCollectionManager() {
   }, [collection]);
 
   const [selectedSet, setSelectedSet] = useState(pokemonSets[0]);
-  const [cards, setCards] = useState<PokemonCard[]>([]);
+  const [cards] = useState<PokemonCard[]>([]);
   useEffect(() => {
     // pokemonAPI.getCardsForSet(selectedSet.id).then((fetchedCards) => {
     //   console.log("fetchedCards", fetchedCards);
@@ -264,7 +274,7 @@ export default function PokemonCollectionManager() {
       const entries = [...(prev[cardId]?.[variant] || [])];
       const entryIndex = entries.findIndex((entry) => entry.id === entryId);
 
-      if (entryIndex >= 0) {
+      if (entryIndex >= 0 && entries[entryIndex]) {
         entries[entryIndex] = { ...entries[entryIndex], ...updates };
       }
 
@@ -341,7 +351,7 @@ export default function PokemonCollectionManager() {
 
   const getUniqueCardsOwned = () => {
     return Object.keys(collection).filter((cardId) => {
-      const cardVariants = collection[Number.parseInt(cardId)];
+      const cardVariants = collection[Number.parseInt(cardId)]!;
       return Object.values(cardVariants).some((entries) => entries.length > 0);
     }).length;
   };
@@ -408,13 +418,13 @@ export default function PokemonCollectionManager() {
 
   const getConditionInfo = (condition: string) => {
     return (
-      cardConditions.find((c) => c.value === condition) || cardConditions[1]
+      cardConditions.find((c) => c.value === condition) || cardConditions[1]!
     );
   };
 
   const getLanguageInfo = (languageCode: string) => {
     return (
-      cardLanguages.find((l) => l.code === languageCode) || cardLanguages[0]
+      cardLanguages.find((l) => l.code === languageCode) || cardLanguages[0]!
     );
   };
 
@@ -440,7 +450,7 @@ export default function PokemonCollectionManager() {
               </div>
               <div className="flex flex-wrap gap-4 items-center">
                 <Select
-                  value={selectedSet.id}
+                  value={selectedSet?.id}
                   onValueChange={(value) => {
                     const set = pokemonSets.find((s) => s.id === value);
                     if (set) setSelectedSet(set);
@@ -460,7 +470,7 @@ export default function PokemonCollectionManager() {
 
                 <div className="flex gap-2">
                   <Badge variant="secondary">
-                    {getUniqueCardsOwned()}/{selectedSet.totalCards} Cards
+                    {getUniqueCardsOwned()}/{selectedSet?.totalCards} Cards
                   </Badge>
                   <Badge variant="outline">{getTotalOwned()} Total Cards</Badge>
                   <Badge variant="outline">
@@ -648,7 +658,7 @@ export default function PokemonCollectionManager() {
                         <SelectValue placeholder="Select variant" />
                       </SelectTrigger>
                       <SelectContent>
-                        {selectedSet.variants.map((variant) => (
+                        {selectedSet?.variants.map((variant) => (
                           <SelectItem key={variant} value={variant}>
                             {variant}
                           </SelectItem>
@@ -813,7 +823,7 @@ export default function PokemonCollectionManager() {
 
                         {/* Variants */}
                         <div className="space-y-2">
-                          {selectedSet.variants.map((variant) => {
+                          {selectedSet?.variants.map((variant) => {
                             const entries = getCardEntries(card.id, variant);
                             const totalQuantity = getTotalQuantity(
                               card.id,

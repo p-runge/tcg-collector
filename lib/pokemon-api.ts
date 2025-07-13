@@ -20,7 +20,7 @@ export type PokemonSet = {
   // symbol: string;
   releaseDate: string;
   totalCards: number;
-  // variants: string[];
+  variants: string[];
 };
 
 export type PokemonCard = {
@@ -30,8 +30,18 @@ export type PokemonCard = {
   rarity: string;
   set: { id: string; name: string };
   images: { small: string; large: string };
-  supertype: string;
-  subtypes: string[];
+  // supertype: string;
+  // subtypes: string[];
 };
+
+export const RARITIES = Object.values(PokemonTCG.Rarity).filter(
+  (value) => typeof value === "string"
+) as unknown as (keyof typeof PokemonTCG.Rarity)[];
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function getVariants(_setId: string): string[] {
+  // TODO: add map for setId to variants
+  return ["Normal", "1st Edition", "Shadowless", "Reverse Holo"];
+}
 
 export const pokemonAPI = PokemonTCG;

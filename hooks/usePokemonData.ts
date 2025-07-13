@@ -5,6 +5,7 @@ import {
   pokemonAPI,
   type PokemonSet,
   type PokemonCard,
+  getVariants,
 } from "@/lib/pokemon-api";
 
 export function usePokemonSets() {
@@ -18,13 +19,17 @@ export function usePokemonSets() {
       setLoading(true);
       setError(null);
       const setsData = await pokemonAPI.getAllSets().then((sets) =>
-        sets.map((set) => ({
-          id: set.id,
-          name: set.name,
-          totalCards: set.total,
-          releaseDate: set.releaseDate,
-          series: set.series,
-        }))
+        sets.map(
+          (set) =>
+            ({
+              id: set.id,
+              name: set.name,
+              totalCards: set.total,
+              releaseDate: set.releaseDate,
+              series: set.series,
+              variants: getVariants(set.id),
+            } satisfies PokemonSet)
+        )
       );
       setSets(setsData);
     } catch (err) {
@@ -58,7 +63,24 @@ export function usePokemonCards(setId: string | null) {
       try {
         setLoading(true);
         setError(null);
-        const cardsData = await pokemonAPI.getCardsForSet(setId);
+        const cardsData = await pokemonAPI
+          .getAllCards({ q: `set.id:${setId}` })
+          .then((cards) =>
+            cards.map(
+              (card) =>
+                ({
+                  id: card.id,
+                  name: card.name,
+                  number: card.number,
+                  rarity: card.rarity,
+                  set: { id: card.set.id, name: card.set.name },
+                  images: {
+                    small: card.images.small,
+                    large: card.images.large,
+                  },
+                } satisfies PokemonCard)
+            )
+          );
         setCards(cardsData);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch cards");
@@ -72,32 +94,4 @@ export function usePokemonCards(setId: string | null) {
   }, [setId]);
 
   return { cards, loading, error };
-}
-
-export function usePokemonRarities() {
-  const [rarities, setRarities] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchRarities() {
-      try {
-        setLoading(true);
-        setError(null);
-        const raritiesData = await pokemonAPI.getRarities();
-        setRarities(raritiesData);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to fetch rarities"
-        );
-        console.error("Error loading rarities:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchRarities();
-  }, []);
-
-  return { rarities, loading, error };
 }
