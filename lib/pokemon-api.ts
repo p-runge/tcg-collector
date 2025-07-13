@@ -4,8 +4,8 @@ export type PokemonSet = {
   id: string;
   name: string;
   series: string;
-  // logo: string;
-  // symbol: string;
+  logo: string;
+  symbol: string;
   releaseDate: string;
   totalCards: number;
   variants: string[];
@@ -101,6 +101,8 @@ async function fetchPokemonSets(): Promise<PokemonSet[]> {
           id: set.id,
           name: set.name,
           series: set.series,
+          logo: set.images.logo,
+          symbol: set.images.symbol,
           releaseDate: set.releaseDate,
           totalCards: set.total,
           variants: getVariants(set.id),
