@@ -7,8 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "TCG Collector",
-  description:
-    "Track your Pokémon card collection with detailed information about sets, languages, variants, and conditions.",
+  description: "The easiest way to track your Pokémon card collection",
   icons: [{ rel: "icon", url: "/favicon.png" }],
 };
 
