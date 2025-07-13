@@ -1,3 +1,5 @@
+import { Navigation } from "@/components/navigation";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import pokemonAPI from "@/lib/pokemon-api";
 import Content from "./_components/content";
 
@@ -17,7 +19,15 @@ export default async function SetIdPage({
 
   const cards = await pokemonAPI.fetchPokemonCards(setId);
 
-  return <Content sets={sets} selectedSet={selectedSet} cards={cards} />;
+  return (
+    <TooltipProvider>
+      <Navigation />
+
+      <div className="min-h-screen bg-background p-4">
+        <Content sets={sets} selectedSet={selectedSet} cards={cards} />
+      </div>
+    </TooltipProvider>
+  );
 }
 
 // static parameters for the page
