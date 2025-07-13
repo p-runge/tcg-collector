@@ -2,6 +2,7 @@ import { Navigation } from "@/components/navigation";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import pokemonAPI from "@/lib/pokemon-api";
 import Content from "./_components/content";
+import Breadcrumb from "@/components/breadcrumb";
 
 export default async function SetIdPage({
   params,
@@ -23,7 +24,13 @@ export default async function SetIdPage({
     <TooltipProvider>
       <Navigation />
 
-      <div className="min-h-screen bg-background p-4">
+      <div className="min-h-screen bg-background p-4 container mx-auto">
+        <Breadcrumb
+          items={[
+            { label: "Sets", href: "/sets" },
+            { label: selectedSet.name },
+          ]}
+        />
         <Content sets={sets} selectedSet={selectedSet} cards={cards} />
       </div>
     </TooltipProvider>
