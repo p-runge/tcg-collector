@@ -29,9 +29,6 @@ export function Navigation() {
             <Link href="/sets">
               <Button variant="ghost">Sets</Button>
             </Link>
-            <Link href="/settings">
-              <Button variant="ghost">Settings</Button>
-            </Link>
           </div>
         </nav>
       </div>
