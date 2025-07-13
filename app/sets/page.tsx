@@ -1,22 +1,20 @@
-import { sql } from "@/lib/db"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Navigation } from "@/components/navigation"
-import Link from "next/link"
-import { Heart, Star } from "lucide-react"
+import { Navigation } from "@/components/navigation";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { sql } from "@/lib/db";
+import pokemonAPI from "@/lib/pokemon-api";
+import { Heart, Star } from "lucide-react";
+import Link from "next/link";
 
 export default async function SetsPage() {
-  const sets = await sql`
-    SELECT 
-      s.*,
-      ser.name as series_name,
-      CASE WHEN cs.id IS NOT NULL THEN true ELSE false END as is_collecting
-    FROM sets s
-    JOIN series ser ON s.series_id = ser.id
-    LEFT JOIN collecting_sets cs ON s.id = cs.set_id
-    ORDER BY s.release_date DESC, s.name
-  `
+  const sets = await pokemonAPI.fetchPokemonSets();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -26,8 +24,8 @@ export default async function SetsPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Browse Sets</h1>
           <p className="text-gray-600">
-            Browse all available Pokémon card sets. Click on a set to view its cards or mark sets you're actively
-            collecting.
+            Browse all available Pokémon card sets. Click on a set to view its
+            cards or mark sets you&apos;re actively collecting.
           </p>
         </div>
 
@@ -39,10 +37,11 @@ export default async function SetsPage() {
                   <div className="flex-1">
                     <CardTitle className="text-lg">{set.name}</CardTitle>
                     <CardDescription className="mt-1">
-                      {set.series_name} • {set.code}
+                      {set.series}
                     </CardDescription>
                   </div>
-                  {set.is_collecting && (
+                  {/* // TODO: check if user is collecting set already */}
+                  {true && (
                     <Badge variant="secondary" className="ml-2">
                       <Star className="w-3 h-3 mr-1" />
                       Collecting
@@ -53,8 +52,9 @@ export default async function SetsPage() {
               <CardContent>
                 <div className="space-y-3">
                   <div className="text-sm text-gray-600">
-                    {set.total_cards && `${set.total_cards} cards`}
-                    {set.release_date && ` • Released ${new Date(set.release_date).getFullYear()}`}
+                    {set.totalCards && `${set.totalCards} cards`}
+                    {set.releaseDate &&
+                      ` • Released ${new Date(set.releaseDate).getFullYear()}`}
                   </div>
 
                   <div className="flex gap-2">
@@ -65,20 +65,29 @@ export default async function SetsPage() {
                     </Link>
                     <form
                       action={async () => {
-                        "use server"
-                        if (set.is_collecting) {
-                          await sql`DELETE FROM collecting_sets WHERE set_id = ${set.id}`
+                        "use server";
+
+                        // TODO: check if user is collecting set already
+                        const isCollecting = true;
+                        if (isCollecting) {
+                          await sql`DELETE FROM collecting_sets WHERE set_id = ${set.id}`;
                         } else {
                           await sql`
                             INSERT INTO collecting_sets (set_id)
                             VALUES (${set.id})
                             ON CONFLICT (set_id) DO NOTHING
-                          `
+                          `;
                         }
                       }}
                     >
-                      <Button type="submit" variant={set.is_collecting ? "default" : "outline"} size="icon">
-                        <Heart className={`w-4 h-4 ${set.is_collecting ? "fill-current" : ""}`} />
+                      <Button
+                        type="submit"
+                        variant={true ? "default" : "outline"}
+                        size="icon"
+                      >
+                        <Heart
+                          className={`w-4 h-4 ${true ? "fill-current" : ""}`}
+                        />
                       </Button>
                     </form>
                   </div>
@@ -89,5 +98,5 @@ export default async function SetsPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

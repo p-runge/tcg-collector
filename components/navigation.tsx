@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export function Navigation() {
   return (
@@ -10,8 +10,8 @@ export function Navigation() {
             Pokémon Tracker
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/dashboard">
-              <Button variant="ghost">Dashboard</Button>
+            <Link href="/">
+              <Button variant="ghost">Start</Button>
             </Link>
             <Link href="/collection">
               <Button variant="ghost">Collection</Button>
@@ -26,5 +26,5 @@ export function Navigation() {
         </nav>
       </div>
     </header>
-  )
+  );
 }

@@ -1,9 +1,8 @@
 "use client";
 
-import {
+import pokemonAPI, {
   type PokemonCard,
   type PokemonSet,
-  getVariants,
 } from "@/lib/pokemon-api";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 import { useCallback, useEffect, useState } from "react";
@@ -18,19 +17,7 @@ export function usePokemonSets() {
     try {
       setLoading(true);
       setError(null);
-      const setsData = await PokemonTCG.getAllSets().then((sets) =>
-        sets.map(
-          (set) =>
-            ({
-              id: set.id,
-              name: set.name,
-              totalCards: set.total,
-              releaseDate: set.releaseDate,
-              series: set.series,
-              variants: getVariants(set.id),
-            } satisfies PokemonSet)
-        )
-      );
+      const setsData = await pokemonAPI.fetchPokemonSets();
       setSets(setsData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch sets");
