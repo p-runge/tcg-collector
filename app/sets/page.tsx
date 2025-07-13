@@ -40,6 +40,17 @@ export default async function SetsPage() {
           <div key={series} className="mb-10">
             <div className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">
               {series}
+
+              {/* year range */}
+              {seriesSets.length > 0 && (
+                <span className="text-gray-500 ml-2">
+                  ({new Date(seriesSets[0]!.releaseDate).getFullYear()} -{" "}
+                  {new Date(
+                    seriesSets[seriesSets.length - 1]!.releaseDate
+                  ).getFullYear()}
+                  )
+                </span>
+              )}
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {seriesSets.map((set) => (
