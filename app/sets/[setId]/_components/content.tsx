@@ -1,7 +1,5 @@
 "use client";
 
-import type React from "react";
-
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -52,6 +50,7 @@ import {
   Users,
   X,
 } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -413,9 +412,12 @@ export default function Content({ sets, selectedSet, cards }: Props) {
           <ScrollArea className="max-h-96">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-1">
               {viewingPhotos.map((photo, index) => (
-                <img
+                <Image
                   key={index}
-                  src={photo || "/placeholder.svg"}
+                  src={photo}
+                  // width and height don't matter for base64 images
+                  width={0}
+                  height={0}
                   alt={`Card photo ${index + 1}`}
                   className="w-full rounded border"
                 />
@@ -669,15 +671,12 @@ export default function Content({ sets, selectedSet, cards }: Props) {
 
                       {/* Card Thumbnail */}
                       <div className="flex-shrink-0">
-                        <img
-                          src={card.images.small || "/placeholder.svg"}
+                        <Image
+                          src={card.images.small}
                           alt={card.name}
+                          width={64}
+                          height={88}
                           className="w-16 h-22 object-cover rounded border shadow-sm"
-                          onError={(e) => {
-                            e.currentTarget.src = `/placeholder.svg?height=88&width=64&text=${encodeURIComponent(
-                              card.name
-                            )}`;
-                          }}
                         />
                       </div>
 
@@ -943,14 +942,14 @@ export default function Content({ sets, selectedSet, cards }: Props) {
                                                             key={index}
                                                             className="relative"
                                                           >
-                                                            <img
-                                                              src={
-                                                                photo ||
-                                                                "/placeholder.svg"
-                                                              }
+                                                            <Image
+                                                              src={photo}
                                                               alt={`Photo ${
                                                                 index + 1
                                                               }`}
+                                                              // width and height don't matter for base64 images
+                                                              width={0}
+                                                              height={0}
                                                               className="w-full h-20 object-cover rounded border"
                                                             />
                                                             <Button
