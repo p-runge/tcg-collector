@@ -57,45 +57,6 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-// Card conditions with colors for quick visual identification
-const cardConditions = [
-  {
-    value: "M",
-    label: "Mint",
-    color: "bg-green-100 text-green-800 border-green-200",
-  },
-  {
-    value: "NM",
-    label: "Near Mint",
-    color: "bg-blue-100 text-blue-800 border-blue-200",
-  },
-  {
-    value: "EX",
-    label: "Excellent",
-    color: "bg-cyan-100 text-cyan-800 border-cyan-200",
-  },
-  {
-    value: "LP",
-    label: "Light Played",
-    color: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  },
-  {
-    value: "MP",
-    label: "Moderately Played",
-    color: "bg-orange-100 text-orange-800 border-orange-200",
-  },
-  {
-    value: "HP",
-    label: "Heavily Played",
-    color: "bg-red-100 text-red-800 border-red-200",
-  },
-  {
-    value: "D",
-    label: "Damaged",
-    color: "bg-gray-100 text-gray-800 border-gray-200",
-  },
-];
-
 type CardEntry = {
   id: string; // Unique ID for each individual card
   condition: string;
@@ -344,19 +305,6 @@ export default function Content({ sets, selectedSet, cards }: Props) {
     }));
   };
 
-  const getConditionInfo = (condition: string) => {
-    return (
-      cardConditions.find((c) => c.value === condition) || cardConditions[1]!
-    );
-  };
-
-  const getLanguageInfo = (languageCode: string) => {
-    return (
-      pokemonAPI.cardLanguages.find((l) => l.code === languageCode) ||
-      pokemonAPI.cardLanguages[0]!
-    );
-  };
-
   return (
     <TooltipProvider>
       <Navigation />
@@ -416,8 +364,9 @@ export default function Content({ sets, selectedSet, cards }: Props) {
                       {getTotalOwned()} Total Cards
                     </Badge>
                     <Badge variant="outline">
-                      Default: {getLanguageInfo(defaultLanguage).flag}{" "}
-                      {getLanguageInfo(defaultLanguage).name}
+                      Default:{" "}
+                      {pokemonAPI.getCardLanguageInfo(defaultLanguage).flag}{" "}
+                      {pokemonAPI.getCardLanguageInfo(defaultLanguage).name}
                     </Badge>
                   </div>
                 )}
@@ -624,7 +573,7 @@ export default function Content({ sets, selectedSet, cards }: Props) {
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                {cardConditions.map((condition) => (
+                                {pokemonAPI.conditions.map((condition) => (
                                   <SelectItem
                                     key={condition.value}
                                     value={condition.value}
@@ -872,7 +821,7 @@ export default function Content({ sets, selectedSet, cards }: Props) {
                                                       Add Card with Condition:
                                                     </Label>
                                                     <div className="grid grid-cols-4 gap-1">
-                                                      {cardConditions.map(
+                                                      {pokemonAPI.conditions.map(
                                                         (condition) => (
                                                           <Button
                                                             key={
@@ -919,12 +868,14 @@ export default function Content({ sets, selectedSet, cards }: Props) {
 
                                     {/* Individual Card Entries */}
                                     {entries.map((entry) => {
-                                      const conditionInfo = getConditionInfo(
-                                        entry.condition
-                                      );
-                                      const languageInfo = getLanguageInfo(
-                                        entry.language
-                                      );
+                                      const conditionInfo =
+                                        pokemonAPI.getConditionInfo(
+                                          entry.condition
+                                        );
+                                      const languageInfo =
+                                        pokemonAPI.getCardLanguageInfo(
+                                          entry.language
+                                        );
                                       return (
                                         <div
                                           key={entry.id}

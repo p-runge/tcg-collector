@@ -34,6 +34,55 @@ const cardLanguages = [
   { code: "zh", name: "Chinese", flag: "🇨🇳" },
 ];
 
+function getCardLanguageInfo(languageCode: string) {
+  return (
+    cardLanguages.find((l) => l.code === languageCode) || cardLanguages[0]!
+  );
+}
+
+// Card conditions with colors for quick visual identification
+const conditions = [
+  {
+    value: "M",
+    label: "Mint",
+    color: "bg-green-100 text-green-800 border-green-200",
+  },
+  {
+    value: "NM",
+    label: "Near Mint",
+    color: "bg-blue-100 text-blue-800 border-blue-200",
+  },
+  {
+    value: "EX",
+    label: "Excellent",
+    color: "bg-cyan-100 text-cyan-800 border-cyan-200",
+  },
+  {
+    value: "LP",
+    label: "Light Played",
+    color: "bg-yellow-100 text-yellow-800 border-yellow-200",
+  },
+  {
+    value: "MP",
+    label: "Moderately Played",
+    color: "bg-orange-100 text-orange-800 border-orange-200",
+  },
+  {
+    value: "HP",
+    label: "Heavily Played",
+    color: "bg-red-100 text-red-800 border-red-200",
+  },
+  {
+    value: "D",
+    label: "Damaged",
+    color: "bg-gray-100 text-gray-800 border-gray-200",
+  },
+];
+
+function getConditionInfo(condition: string) {
+  return conditions.find((c) => c.value === condition) || conditions[1]!;
+}
+
 const rarities = Object.values(PokemonTCG.Rarity).filter(
   (value) => typeof value === "string"
 ) as unknown as (keyof typeof PokemonTCG.Rarity)[];
@@ -82,10 +131,13 @@ async function fetchPokemonCards(setId: string): Promise<PokemonCard[]> {
 }
 
 const pokemonAPI = {
-  fetchPokemonSets,
-  fetchPokemonCards,
+  cardLanguages,
+  getCardLanguageInfo,
+  conditions,
+  getConditionInfo,
   rarities,
   getVariants,
-  cardLanguages,
+  fetchPokemonSets,
+  fetchPokemonCards,
 };
 export default pokemonAPI;
