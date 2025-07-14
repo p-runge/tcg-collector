@@ -1,8 +1,14 @@
 import { Navigation } from "@/components/navigation";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import pokemonAPI from "@/lib/pokemon-api";
 import Content from "./_components/content";
-import Breadcrumb from "@/components/breadcrumb";
 
 export default async function SetIdPage({
   params,
@@ -25,13 +31,39 @@ export default async function SetIdPage({
       <Navigation />
 
       <div className="min-h-screen bg-background p-4 container mx-auto">
-        <Breadcrumb
-          items={[
-            { label: "Sets", href: "/sets" },
-            { label: selectedSet.name },
-          ]}
-        />
-        <Content sets={sets} selectedSet={selectedSet} cards={cards} />
+        {/* breadcrumb */}
+        <nav className="text-sm mb-4" aria-label="Breadcrumb">
+          <ol className="list-reset flex text-muted-foreground">
+            <li>
+              <a href="/sets" className="hover:underline">
+                Sets
+              </a>
+            </li>
+            <li className="font-semibold flex">
+              <span className="mx-2">/</span>
+              <Select value={selectedSet.id}>
+                <SelectTrigger className="flex items-center -my-2 gap-2 p-0 border-none shadow-none bg-transparent h-auto cursor-pointer hover:underline">
+                  <span className="font-bold">{selectedSet.name}</span>
+                </SelectTrigger>
+                <SelectContent>
+                  <ScrollArea className="h-72">
+                    {sets.map((set) => (
+                      <SelectItem key={set.id} value={set.id}>
+                        <div className="flex flex-col items-start">
+                          <span className="font-medium">{set.name}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {set.series}
+                          </span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </ScrollArea>
+                </SelectContent>
+              </Select>
+            </li>
+          </ol>
+        </nav>
+        <Content selectedSet={selectedSet} cards={cards} />
       </div>
     </TooltipProvider>
   );

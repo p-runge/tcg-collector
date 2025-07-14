@@ -51,7 +51,6 @@ import {
   X,
 } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type CardEntry = {
@@ -72,13 +71,10 @@ type CardCollection = {
 type AddingMode = "individual" | "bulk";
 
 type Props = {
-  sets: PokemonSet[];
   selectedSet: PokemonSet;
   cards: PokemonCard[];
 };
-export default function Content({ sets, selectedSet, cards }: Props) {
-  const router = useRouter();
-
+export default function Content({ selectedSet, cards }: Props) {
   // Collection state
   const [collection, setCollection] = useState<CardCollection>({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -350,33 +346,6 @@ export default function Content({ sets, selectedSet, cards }: Props) {
           </div>
 
           {/* // TODO: add collection stats here */}
-
-          <div className="flex flex-wrap gap-4 items-center">
-            <Select
-              value={selectedSet.id}
-              onValueChange={(value) => {
-                router.push(`/sets/${value}`);
-              }}
-            >
-              <SelectTrigger className="w-64">
-                <SelectValue placeholder="Select a set..." />
-              </SelectTrigger>
-              <SelectContent>
-                <ScrollArea className="h-72">
-                  {sets.map((set) => (
-                    <SelectItem key={set.id} value={set.id}>
-                      <div className="flex flex-col items-start">
-                        <span className="font-medium">{set.name}</span>
-                        <span className="text-xs text-muted-foreground">
-                          {set.series}
-                        </span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </ScrollArea>
-              </SelectContent>
-            </Select>
-          </div>
         </CardHeader>
       </Card>
 
