@@ -1,13 +1,9 @@
 import { Navigation } from "@/components/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectTrigger } from "@/components/ui/select";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import pokemonAPI from "@/lib/pokemon-api";
+import Link from "next/link";
 import Content from "./_components/content";
 
 export default async function SetIdPage({
@@ -35,9 +31,9 @@ export default async function SetIdPage({
         <nav className="text-sm mb-4" aria-label="Breadcrumb">
           <ol className="list-reset flex text-muted-foreground">
             <li>
-              <a href="/sets" className="hover:underline">
+              <Link href="/sets" className="hover:underline">
                 Sets
-              </a>
+              </Link>
             </li>
             <li className="font-semibold flex">
               <span className="mx-2">/</span>
@@ -48,14 +44,16 @@ export default async function SetIdPage({
                 <SelectContent>
                   <ScrollArea className="h-72">
                     {sets.map((set) => (
-                      <SelectItem key={set.id} value={set.id}>
-                        <div className="flex flex-col items-start">
-                          <span className="font-medium">{set.name}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {set.series}
-                          </span>
-                        </div>
-                      </SelectItem>
+                      <Link
+                        key={set.id}
+                        href={`/sets/${set.id}`}
+                        className="flex flex-col items-start hover:bg-muted py-1 rounded"
+                      >
+                        <span className="font-medium">{set.name}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {set.series}
+                        </span>
+                      </Link>
                     ))}
                   </ScrollArea>
                 </SelectContent>
