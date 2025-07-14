@@ -38,6 +38,8 @@ import {
 } from "@/components/ui/tooltip";
 import pokemonAPI, { PokemonCard, PokemonSet } from "@/lib/pokemon-api";
 import {
+  Circle,
+  Diamond,
   Edit3,
   Eye,
   Grid,
@@ -46,12 +48,14 @@ import {
   Plus,
   Search,
   Settings,
+  Star,
   User,
   Users,
   X,
 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Rarity } from "pokemon-tcg-sdk-typescript/dist/sdk";
+import { ReactNode, useEffect, useState } from "react";
 
 type CardEntry = {
   id: string; // Unique ID for each individual card
@@ -669,8 +673,13 @@ export default function Content({ set, cards }: Props) {
                           <h3 className="font-semibold truncate">
                             {card.name}
                           </h3>
-                          <span className="text-sm flex items-center">
-                            <span>({`${card.number}/${set.total}`})</span>
+                          <span className="text-sm flex items-center gap-2">
+                            <span className="flex items-center gap-0.5">
+                              ({`${card.number}/${set.total}`})
+                              {rarityIconMap[card.rarity as Rarity] ?? (
+                                <span>{card.rarity}</span>
+                              )}
+                            </span>
 
                             {/* base set has no symbol */}
                             {set.id !== "base1" && (
@@ -679,16 +688,9 @@ export default function Content({ set, cards }: Props) {
                                 alt={`${set.name} symbol`}
                                 width={16}
                                 height={16}
-                                className="inline-block ml-1"
                               />
                             )}
                           </span>
-                        </div>
-
-                        <div className="flex items-center gap-2 mb-3">
-                          <Badge variant="secondary" className="text-xs">
-                            {card.rarity}
-                          </Badge>
                         </div>
 
                         {/* Variants */}
@@ -1034,3 +1036,15 @@ export default function Content({ set, cards }: Props) {
     </div>
   );
 }
+
+const rarityIconMap = {
+  Common: <Circle className="w-3 h-3 fill-black" />,
+  Uncommon: <Diamond className="w-3 h-3 fill-black" />,
+  Rare: <Star className="w-3 h-3 fill-black" />,
+  "Rare Holo": (
+    <span className="flex items-center">
+      <Star className="w-3 h-3 fill-black" />
+      <span className="text-xs">H</span>
+    </span>
+  ),
+} as Partial<Record<Rarity, ReactNode>>;
