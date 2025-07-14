@@ -119,9 +119,7 @@ export default function Content({ sets }: Props) {
                           height={24}
                           className="inline-block w-6 h-6 object-contain object-center mr-2"
                         />
-                        <span>
-                          {set.totalCards && `${set.totalCards} cards`}
-                        </span>
+                        <span>{set.total && `${set.total} cards`}</span>
                       </div>
 
                       <div className="flex gap-2">

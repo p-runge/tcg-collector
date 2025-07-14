@@ -71,10 +71,10 @@ type CardCollection = {
 type AddingMode = "individual" | "bulk";
 
 type Props = {
-  selectedSet: PokemonSet;
+  set: PokemonSet;
   cards: PokemonCard[];
 };
-export default function Content({ selectedSet, cards }: Props) {
+export default function Content({ set, cards }: Props) {
   // Collection state
   const [collection, setCollection] = useState<CardCollection>({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -104,7 +104,7 @@ export default function Content({ selectedSet, cards }: Props) {
   // Reset bulk variant when set changes
   useEffect(() => {
     setBulkVariant("");
-  }, [selectedSet]);
+  }, [set]);
 
   const filteredCards = cards.filter((card) => {
     const matchesSearch =
@@ -307,8 +307,8 @@ export default function Content({ selectedSet, cards }: Props) {
             <CardTitle>
               <div className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 flex items-center">
                 <Image
-                  src={selectedSet.logo}
-                  alt={selectedSet.name}
+                  src={set.logo}
+                  alt={set.name}
                   width={64}
                   height={64}
                   className="inline-block w-16 h-16 object-contain object-center mr-3"
@@ -316,15 +316,15 @@ export default function Content({ selectedSet, cards }: Props) {
 
                 <div className="text-2xl font-bold">
                   <div className="mb-1">
-                    <span>{selectedSet.name}</span>
+                    <span>{set.name}</span>
 
                     <span className="text-gray-500 ml-2">
-                      ({new Date(selectedSet.releaseDate).getFullYear()})
+                      ({new Date(set.releaseDate).getFullYear()})
                     </span>
                   </div>
                   <div className="flex gap-2">
                     <Badge variant="secondary">
-                      {getUniqueCardsOwned()}/{selectedSet.totalCards} Cards
+                      {getUniqueCardsOwned()}/{set.total} Cards
                     </Badge>
                     <Badge variant="outline">
                       {getTotalOwned()} Total Cards
@@ -411,7 +411,7 @@ export default function Content({ selectedSet, cards }: Props) {
         </DialogContent>
       </Dialog>
 
-      {selectedSet && (
+      {set && (
         <>
           {/* Controls */}
           <Card>
@@ -532,7 +532,7 @@ export default function Content({ selectedSet, cards }: Props) {
                             <SelectValue placeholder="Select variant" />
                           </SelectTrigger>
                           <SelectContent>
-                            {selectedSet.variants.map((variant: string) => (
+                            {set.variants.map((variant: string) => (
                               <SelectItem key={variant} value={variant}>
                                 {variant}
                               </SelectItem>
@@ -669,9 +669,20 @@ export default function Content({ selectedSet, cards }: Props) {
                           <h3 className="font-semibold truncate">
                             {card.name}
                           </h3>
-                          <Badge variant="outline" className="text-xs">
-                            {card.number}
-                          </Badge>
+                          <span className="text-sm flex items-center">
+                            <span>({`${card.number}/${set.total}`})</span>
+
+                            {/* base set has no symbol */}
+                            {set.id !== "base1" && (
+                              <Image
+                                src={set.symbol}
+                                alt={`${set.name} symbol`}
+                                width={16}
+                                height={16}
+                                className="inline-block ml-1"
+                              />
+                            )}
+                          </span>
                         </div>
 
                         <div className="flex items-center gap-2 mb-3">
@@ -682,7 +693,7 @@ export default function Content({ selectedSet, cards }: Props) {
 
                         {/* Variants */}
                         <div className="space-y-2">
-                          {selectedSet.variants.map((variant: string) => {
+                          {set.variants.map((variant: string) => {
                             const entries = getCardEntries(card.id, variant);
                             const totalQuantity = getTotalQuantity(
                               card.id,

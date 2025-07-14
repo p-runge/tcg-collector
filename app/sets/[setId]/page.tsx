@@ -63,7 +63,7 @@ export default async function SetIdPage({
             </li>
           </ol>
         </nav>
-        <Content selectedSet={selectedSet} cards={cards} />
+        <Content set={selectedSet} cards={cards} />
       </div>
     </TooltipProvider>
   );
