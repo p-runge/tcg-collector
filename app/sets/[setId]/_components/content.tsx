@@ -56,6 +56,7 @@ import {
 import Image from "next/image";
 import { Rarity } from "pokemon-tcg-sdk-typescript/dist/sdk";
 import { ReactNode, useEffect, useState } from "react";
+import CardImage from "./card-image";
 
 type CardEntry = {
   id: string; // Unique ID for each individual card
@@ -659,8 +660,9 @@ export default function Content({ set, cards }: Props) {
 
                       {/* Card Thumbnail */}
                       <div className="flex-shrink-0">
-                        <Image
-                          src={card.images.small}
+                        <CardImage
+                          small={card.images.small}
+                          large={card.images.large}
                           alt={card.name}
                           width={64}
                           height={88}
