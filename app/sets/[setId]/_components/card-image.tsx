@@ -1,8 +1,9 @@
 "use client";
 
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 type CardImageProps = {
   small: string;
@@ -30,7 +31,10 @@ export default function CardImage({
         alt={alt}
         width={width}
         height={height}
-        className={`cursor-zoom-in transition-transform hover:scale-105 ${className}`}
+        className={cn(
+          "cursor-zoom-in transition-transform hover:scale-105",
+          className
+        )}
         onClick={() => setShowOverlay(true)}
         tabIndex={0}
         onKeyDown={(e) => {
@@ -40,13 +44,17 @@ export default function CardImage({
         aria-label="Show large card image"
       />
       <Dialog open={showOverlay} onOpenChange={setShowOverlay}>
-        <DialogContent className="flex items-center justify-center bg-black/80 p-0 max-w-3xl">
+        <DialogContent
+          className="w-screen h-screen flex items-center justify-center bg-black/50 p-0 sm:max-w-none border-none"
+          style={{ borderRadius: 0 }}
+        >
+          <DialogTitle className="sr-only">Big image</DialogTitle>
           <Image
             src={large}
             alt={alt}
             width={828}
             height={1140}
-            className="max-h-screen max-w-screen object-contain rounded shadow-lg"
+            className="w-full h-full object-contain"
             draggable={false}
             priority
           />
