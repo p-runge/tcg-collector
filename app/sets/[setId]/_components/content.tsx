@@ -82,6 +82,28 @@ type Props = {
 export default function Content({ set, cards }: Props) {
   // Collection state
   const [collection, setCollection] = useState<CardCollection>({});
+  useEffect(() => {
+    // Initialize collection from localStorage or empty object
+    const storedCollection = localStorage.getItem(`collection-set-${set.id}`);
+    if (storedCollection) {
+      setCollection(JSON.parse(storedCollection));
+    } else {
+      setCollection({});
+    }
+  }, [set.id]);
+
+  useEffect(() => {
+    if (!set.id) return;
+    if (JSON.stringify(collection) === "{}") return;
+
+    // Save collection to localStorage whenever it changes
+    localStorage.setItem(
+      `collection-set-${set.id}`,
+      JSON.stringify(collection)
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [collection]);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
