@@ -86,7 +86,7 @@ export default function Content({ set, cards }: Props) {
     // Initialize collection from localStorage or empty object
     const storedCollection = localStorage.getItem(`collection-set-${set.id}`);
     if (storedCollection) {
-      setCollection(JSON.parse(storedCollection));
+      setCollection(JSON.parse(storedCollection) as CardCollection);
     } else {
       setCollection({});
     }
@@ -333,13 +333,15 @@ export default function Content({ set, cards }: Props) {
           <div className="flex items-center justify-between">
             <CardTitle>
               <div className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 flex items-center">
-                <Image
-                  src={set.logo}
-                  alt={set.name}
-                  width={64}
-                  height={64}
-                  className="inline-block w-16 h-16 object-contain object-center mr-3"
-                />
+                {set.logo && (
+                  <Image
+                    src={set.logo}
+                    alt={set.name}
+                    width={64}
+                    height={64}
+                    className="inline-block w-16 h-16 object-contain object-center mr-3"
+                  />
+                )}
 
                 <div className="text-2xl font-bold">
                   <div className="mb-1">
@@ -709,7 +711,7 @@ export default function Content({ set, cards }: Props) {
                             </span>
 
                             {/* base set has no symbol */}
-                            {set.id !== "base1" && (
+                            {set.symbol && (
                               <Image
                                 src={set.symbol}
                                 alt={`${set.name} symbol`}

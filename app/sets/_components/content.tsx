@@ -57,13 +57,15 @@ export default function Content({ sets }: Props) {
         .map(([series, seriesSets]) => (
           <div key={series} className="mb-10">
             <div className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 flex items-center">
-              <Image
-                src={seriesSets[0]!.logo}
-                alt={`${series} logo`}
-                width={64}
-                height={64}
-                className="inline-block w-16 h-16 object-contain object-center mr-2"
-              />
+              {seriesSets[0]!.logo && (
+                <Image
+                  src={seriesSets[0]!.logo}
+                  alt={`${series} logo`}
+                  width={64}
+                  height={64}
+                  className="inline-block w-16 h-16 object-contain object-center mr-2"
+                />
+              )}
 
               <span>{series}</span>
 
@@ -86,13 +88,15 @@ export default function Content({ sets }: Props) {
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <CardTitle className="text-lg flex items-center">
-                          <Image
-                            src={set.logo}
-                            alt={`${set.name}`}
-                            width={48}
-                            height={48}
-                            className="inline-block w-12 h-12 object-contain object-center mr-2"
-                          />
+                          {set.logo && (
+                            <Image
+                              src={set.logo}
+                              alt={`${set.name}`}
+                              width={48}
+                              height={48}
+                              className="inline-block w-12 h-12 object-contain object-center mr-2"
+                            />
+                          )}
                           <span>{set.name}</span>
                         </CardTitle>
                         <CardDescription className="mt-1 flex items-center">
@@ -112,13 +116,15 @@ export default function Content({ sets }: Props) {
                   <CardContent>
                     <div className="space-y-3">
                       <div className="text-sm text-gray-600 flex items-center">
-                        <Image
-                          src={set.symbol}
-                          alt={`${set.name} symbol`}
-                          width={24}
-                          height={24}
-                          className="inline-block w-6 h-6 object-contain object-center mr-2"
-                        />
+                        {set.symbol && (
+                          <Image
+                            src={set.symbol}
+                            alt={`${set.name} symbol`}
+                            width={24}
+                            height={24}
+                            className="inline-block w-6 h-6 object-contain object-center mr-2"
+                          />
+                        )}
                         <span>{set.total && `${set.total} cards`}</span>
                       </div>
 

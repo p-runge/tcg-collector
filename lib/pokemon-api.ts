@@ -1,11 +1,15 @@
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
+import TCGdex from "@tcgdex/sdk";
+
+// Instantiate the SDK with your preferred language
+const tcgdex = new TCGdex("en");
 
 export type PokemonSet = {
   id: string;
   name: string;
   series: string;
-  logo: string;
-  symbol: string;
+  logo: string | null;
+  symbol: string | null;
   releaseDate: string;
   total: number;
   totalWithSecretRares: number;
@@ -95,22 +99,24 @@ function getVariants(_setId: string): string[] {
 }
 
 async function fetchPokemonSets(): Promise<PokemonSet[]> {
-  return PokemonTCG.getAllSets().then((sets) =>
-    sets.map(
+  return tcgdex.set.list().then(async (sets) => {
+    const fullSets = await Promise.all(sets.map(async (set) => set.getSet()));
+
+    return fullSets.map(
       (set) =>
         ({
           id: set.id,
           name: set.name,
-          series: set.series,
-          logo: set.images.logo,
-          symbol: set.images.symbol,
+          series: set.serie.name,
+          logo: set.logo ? `${set.logo}.webp` : null,
+          symbol: set.symbol ? `${set.symbol}.webp` : null,
           releaseDate: set.releaseDate,
-          total: set.printedTotal,
-          totalWithSecretRares: set.total,
+          total: set.cardCount.official,
+          totalWithSecretRares: set.cardCount.total,
           variants: getVariants(set.id),
         } satisfies PokemonSet)
-    )
-  );
+    );
+  });
 }
 
 async function fetchPokemonCards(setId: string): Promise<PokemonCard[]> {
