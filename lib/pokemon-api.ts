@@ -2,7 +2,7 @@ import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 import TCGdex from "@tcgdex/sdk";
 
 // Instantiate the SDK with your preferred language
-const tcgdex = new TCGdex("en");
+const tcgdex = new TCGdex("de");
 
 export type PokemonSet = {
   id: string;
@@ -120,24 +120,35 @@ async function fetchPokemonSets(): Promise<PokemonSet[]> {
 }
 
 async function fetchPokemonCards(setId: string): Promise<PokemonCard[]> {
-  return PokemonTCG.findCardsByQueries({
-    q: `set.id:${setId}`,
-  }).then((cards) =>
-    cards.map(
-      (card) =>
-        ({
-          id: card.id,
-          name: card.name,
-          number: card.number,
-          rarity: card.rarity,
-          set: { id: card.set.id, name: card.set.name },
-          images: {
-            small: card.images.small,
-            large: card.images.large,
-          },
-        } satisfies PokemonCard)
-    )
-  );
+  return tcgdex.set.get(setId).then(async (set) => {
+    if (!set) {
+      return [];
+    }
+
+    const fullCards = await Promise.all(
+      set.cards.map((card) => card.getCard())
+    );
+
+    return (
+      fullCards?.map(
+        (card) =>
+          ({
+            id: card.id,
+            name: card.name,
+            number: card.localId,
+            rarity: card.rarity,
+            set: { id: card.set.id, name: card.set.name },
+            images: {
+              // get url by base, set and id
+              small: `https://assets.tcgdex.net/en/${set.serie.id}/${setId}/${card.localId}/low.webp`,
+              large: `https://assets.tcgdex.net/en/${set.serie.id}/${setId}/${card.localId}/high.webp`,
+            },
+            // supertype: card.supertype,
+            // subtypes: card.subtypes,
+          } as PokemonCard)
+      ) ?? []
+    );
+  });
 }
 
 const pokemonAPI = {

@@ -52,8 +52,8 @@ export default function CardImage({
           <Image
             src={large}
             alt={alt}
-            width={828}
-            height={1140}
+            width={600}
+            height={825}
             className="w-full h-full object-contain"
             draggable={false}
             priority
