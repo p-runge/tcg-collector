@@ -1,4 +1,3 @@
-import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 import TCGdex from "@tcgdex/sdk";
 
 // Instantiate the SDK with your preferred language
@@ -88,9 +87,7 @@ function getConditionInfo(condition: string) {
   return conditions.find((c) => c.value === condition) || conditions[1]!;
 }
 
-const rarities = Object.values(PokemonTCG.Rarity).filter(
-  (value) => typeof value === "string"
-) as unknown as (keyof typeof PokemonTCG.Rarity)[];
+const rarities = (await tcgdex.rarity.list()).map((r) => r.toString());
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getVariants(_setId: string): string[] {

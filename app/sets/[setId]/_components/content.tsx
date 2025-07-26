@@ -37,6 +37,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import pokemonAPI, { PokemonCard, PokemonSet } from "@/lib/pokemon-api";
+import { cn } from "@/lib/utils";
 import {
   Circle,
   Diamond,
@@ -775,7 +776,7 @@ export default function Content({ set, cards }: Props) {
                                                   onValueChange={
                                                     setSelectedQuickLanguage
                                                   }
-                                                  className="grid grid-cols-5 gap-1"
+                                                  className="grid grid-cols-6 gap-1"
                                                 >
                                                   {pokemonAPI.cardLanguages
                                                     .slice(0, 10)
@@ -793,12 +794,13 @@ export default function Content({ set, cards }: Props) {
                                                           htmlFor={
                                                             language.code
                                                           }
-                                                          className={`flex items-center justify-center h-8 p-1 text-xs border rounded cursor-pointer transition-colors ${
+                                                          className={cn(
+                                                            "flex items-center justify-center h-8 p-1 text-xs border rounded cursor-pointer transition-colors w-full",
                                                             selectedQuickLanguage ===
-                                                            language.code
+                                                              language.code
                                                               ? "bg-primary/10 border-primary text-primary"
                                                               : "bg-background border-border hover:bg-muted"
-                                                          }`}
+                                                          )}
                                                           title={language.name}
                                                         >
                                                           {language.flag}
