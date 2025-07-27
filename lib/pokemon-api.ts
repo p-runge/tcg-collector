@@ -87,7 +87,51 @@ function getConditionInfo(condition: string) {
   return conditions.find((c) => c.value === condition) || conditions[1]!;
 }
 
-const rarities = (await tcgdex.rarity.list()).map((r) => r.toString());
+/**
+ * This would require a top-level await which is not possible in this env.
+ * Instead we are using a static snapshot of that endpoint's response.
+ */
+// const rarities = (await tcgdex.rarity.list()).map((r) => r.toString());
+const rarities = [
+  "ACE SPEC Rare",
+  "Amazing Rare",
+  "Black White Rare",
+  "Classic Collection",
+  "Common",
+  "Crown",
+  "Double rare",
+  "Four Diamond",
+  "Full Art Trainer",
+  "Holo Rare",
+  "Holo Rare V",
+  "Holo Rare VMAX",
+  "Holo Rare VSTAR",
+  "Hyper rare",
+  "Illustration rare",
+  "LEGEND",
+  "None",
+  "One Diamond",
+  "One Shiny",
+  "One Star",
+  "Radiant Rare",
+  "Rare",
+  "Rare Holo",
+  "Rare Holo LV.X",
+  "Rare PRIME",
+  "Secret Rare",
+  "Shiny Ultra Rare",
+  "Shiny rare",
+  "Shiny rare V",
+  "Shiny rare VMAX",
+  "Special illustration rare",
+  "Three Diamond",
+  "Three Star",
+  "Two Diamond",
+  "Two Shiny",
+  "Two Star",
+  "Ultra Rare",
+  "Uncommon",
+];
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getVariants(_setId: string): string[] {
