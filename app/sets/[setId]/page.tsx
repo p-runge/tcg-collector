@@ -67,8 +67,4 @@ export default async function SetIdPage({
   );
 }
 
-// static parameters for the page
-export async function generateStaticParams() {
-  const sets = await pokemonAPI.fetchPokemonSets();
-  return sets.map((set) => ({ setId: set.id }));
-}
+export const revalidate = 3600;
