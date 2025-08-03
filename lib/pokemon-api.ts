@@ -161,35 +161,22 @@ async function fetchPokemonSets(): Promise<PokemonSet[]> {
 }
 
 async function fetchPokemonCards(setId: string): Promise<PokemonCard[]> {
-  return tcgdex.set.get(setId).then(async (set) => {
-    if (!set) {
-      return [];
-    }
+  const set = await tcgdex.set.get(setId);
+  if (!set) return [];
 
-    const fullCards = await Promise.all(
-      set.cards.map((card) => card.getCard())
-    );
+  const fullCards = await Promise.all(set.cards.map((card) => card.getCard()));
 
-    return (
-      fullCards?.map(
-        (card) =>
-          ({
-            id: card.id,
-            name: card.name,
-            number: card.localId,
-            rarity: card.rarity,
-            set: { id: card.set.id, name: card.set.name },
-            images: {
-              // get url by base, set and id
-              small: `https://assets.tcgdex.net/en/${set.serie.id}/${setId}/${card.localId}/low.webp`,
-              large: `https://assets.tcgdex.net/en/${set.serie.id}/${setId}/${card.localId}/high.webp`,
-            },
-            // supertype: card.supertype,
-            // subtypes: card.subtypes,
-          } as PokemonCard)
-      ) ?? []
-    );
-  });
+  return fullCards.map((card) => ({
+    id: card.id,
+    name: card.name,
+    number: card.localId,
+    rarity: card.rarity,
+    set: { id: card.set.id, name: card.set.name },
+    images: {
+      small: `https://assets.tcgdex.net/en/${set.serie.id}/${setId}/${card.localId}/low.webp`,
+      large: `https://assets.tcgdex.net/en/${set.serie.id}/${setId}/${card.localId}/high.webp`,
+    },
+  }));
 }
 
 const pokemonAPI = {
