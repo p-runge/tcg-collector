@@ -67,4 +67,5 @@ export default async function SetIdPage({
   );
 }
 
-export const revalidate = 3600;
+// cache for 1 day
+export const revalidate = 86400;
