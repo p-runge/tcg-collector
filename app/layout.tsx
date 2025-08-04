@@ -1,5 +1,6 @@
 import type React from "react";
 import type { Metadata } from "next";
+import PlausibleProvider from "next-plausible";
 import "./globals.css";
 import "@total-typescript/ts-reset";
 
@@ -16,7 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <PlausibleProvider domain="tcg.p6.gg">{children}</PlausibleProvider>
+      </body>
     </html>
   );
 }
