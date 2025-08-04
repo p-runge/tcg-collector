@@ -341,6 +341,7 @@ export default function Content({ set, cards }: Props) {
                     width={64}
                     height={64}
                     className="inline-block w-16 h-16 object-contain object-center mr-3"
+                    unoptimized
                   />
                 )}
 
@@ -718,6 +719,7 @@ export default function Content({ set, cards }: Props) {
                                 alt={`${set.name} symbol`}
                                 width={16}
                                 height={16}
+                                unoptimized
                               />
                             )}
                           </span>

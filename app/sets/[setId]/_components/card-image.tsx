@@ -42,6 +42,7 @@ export default function CardImage({
         }}
         role="button"
         aria-label="Show large card image"
+        unoptimized
       />
       <Dialog open={showOverlay} onOpenChange={setShowOverlay}>
         <DialogContent
@@ -57,6 +58,7 @@ export default function CardImage({
             className="w-full h-full object-contain"
             draggable={false}
             priority
+            unoptimized
           />
         </DialogContent>
       </Dialog>
