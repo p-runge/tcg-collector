@@ -9,58 +9,28 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { sql } from "@/lib/db";
+import { db, users } from "@/lib/db";
 import { BookHeart, Library, Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function CollectionPage() {
-  const userCards = (await sql`
-    SELECT 
-      uc.*,
-      c.name as card_name,
-      c.number as card_number,
-      c.rarity,
-      s.name as set_name,
-      s.code as set_code,
-      ser.name as series_name,
-      l.name as language_name,
-      v.name as variant_name,
-      cond.name as condition_name,
-      cond.abbreviation as condition_abbr
-    FROM user_cards uc
-    JOIN cards c ON uc.card_id = c.id
-    JOIN sets s ON c.set_id = s.id
-    JOIN series ser ON s.series_id = ser.id
-    JOIN languages l ON uc.language_id = l.id
-    JOIN variants v ON uc.variant_id = v.id
-    JOIN conditions cond ON uc.condition_id = cond.id
-    ORDER BY ser.name, s.name, c.number::integer
-  `) as {
+  const userList = await db.select().from(users).orderBy(users.username);
+  console.log("userList", userList);
+
+  const groupedCards: {
     id: number;
     card_id: number;
-    user_id: number;
-    quantity: number;
-    notes: string | null;
     card_name: string;
     card_number: string;
     rarity: string | null;
     set_name: string;
-    set_code: string;
-    series_name: string;
     language_name: string;
-    variant_name: string | null;
+    variant_name: string;
     condition_name: string;
     condition_abbr: string;
-  }[];
-
-  const groupedCards = userCards.reduce((acc, card) => {
-    const key = `${card.series_name} - ${card.set_name}`;
-    if (!acc[key]) {
-      acc[key] = [];
-    }
-    acc[key].push(card);
-    return acc;
-  }, {} as Record<string, typeof userCards>);
+    quantity: number;
+    notes: string | null;
+  }[][] = [];
 
   return (
     <div className="min-h-screen bg-gray-50">

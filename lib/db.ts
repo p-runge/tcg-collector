@@ -1,95 +1,109 @@
-import { neon } from "@neondatabase/serverless"
+import { env } from "@/env";
+import { drizzle } from "drizzle-orm/node-postgres";
+import {
+  pgTable,
+  serial,
+  varchar,
+  integer,
+  text,
+  timestamp,
+  date,
+} from "drizzle-orm/pg-core";
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL environment variable is not set")
-}
+export const db = drizzle(env.DATABASE_URL);
 
-export const sql = neon(process.env.DATABASE_URL)
+// User table
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  discord_id: varchar("discord_id", { length: 32 }).notNull(),
+  username: varchar("username", { length: 64 }).notNull(),
+  avatar_url: text("avatar_url"),
+  favorite_language_id: integer("favorite_language_id"),
+  created_at: timestamp("created_at", { mode: "string" })
+    .notNull()
+    .defaultNow(),
+});
 
-export type User = {
-  id: number
-  discord_id: string
-  username: string
-  avatar_url?: string
-  favorite_language_id?: number
-  created_at: string
-}
+// Series table
+export const series = pgTable("series", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 128 }).notNull(),
+  release_year: integer("release_year"),
+  created_at: timestamp("created_at", { mode: "string" })
+    .notNull()
+    .defaultNow(),
+});
 
-export type Series = {
-  id: number
-  name: string
-  release_year?: number
-  created_at: string
-}
+// Set table
+export const sets = pgTable("sets", {
+  id: serial("id").primaryKey(),
+  series_id: integer("series_id").notNull(),
+  name: varchar("name", { length: 128 }).notNull(),
+  code: varchar("code", { length: 32 }).notNull(),
+  release_date: date("release_date"),
+  total_cards: integer("total_cards"),
+  created_at: timestamp("created_at", { mode: "string" })
+    .notNull()
+    .defaultNow(),
+});
 
-export type Set = {
-  id: number
-  series_id: number
-  name: string
-  code: string
-  release_date?: string
-  total_cards?: number
-  created_at: string
-  series_name?: string
-}
+// Card table
+export const cards = pgTable("cards", {
+  id: serial("id").primaryKey(),
+  set_id: integer("set_id").notNull(),
+  number: varchar("number", { length: 32 }).notNull(),
+  name: varchar("name", { length: 128 }).notNull(),
+  rarity: varchar("rarity", { length: 32 }),
+  card_type: varchar("card_type", { length: 32 }),
+  created_at: timestamp("created_at", { mode: "string" })
+    .notNull()
+    .defaultNow(),
+});
 
-export type Card = {
-  id: number
-  set_id: number
-  number: string
-  name: string
-  rarity?: string
-  card_type?: string
-  created_at: string
-  set_name?: string
-  set_code?: string
-}
+// // Language table
+// export const languages = pgTable("languages", {
+//   id: serial("id").primaryKey(),
+//   code: varchar("code", { length: 8 }).notNull(),
+//   name: varchar("name", { length: 64 }).notNull(),
+// });
 
-export type Language = {
-  id: number
-  code: string
-  name: string
-}
+// // Variant table
+// export const variants = pgTable("variants", {
+//   id: serial("id").primaryKey(),
+//   name: varchar("name", { length: 64 }).notNull(),
+//   description: text("description"),
+// });
 
-export type Variant = {
-  id: number
-  name: string
-  description?: string
-}
+// // Condition table
+// export const conditions = pgTable("conditions", {
+//   id: serial("id").primaryKey(),
+//   name: varchar("name", { length: 64 }).notNull(),
+//   abbreviation: varchar("abbreviation", { length: 16 }),
+//   description: text("description"),
+// });
 
-export type Condition = {
-  id: number
-  name: string
-  abbreviation?: string
-  description?: string
-}
+// UserCard table
+export const userCards = pgTable("user_cards", {
+  id: serial("id").primaryKey(),
+  user_id: integer("user_id").notNull(),
+  card_id: integer("card_id").notNull(),
+  language_id: integer("language_id").notNull(),
+  variant_id: integer("variant_id").notNull(),
+  condition_id: integer("condition_id").notNull(),
+  quantity: integer("quantity").notNull(),
+  notes: text("notes"),
+  created_at: timestamp("created_at", { mode: "string" })
+    .notNull()
+    .defaultNow(),
+  updated_at: timestamp("updated_at", { mode: "string" })
+    .notNull()
+    .defaultNow(),
+});
 
-export type UserCard = {
-  id: number
-  user_id: number
-  card_id: number
-  language_id: number
-  variant_id: number
-  condition_id: number
-  quantity: number
-  notes?: string
-  created_at: string
-  updated_at: string
-  card_name?: string
-  card_number?: string
-  set_name?: string
-  set_code?: string
-  language_name?: string
-  variant_name?: string
-  condition_name?: string
-}
-
-export type UserCollectingSet = {
-  id: number
-  user_id: number
-  set_id: number
-  created_at: string
-  set_name?: string
-  set_code?: string
-  series_name?: string
-}
+// // UserCollectingSet table
+// export const userCollectingSets = pgTable("user_collecting_sets", {
+//   id: serial("id").primaryKey(),
+//   user_id: integer("user_id").notNull(),
+//   set_id: integer("set_id").notNull(),
+//   created_at: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
+// });
