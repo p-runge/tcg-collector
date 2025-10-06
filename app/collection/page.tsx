@@ -9,12 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { db, users } from "@/lib/db";
+import { db, usersTable } from "@/lib/db";
 import { BookHeart, Library, Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function CollectionPage() {
-  const userList = await db.select().from(users).orderBy(users.username);
+  const userList = await db
+    .select()
+    .from(usersTable)
+    .orderBy(usersTable.username);
   console.log("userList", userList);
 
   const groupedCards: {

@@ -1,20 +1,20 @@
 import { env } from "@/env";
 import { drizzle } from "drizzle-orm/node-postgres";
 import {
-  pgTable,
-  serial,
-  varchar,
+  date,
   integer,
+  pgTable,
   text,
   timestamp,
-  date,
+  uuid,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 export const db = drizzle(env.DATABASE_URL);
 
 // User table
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+export const usersTable = pgTable("users", {
+  id: uuid("id").primaryKey(),
   discord_id: varchar("discord_id", { length: 32 }).notNull(),
   username: varchar("username", { length: 64 }).notNull(),
   avatar_url: text("avatar_url"),
@@ -25,8 +25,8 @@ export const users = pgTable("users", {
 });
 
 // Series table
-export const series = pgTable("series", {
-  id: serial("id").primaryKey(),
+export const seriesTable = pgTable("series", {
+  id: uuid("id").primaryKey(),
   name: varchar("name", { length: 128 }).notNull(),
   release_year: integer("release_year"),
   created_at: timestamp("created_at", { mode: "string" })
@@ -35,22 +35,31 @@ export const series = pgTable("series", {
 });
 
 // Set table
-export const sets = pgTable("sets", {
-  id: serial("id").primaryKey(),
-  series_id: integer("series_id").notNull(),
-  name: varchar("name", { length: 128 }).notNull(),
-  code: varchar("code", { length: 32 }).notNull(),
-  release_date: date("release_date"),
-  total_cards: integer("total_cards"),
+export const setsTable = pgTable("sets", {
+  id: uuid("id").primaryKey(),
   created_at: timestamp("created_at", { mode: "string" })
     .notNull()
     .defaultNow(),
+  updated_at: timestamp("updated_at", { mode: "string" })
+    .notNull()
+    .defaultNow(),
+  name: varchar("name", { length: 128 }).notNull(),
+  logo: text("logo"),
+  symbol: varchar("symbol", { length: 32 }),
+  releaseDate: date("release_date").notNull(),
+  total: integer("total").notNull(),
+  totalWithSecretRares: integer("total_with_secret_rares").notNull(),
+  series_id: uuid("series_id")
+    // .notNull()
+    .references(() => seriesTable.id),
 });
 
 // Card table
-export const cards = pgTable("cards", {
-  id: serial("id").primaryKey(),
-  set_id: integer("set_id").notNull(),
+export const cardsTable = pgTable("cards", {
+  id: uuid("id").primaryKey(),
+  set_id: integer("set_id")
+    .notNull()
+    .references(() => setsTable.id),
   number: varchar("number", { length: 32 }).notNull(),
   name: varchar("name", { length: 128 }).notNull(),
   rarity: varchar("rarity", { length: 32 }),
@@ -61,30 +70,30 @@ export const cards = pgTable("cards", {
 });
 
 // // Language table
-// export const languages = pgTable("languages", {
-//   id: serial("id").primaryKey(),
+// export const languagesTable = pgTable("languages", {
+//   id: uuid("id").primaryKey(),
 //   code: varchar("code", { length: 8 }).notNull(),
 //   name: varchar("name", { length: 64 }).notNull(),
 // });
 
 // // Variant table
-// export const variants = pgTable("variants", {
-//   id: serial("id").primaryKey(),
+// export const variantsTable = pgTable("variants", {
+//   id: uuid("id").primaryKey(),
 //   name: varchar("name", { length: 64 }).notNull(),
 //   description: text("description"),
 // });
 
 // // Condition table
-// export const conditions = pgTable("conditions", {
-//   id: serial("id").primaryKey(),
+// export const conditionsTable = pgTable("conditions", {
+//   id: uuid("id").primaryKey(),
 //   name: varchar("name", { length: 64 }).notNull(),
 //   abbreviation: varchar("abbreviation", { length: 16 }),
 //   description: text("description"),
 // });
 
 // UserCard table
-export const userCards = pgTable("user_cards", {
-  id: serial("id").primaryKey(),
+export const userCardsTable = pgTable("user_cards", {
+  id: uuid("id").primaryKey(),
   user_id: integer("user_id").notNull(),
   card_id: integer("card_id").notNull(),
   language_id: integer("language_id").notNull(),
@@ -101,8 +110,8 @@ export const userCards = pgTable("user_cards", {
 });
 
 // // UserCollectingSet table
-// export const userCollectingSets = pgTable("user_collecting_sets", {
-//   id: serial("id").primaryKey(),
+// export const userCollectingSetsTable = pgTable("user_collecting_sets", {
+//   id: uuid("id").primaryKey(),
 //   user_id: integer("user_id").notNull(),
 //   set_id: integer("set_id").notNull(),
 //   created_at: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
