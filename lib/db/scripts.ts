@@ -19,7 +19,7 @@ export async function fetchAndStoreSets() {
         releaseDate: set.releaseDate,
         total: set.total,
         totalWithSecretRares: set.totalWithSecretRares,
-        series_id: set.series,
+        series: set.series,
       });
       console.log(`Stored set: ${set.name} (${set.id})`);
     }

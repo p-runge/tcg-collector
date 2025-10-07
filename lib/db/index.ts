@@ -24,19 +24,9 @@ export const usersTable = pgTable("users", {
     .defaultNow(),
 });
 
-// Series table
-export const seriesTable = pgTable("series", {
-  id: uuid("id").primaryKey(),
-  name: varchar("name", { length: 128 }).notNull(),
-  release_year: integer("release_year"),
-  created_at: timestamp("created_at", { mode: "string" })
-    .notNull()
-    .defaultNow(),
-});
-
 // Set table
 export const setsTable = pgTable("sets", {
-  id: uuid("id").primaryKey(),
+  id: varchar("id", { length: 10 }).primaryKey(),
   created_at: timestamp("created_at", { mode: "string" })
     .notNull()
     .defaultNow(),
@@ -49,15 +39,13 @@ export const setsTable = pgTable("sets", {
   releaseDate: date("release_date").notNull(),
   total: integer("total").notNull(),
   totalWithSecretRares: integer("total_with_secret_rares").notNull(),
-  series_id: uuid("series_id")
-    // .notNull()
-    .references(() => seriesTable.id),
+  series: varchar("series", { length: 128 }).notNull(),
 });
 
 // Card table
 export const cardsTable = pgTable("cards", {
   id: uuid("id").primaryKey(),
-  set_id: uuid("set_id")
+  set_id: varchar("set_id", { length: 10 })
     .notNull()
     .references(() => setsTable.id),
   number: varchar("number", { length: 32 }).notNull(),
@@ -113,6 +101,6 @@ export const userCardsTable = pgTable("user_cards", {
 // export const userCollectingSetsTable = pgTable("user_collecting_sets", {
 //   id: uuid("id").primaryKey(),
 //   user_id: uuid("user_id").notNull(),
-//   set_id: uuid("set_id").notNull(),
+//   set_id: varchar("set_id", { length: 10 }).notNull(),
 //   created_at: timestamp("created_at", { mode: "string" }).notNull().defaultNow(),
 // });
