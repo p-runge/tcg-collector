@@ -11,16 +11,31 @@ export async function fetchAndStoreSets() {
 
     for (const set of sets) {
       console.log(`Storing set: ${set.name} (${set.id})`, set);
-      await db.insert(setsTable).values({
-        id: set.id,
-        name: set.name,
-        logo: set.logo,
-        symbol: set.symbol,
-        releaseDate: set.releaseDate,
-        total: set.total,
-        totalWithSecretRares: set.totalWithSecretRares,
-        series: set.series,
-      });
+      await db
+        .insert(setsTable)
+        .values({
+          id: set.id,
+          name: set.name,
+          logo: set.logo,
+          symbol: set.symbol,
+          releaseDate: set.releaseDate,
+          total: set.total,
+          totalWithSecretRares: set.totalWithSecretRares,
+          series: set.series,
+        })
+        .onConflictDoUpdate({
+          target: setsTable.id,
+          set: {
+            updated_at: new Date().toISOString(),
+            name: set.name,
+            logo: set.logo,
+            symbol: set.symbol,
+            releaseDate: set.releaseDate,
+            total: set.total,
+            totalWithSecretRares: set.totalWithSecretRares,
+            series: set.series,
+          },
+        });
       console.log(`Stored set: ${set.name} (${set.id})`);
     }
 

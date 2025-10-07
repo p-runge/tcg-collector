@@ -35,7 +35,7 @@ export const setsTable = pgTable("sets", {
     .defaultNow(),
   name: varchar("name", { length: 128 }).notNull(),
   logo: text("logo"),
-  symbol: varchar("symbol", { length: 32 }),
+  symbol: varchar("symbol", { length: 128 }),
   releaseDate: date("release_date").notNull(),
   total: integer("total").notNull(),
   totalWithSecretRares: integer("total_with_secret_rares").notNull(),
