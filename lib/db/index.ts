@@ -26,7 +26,7 @@ export const usersTable = pgTable("users", {
 
 // Set table
 export const setsTable = pgTable("sets", {
-  id: varchar("id", { length: 10 }).primaryKey(),
+  id: varchar("id", { length: 16 }).primaryKey(),
   created_at: timestamp("created_at", { mode: "string" })
     .notNull()
     .defaultNow(),
@@ -44,17 +44,21 @@ export const setsTable = pgTable("sets", {
 
 // Card table
 export const cardsTable = pgTable("cards", {
-  id: uuid("id").primaryKey(),
-  set_id: varchar("set_id", { length: 10 })
-    .notNull()
-    .references(() => setsTable.id),
-  number: varchar("number", { length: 32 }).notNull(),
-  name: varchar("name", { length: 128 }).notNull(),
-  rarity: varchar("rarity", { length: 32 }),
-  card_type: varchar("card_type", { length: 32 }),
+  id: varchar("id", { length: 16 }).primaryKey(),
   created_at: timestamp("created_at", { mode: "string" })
     .notNull()
     .defaultNow(),
+  updated_at: timestamp("updated_at", { mode: "string" })
+    .notNull()
+    .defaultNow(),
+  name: varchar("name", { length: 128 }).notNull(),
+  number: varchar("number", { length: 32 }).notNull(),
+  rarity: varchar("rarity", { length: 32 }).notNull(),
+  imageSmall: text("image_small").notNull(),
+  imageLarge: text("image_large").notNull(),
+  setId: varchar("set_id", { length: 16 })
+    .notNull()
+    .references(() => setsTable.id),
 });
 
 // // Language table
