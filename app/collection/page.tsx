@@ -77,7 +77,7 @@ export default async function CollectionPage() {
                   <p className="text-gray-600 mb-6">
                     Start adding cards to track your Pokémon collection!
                   </p>
-                  <Link href="/collection/add">
+                  <Link href="/collection/new">
                     <Button>
                       <Plus className="w-4 h-4 mr-2" />
                       Add Your First Card
@@ -155,7 +155,7 @@ export default async function CollectionPage() {
                   No collections added yet
                 </h3>
                 <p className="text-gray-600 mb-6">Add your first collection!</p>
-                <Link href="/collection/add">
+                <Link href="/collection/new">
                   <Button>
                     <Plus className="w-4 h-4 mr-2" />
                     Add Your First Collection
