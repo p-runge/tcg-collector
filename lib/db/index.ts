@@ -101,6 +101,18 @@ export const userCardsTable = pgTable("user_cards", {
     .defaultNow(),
 });
 
+export const userCollectionsTable = pgTable("user_collections", {
+  id: uuid("id").primaryKey(),
+  created_at: timestamp("created_at", { mode: "string" })
+    .notNull()
+    .defaultNow(),
+  updated_at: timestamp("updated_at", { mode: "string" })
+    .notNull()
+    .defaultNow(),
+  name: varchar("name", { length: 128 }).notNull(),
+  user_id: uuid("user_id").notNull(),
+});
+
 // // UserCollectingSet table
 // export const userCollectingSetsTable = pgTable("user_collecting_sets", {
 //   id: uuid("id").primaryKey(),
