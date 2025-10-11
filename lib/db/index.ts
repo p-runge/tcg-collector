@@ -102,7 +102,7 @@ export const userCardsTable = pgTable("user_cards", {
 });
 
 export const userCollectionsTable = pgTable("user_collections", {
-  id: uuid("id").primaryKey(),
+  id: uuid("id").primaryKey().default(crypto.randomUUID()),
   created_at: timestamp("created_at", { mode: "string" })
     .notNull()
     .defaultNow(),
@@ -110,7 +110,9 @@ export const userCollectionsTable = pgTable("user_collections", {
     .notNull()
     .defaultNow(),
   name: varchar("name", { length: 128 }).notNull(),
-  user_id: uuid("user_id").notNull(),
+  user_id: uuid("user_id")
+    .notNull()
+    .references(() => usersTable.id),
 });
 
 // // UserCollectingSet table
