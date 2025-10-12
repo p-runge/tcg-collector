@@ -1,4 +1,5 @@
 import { Navigation } from "@/components/navigation";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function NewCollectionPage() {
@@ -18,12 +19,7 @@ export default function NewCollectionPage() {
           {/* name input */}
           <Input name="name" placeholder="Collection Name" />
           {/* submit button */}
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Create Collection
-          </button>
+          <Button type="submit">Create Collection</Button>
         </form>
       </main>
     </div>
