@@ -1,4 +1,4 @@
-import { db, userCollectionsTable } from "@/lib/db";
+import { db, collectionsTable } from "@/lib/db";
 import { and, eq } from "drizzle-orm";
 
 export async function POST({ formData }: Request) {
@@ -18,15 +18,12 @@ export async function POST({ formData }: Request) {
   // check for existing collection with same name for this user
   await db
     .select()
-    .from(userCollectionsTable)
+    .from(collectionsTable)
     .where(
-      and(
-        eq(userCollectionsTable.name, name),
-        eq(userCollectionsTable.user_id, userId)
-      )
+      and(eq(collectionsTable.name, name), eq(collectionsTable.user_id, userId))
     );
 
-  await db.insert(userCollectionsTable).values({
+  await db.insert(collectionsTable).values({
     name,
     user_id: userId,
   });

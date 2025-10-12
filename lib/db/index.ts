@@ -101,7 +101,7 @@ export const userCardsTable = pgTable("user_cards", {
     .defaultNow(),
 });
 
-export const userCollectionsTable = pgTable("user_collections", {
+export const collectionsTable = pgTable("collections", {
   id: uuid("id").primaryKey().default(crypto.randomUUID()),
   created_at: timestamp("created_at", { mode: "string" })
     .notNull()
