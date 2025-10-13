@@ -23,7 +23,42 @@ export const rarityEnum = pgEnum("rarity", [
   "Common",
   "Uncommon",
   "Rare",
+  "Ultra Rare",
+  "None",
+  "Secret Rare",
+  "One Diamond",
+  "Illustration rare",
+  "Two Diamond",
+  "Rare Holo",
   "Holo Rare",
+  "Double rare",
+  "Holo Rare V",
+  "Shiny rare",
+  "Three Diamond",
+  "Two Star",
+  "Special illustration rare",
+  "One Star",
+  "Holo Rare VMAX",
+  "Four Diamond",
+  "One Shiny",
+  "Hyper rare",
+  "Rare Holo LV.X",
+  "ACE SPEC Rare",
+  "Holo Rare VSTAR",
+  "Two Shiny",
+  "Rare PRIME",
+  "Classic Collection",
+  "LEGEND",
+  "Three Star",
+  "Radiant Rare",
+  "Crown",
+  "Shiny Ultra Rare",
+  "Shiny rare V",
+  "Amazing Rare",
+  "Shiny rare VMAX",
+  "Full Art Trainer",
+  "Black White Rare",
+  "Mega Hyper Rare",
 ]);
 
 export const conditionEnum = pgEnum("condition", [
@@ -158,7 +193,7 @@ export const collectionCardsTable = pgTable("collection_cards", {
   collection_id: uuid("collection_id")
     .notNull()
     .references(() => collectionsTable.id),
-  card_id: uuid("card_id")
+  card_id: varchar("id", { length: 16 })
     .notNull()
     .references(() => cardsTable.id),
   user_card_id: uuid("user_card_id").references(() => userCardsTable.id),

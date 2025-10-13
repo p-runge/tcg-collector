@@ -1,7 +1,7 @@
 import TCGdex from "@tcgdex/sdk";
 
 // Instantiate the SDK with your preferred language
-const tcgdex = new TCGdex("de");
+const tcgdex = new TCGdex("en");
 
 export type PokemonSet = {
   id: string;
