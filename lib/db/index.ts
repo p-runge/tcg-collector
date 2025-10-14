@@ -115,6 +115,7 @@ export const setsTable = pgTable("sets", {
   totalWithSecretRares: integer("total_with_secret_rares").notNull(),
   series: varchar("series", { length: 128 }).notNull(),
 });
+export type Set = typeof setsTable.$inferSelect;
 
 // Card table
 export const cardsTable = pgTable("cards", {
@@ -134,6 +135,7 @@ export const cardsTable = pgTable("cards", {
     .notNull()
     .references(() => setsTable.id),
 });
+export type Card = typeof cardsTable.$inferSelect;
 
 /**
  * --------------------------------
