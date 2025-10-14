@@ -29,3 +29,18 @@ export async function POST({ formData }: Request) {
   });
   return new Response("Collection created", { status: 201 });
 }
+
+export async function GET() {
+  const userId = "a2136270-6628-418e-b9f5-8892ba5c79f2"; // TODO: get from auth
+
+  const collections = await db
+    .select()
+    .from(collectionsTable)
+    .where(eq(collectionsTable.user_id, userId))
+    .orderBy(collectionsTable.created_at);
+
+  return new Response(JSON.stringify(collections), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+}
