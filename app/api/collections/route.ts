@@ -21,17 +21,24 @@ export async function POST(req: NextRequest) {
   }
 
   // check for existing collection with same name for this user
-  await db
+  const existingCollection = await db
     .select()
     .from(collectionsTable)
     .where(
       and(eq(collectionsTable.name, name), eq(collectionsTable.user_id, userId))
     );
 
+  if (existingCollection.length > 0) {
+    return new Response("Collection with this name already exists", {
+      status: 409,
+    });
+  }
+
   await db.insert(collectionsTable).values({
     name,
     user_id: userId,
   });
+
   return new Response("Collection created", { status: 201 });
 }
 
