@@ -49,15 +49,16 @@ export function CardBrowser({ selectedCards, onCardToggle }: CardBrowserProps) {
 
         const response = await fetch(`/api/cards?${params}`);
         const data = (await response.json()) as {
-          cards: Card[];
+          items: Card[];
           nextCursor: string | null;
           hasMore: boolean;
         };
+        console.log("data", data);
 
         if (reset) {
-          setCards(data.cards);
+          setCards(data.items);
         } else {
-          setCards((prev) => [...prev, ...data.cards]);
+          setCards((prev) => [...prev, ...data.items]);
         }
 
         setCursor(data.nextCursor);
