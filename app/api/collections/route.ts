@@ -4,7 +4,6 @@ import { NextRequest } from "next/server";
 
 type PostCollectionPayload = {
   name: string;
-  userId: string;
   cardIds: string[];
 };
 export async function POST(req: NextRequest) {

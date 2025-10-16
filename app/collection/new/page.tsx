@@ -42,15 +42,11 @@ export default function NewCollectionPage() {
     setIsCreating(true);
 
     try {
-      // TODO: Replace with actual user ID from auth
-      const userId = "a2136270-6628-418e-b9f5-8892ba5c79f2";
-
       const response = await fetch("/api/collections", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: collectionName,
-          userId,
           cardIds: Array.from(selectedCards),
         }),
       });
