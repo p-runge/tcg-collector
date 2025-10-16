@@ -170,8 +170,7 @@ export default async function CollectionPage() {
                 {collections.map((collection) => (
                   <Link
                     key={collection.id}
-                    href="#"
-                    // href={`/collection/${collection.id}`}
+                    href={`/collection/${collection.id}`}
                     className="block"
                   >
                     <Card className="hover:shadow-lg transition-shadow">
