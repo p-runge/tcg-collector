@@ -9,16 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { db, usersTable } from "@/lib/db";
+import { collectionsTable, db } from "@/lib/db";
 import { BookHeart, Library, Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function CollectionPage() {
-  const userList = await db
+  const collections = await db
     .select()
-    .from(usersTable)
-    .orderBy(usersTable.username);
-  console.log("userList", userList);
+    .from(collectionsTable)
+    .orderBy(collectionsTable.created_at);
 
   const groupedCards: {
     id: number;
@@ -149,20 +148,48 @@ export default async function CollectionPage() {
           </TabsContent>
 
           <TabsContent value="collections">
-            <Card className="text-center py-12">
-              <CardContent>
-                <h3 className="text-lg font-semibold mb-2">
-                  No collections added yet
-                </h3>
-                <p className="text-gray-600 mb-6">Add your first collection!</p>
-                <Link href="/collection/new">
-                  <Button>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Your First Collection
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+            {collections.length === 0 ? (
+              <Card className="text-center py-12">
+                <CardContent>
+                  <h3 className="text-lg font-semibold mb-2">
+                    No collections added yet
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    Add your first collection!
+                  </p>
+                  <Link href="/collection/new">
+                    <Button>
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Your First Collection
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {collections.map((collection) => (
+                  <Link
+                    key={collection.id}
+                    href="#"
+                    // href={`/collection/${collection.id}`}
+                    className="block"
+                  >
+                    <Card className="hover:shadow-lg transition-shadow">
+                      <CardHeader>
+                        <CardTitle className="text-lg">
+                          {collection.name}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-gray-600">
+                          View and manage cards in this collection.
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </main>
