@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
+  console.log("Creating collection", { name, userId });
   await db.insert(collectionsTable).values({
     name,
     user_id: userId,

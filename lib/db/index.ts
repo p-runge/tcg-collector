@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import {
   date,
@@ -144,7 +145,9 @@ export type Card = typeof cardsTable.$inferSelect;
  */
 
 export const usersTable = pgTable("users", {
-  id: uuid("id").primaryKey().default(crypto.randomUUID()),
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   discord_id: varchar("discord_id", { length: 32 }).notNull(),
   username: varchar("username", { length: 64 }).notNull(),
   avatar_url: text("avatar_url"),
@@ -155,7 +158,9 @@ export const usersTable = pgTable("users", {
 });
 
 export const userCardsTable = pgTable("user_cards", {
-  id: uuid("id").primaryKey().default(crypto.randomUUID()),
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   user_id: uuid("user_id").notNull(),
   card_id: uuid("card_id").notNull(),
   language: languageEnum(),
@@ -171,7 +176,9 @@ export const userCardsTable = pgTable("user_cards", {
 });
 
 export const collectionsTable = pgTable("collections", {
-  id: uuid("id").primaryKey().default(crypto.randomUUID()),
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   created_at: timestamp("created_at", { mode: "string" })
     .notNull()
     .defaultNow(),
@@ -185,7 +192,9 @@ export const collectionsTable = pgTable("collections", {
 });
 
 export const collectionCardsTable = pgTable("collection_cards", {
-  id: uuid("id").primaryKey().default(crypto.randomUUID()),
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   created_at: timestamp("created_at", { mode: "string" })
     .notNull()
     .defaultNow(),

@@ -55,9 +55,6 @@ export default function NewCollectionPage() {
         throw new Error("Failed to create collection");
       }
 
-      const collection = await response.json();
-      console.log("Collection created:", collection);
-
       // Redirect to collections list or detail page
       router.push("/collection");
     } catch (error) {
