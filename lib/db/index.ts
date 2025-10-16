@@ -204,7 +204,7 @@ export const collectionCardsTable = pgTable("collection_cards", {
   collection_id: uuid("collection_id")
     .notNull()
     .references(() => collectionsTable.id),
-  card_id: varchar("id", { length: 16 })
+  card_id: varchar("card_id", { length: 16 })
     .notNull()
     .references(() => cardsTable.id),
   user_card_id: uuid("user_card_id").references(() => userCardsTable.id),

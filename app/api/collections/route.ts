@@ -1,4 +1,4 @@
-import { db, collectionsTable } from "@/lib/db";
+import { db, collectionsTable, collectionCardsTable } from "@/lib/db";
 import { and, eq } from "drizzle-orm";
 import { NextRequest } from "next/server";
 
@@ -19,6 +19,10 @@ export async function POST(req: NextRequest) {
     return new Response("Name is too long", { status: 400 });
   }
 
+  if (data.cardIds.length === 0) {
+    return new Response("At least one card ID is required", { status: 400 });
+  }
+
   // check for existing collection with same name for this user
   const existingCollection = await db
     .select()
@@ -34,10 +38,22 @@ export async function POST(req: NextRequest) {
   }
 
   console.log("Creating collection", { name, userId });
-  await db.insert(collectionsTable).values({
-    name,
-    user_id: userId,
-  });
+  const createdCollection = await db
+    .insert(collectionsTable)
+    .values({
+      name,
+      user_id: userId,
+    })
+    .returning()
+    .then((res) => res[0]!);
+  console.log("Created collection", createdCollection);
+
+  await db.insert(collectionCardsTable).values(
+    data.cardIds.map((cardId) => ({
+      card_id: cardId,
+      collection_id: createdCollection.id,
+    }))
+  );
 
   return new Response("Collection created", { status: 201 });
 }

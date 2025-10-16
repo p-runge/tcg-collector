@@ -148,6 +148,14 @@ export default async function CollectionPage() {
           </TabsContent>
 
           <TabsContent value="collections">
+            <div className="mb-6 flex justify-end">
+              <Link href="/collection/new">
+                <Button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add New Collection
+                </Button>
+              </Link>
+            </div>
             {collections.length === 0 ? (
               <Card className="text-center py-12">
                 <CardContent>
