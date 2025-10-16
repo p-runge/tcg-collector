@@ -1,12 +1,17 @@
 import { db, collectionsTable } from "@/lib/db";
 import { and, eq } from "drizzle-orm";
+import { NextRequest } from "next/server";
 
-export async function POST({ formData }: Request) {
+type PostCollectionPayload = {
+  name: string;
+  userId: string;
+  cardIds: string[];
+};
+export async function POST(req: NextRequest) {
+  const data = (await req.json()) as PostCollectionPayload;
   const userId = "a2136270-6628-418e-b9f5-8892ba5c79f2"; // TODO: get from auth
 
-  const fields = await formData();
-  console.log("fields", fields);
-  const name = fields.get("name");
+  const { name } = data;
   if (!name || typeof name !== "string" || name.length === 0) {
     return new Response("Name is required", { status: 400 });
   }

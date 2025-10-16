@@ -73,6 +73,8 @@ export function CardGrid({
               <div className="aspect-[2.5/3.5] relative">
                 <Image
                   src={card.imageSmall || "/placeholder.svg"}
+                  width="250"
+                  height="350"
                   alt={`${card.name} - ${card.number}`}
                   className="w-full h-full object-cover"
                   loading="lazy"

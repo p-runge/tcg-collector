@@ -43,7 +43,7 @@ export default function NewCollectionPage() {
 
     try {
       // TODO: Replace with actual user ID from auth
-      const userId = "00000000-0000-0000-0000-000000000000";
+      const userId = "a2136270-6628-418e-b9f5-8892ba5c79f2";
 
       const response = await fetch("/api/collections", {
         method: "POST",
