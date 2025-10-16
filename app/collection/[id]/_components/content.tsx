@@ -20,6 +20,7 @@ export function EditCollectionPageContent({
   const [collectionName, setCollectionName] = useState("");
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
   const [isSaving, setIsSaving] = useState(false);
+  console.log("selectedCards", selectedCards);
 
   useEffect(() => {
     // Fetch the existing collection data
@@ -31,11 +32,11 @@ export function EditCollectionPageContent({
         }
         const data = (await response.json()) as {
           name: string;
-          cardIds: string[];
+          cards: { id: string }[];
         };
         console.log("Fetched collection data:", data);
         setCollectionName(data.name);
-        setSelectedCards(new Set(data.cardIds));
+        setSelectedCards(new Set(data.cards.map((card) => card.id)));
       } catch (error) {
         console.error("Error fetching collection:", error);
         alert("Failed to load collection. Please try again.");

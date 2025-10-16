@@ -1,4 +1,9 @@
-import { collectionsTable, db } from "@/lib/db";
+import {
+  cardsTable,
+  collectionCardsTable,
+  collectionsTable,
+  db,
+} from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { NextRequest } from "next/server";
 
@@ -8,12 +13,32 @@ export async function GET(
 ) {
   const { id } = params;
 
-  const collection = await db
-    .select()
+  const rows = await db
+    .select({
+      collection: collectionsTable,
+      card: cardsTable,
+    })
     .from(collectionsTable)
-    .where(eq(collectionsTable.id, id))
-    .limit(1)
-    .then((res) => res[0]);
+    .leftJoin(
+      collectionCardsTable,
+      eq(collectionCardsTable.collection_id, collectionsTable.id)
+    )
+    .leftJoin(cardsTable, eq(collectionCardsTable.card_id, cardsTable.id))
+    .where(eq(collectionsTable.id, id));
+
+  const collection = (() => {
+    if (!rows || rows.length === 0) return null;
+    const { collection } = rows[0]!;
+    const cards = rows
+      .map((r) => r.card)
+      .filter(Boolean)
+      .reduce((acc, card) => {
+        if (!acc.find((c) => c!.id === card.id)) acc.push(card);
+        return acc;
+      }, [] as Array<(typeof rows)[number]["card"]>);
+    return { ...collection, cards };
+  })();
+  console.log("Fetched collection:", collection);
 
   if (!collection) {
     return new Response("Collection not found", { status: 404 });
