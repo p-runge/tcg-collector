@@ -50,9 +50,9 @@ type UpdateUserSetRequest = {
 };
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await params;
   const { name } = (await req.json()) as UpdateUserSetRequest;
 
   if (!name || typeof name !== "string") {

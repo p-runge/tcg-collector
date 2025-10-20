@@ -1,7 +1,7 @@
 // fetch sets from external API and insert into the database
-import { cardsTable, db } from ".";
-import { setsTable } from "./index";
+import { cardsTable, db, Rarity } from ".";
 import pokemonAPI from "../pokemon-api";
+import { setsTable } from "./index";
 
 export async function fetchAndStoreSets(withCards = true) {
   console.log("Fetching and storing sets...");
@@ -62,7 +62,7 @@ export async function fetchAndStoreCards(setId: string) {
           id: card.id,
           name: card.name,
           number: card.number,
-          rarity: card.rarity,
+          rarity: card.rarity as Rarity,
           imageSmall: card.images.small,
           imageLarge: card.images.large,
           setId: card.set.id,
@@ -72,7 +72,7 @@ export async function fetchAndStoreCards(setId: string) {
           set: {
             name: card.name,
             number: card.number,
-            rarity: card.rarity,
+            rarity: card.rarity as Rarity,
             imageSmall: card.images.small,
             imageLarge: card.images.large,
             setId: card.set.id,

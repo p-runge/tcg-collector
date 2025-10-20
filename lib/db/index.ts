@@ -61,6 +61,7 @@ export const rarityEnum = pgEnum("rarity", [
   "Black White Rare",
   "Mega Hyper Rare",
 ]);
+export type Rarity = (typeof rarityEnum.enumValues)[number];
 
 export const conditionEnum = pgEnum("condition", [
   "Mint",
@@ -71,6 +72,7 @@ export const conditionEnum = pgEnum("condition", [
   "Played",
   "Poor",
 ]);
+export type Condition = (typeof conditionEnum.enumValues)[number];
 
 export const variantEnum = pgEnum("variant", [
   "Unlimited",
@@ -79,6 +81,7 @@ export const variantEnum = pgEnum("variant", [
   "1st Edition Shadowless",
   "Reverse Holo",
 ]);
+export type Variant = (typeof variantEnum.enumValues)[number];
 
 export const languageEnum = pgEnum("language", [
   "en",
@@ -92,6 +95,7 @@ export const languageEnum = pgEnum("language", [
   "zh",
   "ru",
 ]);
+export type Language = (typeof languageEnum.enumValues)[number];
 
 /**
  * --------------------------------
