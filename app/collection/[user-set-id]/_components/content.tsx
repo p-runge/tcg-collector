@@ -10,41 +10,37 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export function EditCollectionPageContent({
-  collectionId,
-}: {
-  collectionId: string;
-}) {
+export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
   const router = useRouter();
 
-  const [collectionName, setCollectionName] = useState("");
+  const [userSetName, setUserSetName] = useState("");
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
   const [isSaving, setIsSaving] = useState(false);
   console.log("selectedCards", selectedCards);
 
   useEffect(() => {
-    // Fetch the existing collection data
-    const fetchCollection = async () => {
+    // Fetch the existing user set data
+    const fetchUserSet = async () => {
       try {
-        const response = await fetch(`/api/collections/${collectionId}`);
+        const response = await fetch(`/api/user-sets/${userSetId}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch collection");
+          throw new Error("Failed to fetch user set");
         }
         const data = (await response.json()) as {
           name: string;
           cards: { id: string }[];
         };
-        console.log("Fetched collection data:", data);
-        setCollectionName(data.name);
+        console.log("Fetched user set data:", data);
+        setUserSetName(data.name);
         setSelectedCards(new Set(data.cards.map((card) => card.id)));
       } catch (error) {
-        console.error("Error fetching collection:", error);
-        alert("Failed to load collection. Please try again.");
+        console.error("Error fetching user set:", error);
+        alert("Failed to load user set. Please try again.");
       }
     };
 
-    fetchCollection();
-  }, [collectionId]);
+    fetchUserSet();
+  }, [userSetId]);
 
   const handleCardToggle = (cardId: string) => {
     setSelectedCards((prev) => {
@@ -58,9 +54,9 @@ export function EditCollectionPageContent({
     });
   };
 
-  const handleSaveCollection = async () => {
-    if (!collectionName.trim()) {
-      alert("Please enter a collection name");
+  const handleSaveUserSet = async () => {
+    if (!userSetName.trim()) {
+      alert("Please enter a user set name");
       return;
     }
 
@@ -72,24 +68,24 @@ export function EditCollectionPageContent({
     setIsSaving(true);
 
     try {
-      const response = await fetch(`/api/collections/${collectionId}`, {
+      const response = await fetch(`/api/user-sets/${userSetId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: collectionName,
+          name: userSetName,
           cardIds: Array.from(selectedCards),
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save collection");
+        throw new Error("Failed to save user set");
       }
 
-      // Redirect to the collection detail page
-      router.push(`/collection/${collectionId}`);
+      // Redirect to the user set detail page
+      router.push(`/collection/${userSetId}`);
     } catch (error) {
-      console.error("Error saving collection:", error);
-      alert("Failed to save collection. Please try again.");
+      console.error("Error saving user set:", error);
+      alert("Failed to save user set. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -106,9 +102,9 @@ export function EditCollectionPageContent({
               </Button>
             </Link>
             <div>
-              <h1 className="text-3xl font-bold">Edit Collection</h1>
+              <h1 className="text-3xl font-bold">Edit User Set</h1>
               <p className="text-muted-foreground mt-1">
-                Update the collection name and manage its cards
+                Update the user set name and manage its cards
               </p>
             </div>
           </div>
@@ -116,12 +112,12 @@ export function EditCollectionPageContent({
           <Card className="p-6">
             <div className="flex flex-col sm:flex-row gap-4 items-end">
               <div className="flex-1 space-y-2">
-                <Label htmlFor="collection-name">Collection Name</Label>
+                <Label htmlFor="user-set-name">User Set Name</Label>
                 <Input
-                  id="collection-name"
-                  placeholder="Collection Name"
-                  value={collectionName}
-                  onChange={(e) => setCollectionName(e.target.value)}
+                  id="user-set-name"
+                  placeholder="User Set Name"
+                  value={userSetName}
+                  onChange={(e) => setUserSetName(e.target.value)}
                   className="text-lg"
                 />
               </div>
@@ -133,11 +129,9 @@ export function EditCollectionPageContent({
                   cards selected
                 </div>
                 <Button
-                  onClick={handleSaveCollection}
+                  onClick={handleSaveUserSet}
                   disabled={
-                    isSaving ||
-                    !collectionName.trim() ||
-                    selectedCards.size === 0
+                    isSaving || !userSetName.trim() || selectedCards.size === 0
                   }
                   size="lg"
                 >

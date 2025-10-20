@@ -10,9 +10,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function NewCollectionPage() {
+export default function NewSetPage() {
   const router = useRouter();
-  const [collectionName, setCollectionName] = useState("");
+  const [setName, setSetName] = useState("");
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
   const [isCreating, setIsCreating] = useState(false);
 
@@ -28,9 +28,9 @@ export default function NewCollectionPage() {
     });
   };
 
-  const handleCreateCollection = async () => {
-    if (!collectionName.trim()) {
-      alert("Please enter a collection name");
+  const handleCreateSet = async () => {
+    if (!setName.trim()) {
+      alert("Please enter a set name");
       return;
     }
 
@@ -42,11 +42,11 @@ export default function NewCollectionPage() {
     setIsCreating(true);
 
     try {
-      const response = await fetch("/api/collections", {
+      const response = await fetch("/api/user-sets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: collectionName,
+          name: setName,
           cardIds: Array.from(selectedCards),
         }),
       });
@@ -76,9 +76,9 @@ export default function NewCollectionPage() {
               </Button>
             </Link>
             <div>
-              <h1 className="text-3xl font-bold">Create New Collection</h1>
+              <h1 className="text-3xl font-bold">Create New Set</h1>
               <p className="text-muted-foreground mt-1">
-                Name your collection and select cards to add
+                Name your set and select cards to add
               </p>
             </div>
           </div>
@@ -86,12 +86,12 @@ export default function NewCollectionPage() {
           <Card className="p-6">
             <div className="flex flex-col sm:flex-row gap-4 items-end">
               <div className="flex-1 space-y-2">
-                <Label htmlFor="collection-name">Collection Name</Label>
+                <Label htmlFor="set-name">Set Name</Label>
                 <Input
-                  id="collection-name"
-                  placeholder="My Awesome Collection"
-                  value={collectionName}
-                  onChange={(e) => setCollectionName(e.target.value)}
+                  id="set-name"
+                  placeholder="My Awesome Set"
+                  value={setName}
+                  onChange={(e) => setSetName(e.target.value)}
                   className="text-lg"
                 />
               </div>
@@ -103,16 +103,14 @@ export default function NewCollectionPage() {
                   cards selected
                 </div>
                 <Button
-                  onClick={handleCreateCollection}
+                  onClick={handleCreateSet}
                   disabled={
-                    isCreating ||
-                    !collectionName.trim() ||
-                    selectedCards.size === 0
+                    isCreating || !setName.trim() || selectedCards.size === 0
                   }
                   size="lg"
                 >
                   <Plus className="h-5 w-5 mr-2" />
-                  {isCreating ? "Creating..." : "Create Collection"}
+                  {isCreating ? "Creating..." : "Create Set"}
                 </Button>
               </div>
             </div>

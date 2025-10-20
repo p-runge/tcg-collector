@@ -1,34 +1,29 @@
-import {
-  cardsTable,
-  collectionCardsTable,
-  collectionsTable,
-  db,
-} from "@/lib/db";
+import { cardsTable, userSetCardsTable, userSetsTable, db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { NextRequest } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await params;
 
   const rows = await db
     .select({
-      collection: collectionsTable,
+      userSet: userSetsTable,
       card: cardsTable,
     })
-    .from(collectionsTable)
+    .from(userSetsTable)
     .leftJoin(
-      collectionCardsTable,
-      eq(collectionCardsTable.collection_id, collectionsTable.id)
+      userSetCardsTable,
+      eq(userSetCardsTable.user_set_id, userSetsTable.id)
     )
-    .leftJoin(cardsTable, eq(collectionCardsTable.card_id, cardsTable.id))
-    .where(eq(collectionsTable.id, id));
+    .leftJoin(cardsTable, eq(userSetCardsTable.card_id, cardsTable.id))
+    .where(eq(userSetsTable.id, id));
 
-  const collection = (() => {
+  const userSet = (() => {
     if (!rows || rows.length === 0) return null;
-    const { collection } = rows[0]!;
+    const { userSet } = rows[0]!;
     const cards = rows
       .map((r) => r.card)
       .filter(Boolean)
@@ -36,21 +31,21 @@ export async function GET(
         if (!acc.find((c) => c!.id === card.id)) acc.push(card);
         return acc;
       }, [] as Array<(typeof rows)[number]["card"]>);
-    return { ...collection, cards };
+    return { ...userSet, cards };
   })();
-  console.log("Fetched collection:", collection);
+  console.log("Fetched user set:", userSet);
 
-  if (!collection) {
-    return new Response("Collection not found", { status: 404 });
+  if (!userSet) {
+    return new Response("User set not found", { status: 404 });
   }
 
-  return new Response(JSON.stringify(collection), {
+  return new Response(JSON.stringify(userSet), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   });
 }
 
-type UpdateCollectionRequest = {
+type UpdateUserSetRequest = {
   name: string;
 };
 export async function PUT(
@@ -58,21 +53,21 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
-  const { name } = (await req.json()) as UpdateCollectionRequest;
+  const { name } = (await req.json()) as UpdateUserSetRequest;
 
   if (!name || typeof name !== "string") {
-    return new Response("Invalid collection name", { status: 400 });
+    return new Response("Invalid user set name", { status: 400 });
   }
 
   const result = await db
-    .update(collectionsTable)
+    .update(userSetsTable)
     .set({ name })
-    .where(eq(collectionsTable.id, id))
+    .where(eq(userSetsTable.id, id))
     .returning()
     .then((res) => res[0]);
 
   if (!result) {
-    return new Response("Collection not found", { status: 404 });
+    return new Response("User set not found", { status: 404 });
   }
 
   return new Response(JSON.stringify(result), {

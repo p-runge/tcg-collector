@@ -24,7 +24,7 @@ export function Navigation() {
               <Button variant="ghost">Start</Button>
             </Link>
             <Link href="/collection">
-              <Button variant="ghost">Collection</Button>
+              <Button variant="ghost">My Collection</Button>
             </Link>
             <Link href="/sets">
               <Button variant="ghost">Sets</Button>

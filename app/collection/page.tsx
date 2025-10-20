@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { collectionsTable, db } from "@/lib/db";
+import { db, userSetsTable } from "@/lib/db";
 import { BookHeart, Library, Plus } from "lucide-react";
 import Link from "next/link";
 
@@ -35,7 +35,7 @@ export default async function CollectionPage() {
             <TabsTrigger value="collections">
               <span className="inline-flex items-center gap-2">
                 <BookHeart className="w-4 h-4" />
-                Collections
+                My Sets
               </span>
             </TabsTrigger>
             <TabsTrigger value="all-cards">
@@ -46,7 +46,7 @@ export default async function CollectionPage() {
             </TabsTrigger>
           </TabsList>
 
-          <CollectionsTab />
+          <MySetsTab />
 
           <AllCardsTab />
         </Tabs>
@@ -55,54 +55,52 @@ export default async function CollectionPage() {
   );
 }
 
-async function CollectionsTab() {
-  const collections = await db
+async function MySetsTab() {
+  const userSets = await db
     .select()
-    .from(collectionsTable)
-    .orderBy(collectionsTable.created_at);
+    .from(userSetsTable)
+    .orderBy(userSetsTable.created_at);
 
   return (
     <TabsContent value="collections">
       <div className="mb-6 flex justify-end">
-        <Link href="/collection/new">
+        <Link href="/collection/new-set">
           <Button>
             <Plus className="w-4 h-4 mr-2" />
-            Add New Collection
+            Add New Set
           </Button>
         </Link>
       </div>
-      {collections.length === 0 ? (
-        // No collections
+      {userSets.length === 0 ? (
+        // No sets
         <Card className="text-center py-12">
           <CardContent>
-            <h3 className="text-lg font-semibold mb-2">
-              No collections added yet
-            </h3>
-            <p className="text-gray-600 mb-6">Add your first collection!</p>
-            <Link href="/collection/new">
+            <h3 className="text-lg font-semibold mb-2">No sets added yet</h3>
+            <p className="text-gray-600 mb-6">Add your first set!</p>
+            <Link href="/collection/new-set">
               <Button>
                 <Plus className="w-4 h-4 mr-2" />
-                Add Your First Collection
+                Add Your First Set
               </Button>
             </Link>
           </CardContent>
         </Card>
       ) : (
-        // List collections in a grid
+        // List sets in a grid
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {collections.map((collection) => (
+          {userSets.map((userSet) => (
             <Link
-              key={collection.id}
-              href={`/collection/${collection.id}`}
+              key={userSet.id}
+              href={`/collection/${userSet.id}`}
               className="block"
             >
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-lg">{collection.name}</CardTitle>
+                  <CardTitle className="text-lg">{userSet.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600">
-                    View and manage cards in this collection.
+                    View and manage cards in this set.
                   </p>
                 </CardContent>
               </Card>
@@ -142,12 +140,7 @@ function AllCardsTab() {
             <p className="text-gray-600 mb-6">
               Start adding cards to track your Pokémon collection!
             </p>
-            <Link href="/collection/new">
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Add Your First Card
-              </Button>
-            </Link>
+            {/* // TODO: show a version of the card browser here */}
           </CardContent>
         </Card>
       ) : (

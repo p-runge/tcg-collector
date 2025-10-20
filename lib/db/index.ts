@@ -175,7 +175,7 @@ export const userCardsTable = pgTable("user_cards", {
     .defaultNow(),
 });
 
-export const collectionsTable = pgTable("collections", {
+export const userSetsTable = pgTable("user_sets", {
   id: uuid("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
@@ -191,7 +191,7 @@ export const collectionsTable = pgTable("collections", {
     .references(() => usersTable.id),
 });
 
-export const collectionCardsTable = pgTable("collection_cards", {
+export const userSetCardsTable = pgTable("user_set_cards", {
   id: uuid("id")
     .primaryKey()
     .default(sql`gen_random_uuid()`),
@@ -201,9 +201,9 @@ export const collectionCardsTable = pgTable("collection_cards", {
   updated_at: timestamp("updated_at", { mode: "string" })
     .notNull()
     .defaultNow(),
-  collection_id: uuid("collection_id")
+  user_set_id: uuid("user_set_id")
     .notNull()
-    .references(() => collectionsTable.id),
+    .references(() => userSetsTable.id),
   card_id: varchar("card_id", { length: 16 })
     .notNull()
     .references(() => cardsTable.id),
