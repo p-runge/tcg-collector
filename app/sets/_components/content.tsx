@@ -104,13 +104,6 @@ export default function Content({ sets }: Props) {
                           {`${new Date(set.releaseDate).getFullYear()}`}
                         </CardDescription>
                       </div>
-                      {/* // TODO: check if user is collecting set already */}
-                      {true && (
-                        <Badge variant="secondary" className="ml-2">
-                          <Star className="w-3 h-3 mr-1" />
-                          Collecting
-                        </Badge>
-                      )}
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -141,34 +134,6 @@ export default function Content({ sets }: Props) {
                             View Cards
                           </Button>
                         </Link>
-                        <form
-                          action={async () => {
-                            // "use server";
-                            // // TODO: check if user is collecting set already
-                            // const isCollecting = true;
-                            // if (isCollecting) {
-                            //   await sql`DELETE FROM collecting_sets WHERE set_id = ${set.id}`;
-                            // } else {
-                            //   await sql`
-                            //     INSERT INTO collecting_sets (set_id)
-                            //     VALUES (${set.id})
-                            //     ON CONFLICT (set_id) DO NOTHING
-                            //   `;
-                            // }
-                          }}
-                        >
-                          <Button
-                            type="submit"
-                            variant={true ? "default" : "outline"}
-                            size="icon"
-                          >
-                            <Heart
-                              className={`w-4 h-4 ${
-                                true ? "fill-current" : ""
-                              }`}
-                            />
-                          </Button>
-                        </form>
                       </div>
                     </div>
                   </CardContent>
