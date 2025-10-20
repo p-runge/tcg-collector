@@ -35,7 +35,6 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
         setSelectedCards(new Set(data.cards.map((card) => card.id)));
       } catch (error) {
         console.error("Error fetching user set:", error);
-        alert("Failed to load user set. Please try again.");
       }
     };
 
@@ -56,12 +55,12 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
 
   const handleSaveUserSet = async () => {
     if (!userSetName.trim()) {
-      alert("Please enter a user set name");
+      console.error("No set name provided");
       return;
     }
 
     if (selectedCards.size === 0) {
-      alert("Please select at least one card");
+      console.error("No cards selected");
       return;
     }
 
@@ -85,7 +84,6 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
       router.push(`/collection/${userSetId}`);
     } catch (error) {
       console.error("Error saving user set:", error);
-      alert("Failed to save user set. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -102,9 +100,9 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
               </Button>
             </Link>
             <div>
-              <h1 className="text-3xl font-bold">Edit User Set</h1>
+              <h1 className="text-3xl font-bold">Edit Set</h1>
               <p className="text-muted-foreground mt-1">
-                Update the user set name and manage its cards
+                Update the set name and manage its cards
               </p>
             </div>
           </div>
@@ -112,10 +110,10 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
           <Card className="p-6">
             <div className="flex flex-col sm:flex-row gap-4 items-end">
               <div className="flex-1 space-y-2">
-                <Label htmlFor="user-set-name">User Set Name</Label>
+                <Label htmlFor="user-set-name">Set Name</Label>
                 <Input
                   id="user-set-name"
-                  placeholder="User Set Name"
+                  placeholder="Set Name"
                   value={userSetName}
                   onChange={(e) => setUserSetName(e.target.value)}
                   className="text-lg"

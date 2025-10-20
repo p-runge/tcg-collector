@@ -38,17 +38,17 @@ export default async function CollectionPage() {
                 My Sets
               </span>
             </TabsTrigger>
-            <TabsTrigger value="all-cards">
+            <TabsTrigger value="my-cards">
               <span className="inline-flex items-center gap-2">
                 <Library className="w-4 h-4" />
-                All Cards
+                My Cards
               </span>
             </TabsTrigger>
           </TabsList>
 
           <MySetsTab />
 
-          <AllCardsTab />
+          <MyCardsTab />
         </Tabs>
       </main>
     </div>
@@ -112,7 +112,7 @@ async function MySetsTab() {
   );
 }
 
-function AllCardsTab() {
+function MyCardsTab() {
   const groupedCards: {
     id: number;
     card_id: number;
@@ -129,7 +129,7 @@ function AllCardsTab() {
   }[][] = [];
 
   return (
-    <TabsContent value="all-cards">
+    <TabsContent value="my-cards">
       {Object.keys(groupedCards).length === 0 ? (
         // No cards in collection
         <Card className="text-center py-12">
