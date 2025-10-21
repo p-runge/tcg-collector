@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PokemonSet } from "@/lib/pokemon-api";
-import { Calendar, Heart, Star } from "lucide-react";
+import { Calendar } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";

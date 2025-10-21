@@ -1,8 +1,9 @@
-import type React from "react";
+import "@total-typescript/ts-reset";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import PlausibleProvider from "next-plausible";
+import type React from "react";
 import "./globals.css";
-import "@total-typescript/ts-reset";
 
 export const metadata: Metadata = {
   title: "TCG Collector",
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <PlausibleProvider domain="tcg.p6.gg">{children}</PlausibleProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
