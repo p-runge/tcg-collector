@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { api } from "@/lib/api/react";
 import { ArrowLeft, Plus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -28,41 +29,39 @@ export default function NewSetPage() {
     });
   };
 
+  const { mutate: createUserSet } = api.userSet.create.useMutation({
+    onSuccess() {
+      router.push("/collection");
+    },
+    onError(error) {
+      console.error("Error creating user set:", error);
+    },
+  });
+
   const handleCreateSet = async () => {
     if (!setName.trim()) {
-      alert("Please enter a set name");
+      console.error("Please enter a set name");
       return;
     }
 
     if (selectedCards.size === 0) {
-      alert("Please select at least one card");
+      console.error("Please select at least one card");
       return;
     }
 
     setIsCreating(true);
 
-    try {
-      const response = await fetch("/api/user-sets", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: setName,
-          cardIds: Array.from(selectedCards),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create collection");
+    createUserSet(
+      {
+        name: setName,
+        cardIds: Array.from(selectedCards),
+      },
+      {
+        onSettled() {
+          setIsCreating(false);
+        },
       }
-
-      // Redirect to collections list or detail page
-      router.push("/collection");
-    } catch (error) {
-      console.error("Error creating collection:", error);
-      alert("Failed to create collection. Please try again.");
-    } finally {
-      setIsCreating(false);
-    }
+    );
   };
 
   return (

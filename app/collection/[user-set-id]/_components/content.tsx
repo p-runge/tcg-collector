@@ -19,22 +19,9 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
   const [isSaving, setIsSaving] = useState(false);
   console.log("selectedCards", selectedCards);
 
-  const { data: userSet } = api.userSet.getById.useQuery(
-    { id: userSetId }
-    // {
-    //   onSuccess(data) {
-    //     if (data) {
-    //       setUserSetName(data.name);
-    //       // Assuming data.cards is an array of card objects with an 'id' property
-    //       const initialSelectedCards = new Set(
-    //         data.cards?.map((card: { id: string }) => card.id) || []
-    //       );
-    //       setSelectedCards(initialSelectedCards);
-    //     }
-    //   },
-    // }
-  );
+  const { data: userSet } = api.userSet.getById.useQuery({ id: userSetId });
   console.log("userSet", userSet);
+
   useEffect(() => {
     if (userSet) {
       setUserSetName(userSet.set.name);

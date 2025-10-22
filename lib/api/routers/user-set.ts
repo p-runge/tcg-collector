@@ -9,12 +9,25 @@ const userId = "a2136270-6628-418e-b9f5-8892ba5c79f2"; // TODO: Replace with act
 
 export const userSetRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({ name: z.string().min(1) }))
+    .input(z.object({ name: z.string().min(1), cardIds: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(userSetsTable).values({
-        name: input.name,
-        user_id: userId,
-      });
+      const userSet = await ctx.db
+        .insert(userSetsTable)
+        .values({
+          name: input.name,
+          user_id: userId,
+        })
+        .returning()
+        .then((res) => res[0]!);
+
+      const cardValues = input.cardIds.map((cardId) => ({
+        user_set_id: userSet.id,
+        card_id: cardId,
+      }));
+
+      await ctx.db.insert(userSetCardsTable).values(cardValues);
+
+      return userSet;
     }),
 
   getById: publicProcedure
