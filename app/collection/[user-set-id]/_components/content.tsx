@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { api } from "@/lib/api/react";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -18,28 +19,31 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
   const [isSaving, setIsSaving] = useState(false);
   console.log("selectedCards", selectedCards);
 
+  const { data: userSet } = api.userSet.getById.useQuery(
+    { id: userSetId }
+    // {
+    //   onSuccess(data) {
+    //     if (data) {
+    //       setUserSetName(data.name);
+    //       // Assuming data.cards is an array of card objects with an 'id' property
+    //       const initialSelectedCards = new Set(
+    //         data.cards?.map((card: { id: string }) => card.id) || []
+    //       );
+    //       setSelectedCards(initialSelectedCards);
+    //     }
+    //   },
+    // }
+  );
+  console.log("userSet", userSet);
   useEffect(() => {
-    // Fetch the existing user set data
-    const fetchUserSet = async () => {
-      try {
-        const response = await fetch(`/api/user-sets/${userSetId}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch user set");
-        }
-        const data = (await response.json()) as {
-          name: string;
-          cards: { id: string }[];
-        };
-        console.log("Fetched user set data:", data);
-        setUserSetName(data.name);
-        setSelectedCards(new Set(data.cards.map((card) => card.id)));
-      } catch (error) {
-        console.error("Error fetching user set:", error);
-      }
-    };
-
-    fetchUserSet();
-  }, [userSetId]);
+    if (userSet) {
+      setUserSetName(userSet.set.name);
+      const initialSelectedCards = new Set(
+        userSet.cards?.map((card) => card.cardId) || []
+      );
+      setSelectedCards(initialSelectedCards);
+    }
+  }, [userSet]);
 
   const handleCardToggle = (cardId: string) => {
     setSelectedCards((prev) => {
@@ -52,6 +56,8 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
       return newSet;
     });
   };
+
+  const { mutate: updateUserSet } = api.userSet.update.useMutation();
 
   const handleSaveUserSet = async () => {
     if (!userSetName.trim()) {
@@ -66,27 +72,21 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
 
     setIsSaving(true);
 
-    try {
-      const response = await fetch(`/api/user-sets/${userSetId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: userSetName,
-          cardIds: Array.from(selectedCards),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to save user set");
+    updateUserSet(
+      {
+        id: userSetId,
+        name: userSetName.trim(),
+        cardIds: Array.from(selectedCards),
+      },
+      {
+        onSuccess() {
+          router.push("/collection");
+        },
+        onError(error) {
+          console.error("Error updating user set:", error);
+        },
       }
-
-      // Redirect to the user set detail page
-      router.push(`/collection/${userSetId}`);
-    } catch (error) {
-      console.error("Error saving user set:", error);
-    } finally {
-      setIsSaving(false);
-    }
+    );
   };
 
   return (
