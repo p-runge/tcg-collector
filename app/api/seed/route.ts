@@ -8,7 +8,7 @@ export async function GET() {
     timestamp: new Date().toISOString(),
   };
 
-  fetchAndStoreSets();
+  await fetchAndStoreSets();
 
   // Return a JSON response
   return NextResponse.json(seedData);
