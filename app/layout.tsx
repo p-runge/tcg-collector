@@ -1,3 +1,4 @@
+import { TRPCReactProvider } from "@/lib/api/react";
 import "@total-typescript/ts-reset";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <PlausibleProvider domain="tcg.p6.gg">{children}</PlausibleProvider>
+        <PlausibleProvider domain="tcg.p6.gg">
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </PlausibleProvider>
         <SpeedInsights />
       </body>
     </html>

@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { db, userSetsTable } from "@/lib/db";
+import { api } from "@/lib/api/server";
 import { BookHeart, Library, Plus } from "lucide-react";
 import Link from "next/link";
 
@@ -56,10 +56,7 @@ export default async function CollectionPage() {
 }
 
 async function MySetsTab() {
-  const userSets = await db
-    .select()
-    .from(userSetsTable)
-    .orderBy(userSetsTable.created_at);
+  const userSets = await api.userSet.getList();
 
   return (
     <TabsContent value="collections">
