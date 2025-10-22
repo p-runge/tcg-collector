@@ -141,6 +141,7 @@ function getVariants(_setId: string): string[] {
 
 async function fetchPokemonSets(): Promise<PokemonSet[]> {
   return tcgdex.set.list().then(async (sets) => {
+    console.log(`Fetched set list with ${sets.length} sets from API.`);
     const fullSets = await Promise.all(sets.map(async (set) => set.getSet()));
 
     return fullSets.map(

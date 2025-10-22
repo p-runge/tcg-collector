@@ -7,7 +7,7 @@ export async function fetchAndStoreSets(withCards = true) {
   console.log("Fetching and storing sets...");
   try {
     const sets = await pokemonAPI.fetchPokemonSets();
-    console.log(`Fetched ${sets.length} sets from the API.`);
+    console.log(`Fetched ${sets.length} full sets from the API.`);
 
     for (const set of sets) {
       console.log(`Storing set: ${set.name} (${set.id})`, set);
