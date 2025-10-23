@@ -158,7 +158,7 @@ export const usersTable = pgTable("users", {
     .default(sql`gen_random_uuid()`),
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 255 }).notNull(),
-  emailVerified: timestamp("email_verified").default(sql`(unixepoch())`),
+  emailVerified: timestamp("email_verified"),
   image: varchar("image", { length: 255 }),
 });
 
@@ -166,7 +166,7 @@ export const usersTable = pgTable("users", {
 export const accountsTable = pgTable(
   "accounts",
   {
-    userId: varchar("user_id", { length: 255 })
+    userId: uuid("user_id")
       .notNull()
       .references(() => usersTable.id),
     type: varchar("type", { length: 255 }).notNull(),
@@ -195,7 +195,7 @@ export const sessionsTable = pgTable(
     sessionToken: varchar("session_token", { length: 255 })
       .notNull()
       .primaryKey(),
-    userId: varchar("user_id", { length: 255 })
+    userId: uuid("user_id")
       .notNull()
       .references(() => usersTable.id),
     expires: timestamp("expires").notNull(),

@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/auth";
 import Link from "next/link";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await auth();
+
   return (
     <main className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
       <h1 className="text-4xl font-bold mb-4 text-primary">TCG Collector</h1>
@@ -10,15 +13,30 @@ export default function HomePage() {
         multiple languages, variants, and conditions with ease.
       </p>
       <div className="flex gap-4">
-        <Link href="/collection" passHref>
-          <Button className="cursor-pointer">My Collection</Button>
-        </Link>
-        <Link href="/sets" passHref>
+        <Link href="/sets" passHref className="mb-8">
           <Button className="cursor-pointer" variant="outline">
             Browse Sets
           </Button>
         </Link>
+        {session && (
+          <Link href="/collection" passHref>
+            <Button className="cursor-pointer">My Collection</Button>
+          </Link>
+        )}
       </div>
+
+      {!session && (
+        <>
+          <p className="text-lg text-muted-foreground mb-4 max-w-xl text-center">
+            Want to keep track of your own collection?
+          </p>
+          <Link href="/api/auth/signin" passHref>
+            <Button className="cursor-pointer" variant="default">
+              Sign in
+            </Button>
+          </Link>
+        </>
+      )}
     </main>
   );
 }

@@ -9,6 +9,7 @@ import {
   usersTable,
   verificationTokensTable,
 } from "@/lib/db/index";
+import { env } from "@/env";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -38,7 +39,10 @@ declare module "next-auth" {
  */
 export const authConfig = {
   providers: [
-    DiscordProvider,
+    DiscordProvider({
+      clientId: env.AUTH_DISCORD_CLIENT_ID,
+      clientSecret: env.AUTH_DISCORD_CLIENT_SECRET,
+    }),
     /**
      * ...add more providers here.
      *

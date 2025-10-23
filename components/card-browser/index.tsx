@@ -53,7 +53,6 @@ export function CardBrowser({ selectedCards, onCardToggle }: CardBrowserProps) {
           nextCursor: string | null;
           hasMore: boolean;
         };
-        console.log("data", data);
 
         if (reset) {
           setCards(data.items);

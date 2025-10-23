@@ -17,10 +17,8 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
   const [userSetName, setUserSetName] = useState("");
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
   const [isSaving, setIsSaving] = useState(false);
-  console.log("selectedCards", selectedCards);
 
   const { data: userSet } = api.userSet.getById.useQuery({ id: userSetId });
-  console.log("userSet", userSet);
 
   useEffect(() => {
     if (userSet) {
