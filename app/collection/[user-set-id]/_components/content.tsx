@@ -42,6 +42,7 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
     });
   };
 
+  const apiUtils = api.useUtils();
   const { mutate: updateUserSet } = api.userSet.update.useMutation();
 
   const handleSaveUserSet = async () => {
@@ -65,6 +66,7 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
       },
       {
         onSuccess() {
+          apiUtils.userSet.getById.invalidate({ id: userSetId });
           router.push("/collection");
         },
         onError(error) {
