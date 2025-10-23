@@ -1,17 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { Check } from "lucide-react";
-import { cn } from "@/lib/utils";
 import type { Card } from "@/lib/db";
+import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
 import Image from "next/image";
 
 type CardGridProps = {
   cards: Card[];
   selectedCards: Set<string>;
   onCardToggle: (cardId: string) => void;
-  onLoadMore: () => void;
-  hasMore: boolean;
   isLoading: boolean;
 };
 
@@ -19,34 +16,8 @@ export function CardGrid({
   cards,
   selectedCards,
   onCardToggle,
-  onLoadMore,
-  hasMore,
   isLoading,
 }: CardGridProps) {
-  const observerTarget = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting && hasMore && !isLoading) {
-          onLoadMore();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const currentTarget = observerTarget.current;
-    if (currentTarget) {
-      observer.observe(currentTarget);
-    }
-
-    return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
-      }
-    };
-  }, [hasMore, isLoading, onLoadMore]);
-
   if (cards.length === 0 && !isLoading) {
     return (
       <div className="flex items-center justify-center h-64 text-muted-foreground">
@@ -57,7 +28,7 @@ export function CardGrid({
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
         {cards.map((card) => {
           const isSelected = selectedCards.has(card.id);
           return (
@@ -98,18 +69,7 @@ export function CardGrid({
         })}
       </div>
 
-      {/* Infinite scroll trigger */}
-      <div
-        ref={observerTarget}
-        className="h-20 flex items-center justify-center"
-      >
-        {isLoading && (
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-            Loading more cards...
-          </div>
-        )}
-      </div>
+      {/* // TODO: add pagination here */}
     </div>
   );
 }
