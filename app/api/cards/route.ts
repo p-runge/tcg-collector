@@ -4,6 +4,7 @@ export async function GET() {
   const rows = await db
     .select({ card: cardsTable })
     .from(cardsTable)
+    .orderBy(cardsTable.updated_at)
     .limit(100);
 
   // keep only card props, drop set props
