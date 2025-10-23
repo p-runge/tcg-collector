@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { userSetCardsTable, userSetsTable } from "@/lib/db/index";
-import { and, eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
+import { and, eq } from "drizzle-orm";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 const userId = "a2136270-6628-418e-b9f5-8892ba5c79f2"; // TODO: Replace with actual user ID from session
 
@@ -17,7 +17,9 @@ export const userSetRouter = createTRPCRouter({
           name: input.name,
           user_id: userId,
         })
-        .returning()
+        .returning({
+          id: userSetsTable.id,
+        })
         .then((res) => res[0]!);
 
       const cardValues = input.cardIds.map((cardId) => ({
@@ -27,7 +29,7 @@ export const userSetRouter = createTRPCRouter({
 
       await ctx.db.insert(userSetCardsTable).values(cardValues);
 
-      return userSet;
+      return userSet.id;
     }),
 
   getById: publicProcedure
@@ -80,41 +82,61 @@ export const userSetRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const result = await ctx.db
-        .update(userSetsTable)
-        .set({ name: input.name })
-        .where(
-          and(eq(userSetsTable.id, input.id), eq(userSetsTable.user_id, userId))
-        )
-        .returning()
+      const userSet = await ctx.db
+        .select({
+          id: userSetsTable.id,
+          userId: userSetsTable.user_id,
+        })
+        .from(userSetsTable)
+        .where(eq(userSetsTable.id, input.id))
         .then((res) => res[0]);
 
-      if (!result) {
+      if (!userSet) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: `User set with id ${input.id} not found`,
         });
       }
 
-      if (input.cardIds) {
-        await ctx.db
-          .delete(userSetCardsTable)
-          .where(eq(userSetCardsTable.user_set_id, input.id));
-
-        const cardValues = input.cardIds.map((cardId) => ({
-          user_set_id: input.id,
-          card_id: cardId,
-        }));
-
-        await ctx.db.insert(userSetCardsTable).values(cardValues);
+      if (userSet.userId !== userId) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You do not have permission to update this user set",
+        });
       }
 
-      return result;
+      await ctx.db
+        .update(userSetsTable)
+        .set({ name: input.name })
+        .where(
+          and(eq(userSetsTable.id, input.id), eq(userSetsTable.user_id, userId))
+        )
+        .returning({
+          id: userSetsTable.id,
+          name: userSetsTable.name,
+        })
+        .then((res) => res[0]!);
+
+      await ctx.db
+        .delete(userSetCardsTable)
+        .where(eq(userSetCardsTable.user_set_id, input.id));
+
+      const cardValues = input.cardIds.map((cardId) => ({
+        user_set_id: input.id,
+        card_id: cardId,
+      }));
+
+      await ctx.db.insert(userSetCardsTable).values(cardValues);
+
+      return userSet;
     }),
 
   getList: publicProcedure.query(async ({ ctx }) => {
     const userSets = await ctx.db
-      .select()
+      .select({
+        id: userSetsTable.id,
+        name: userSetsTable.name,
+      })
       .from(userSetsTable)
       .where(eq(userSetsTable.user_id, userId))
       .orderBy(userSetsTable.created_at);
