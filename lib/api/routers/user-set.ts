@@ -3,19 +3,19 @@ import { z } from "zod";
 import { userSetCardsTable, userSetsTable } from "@/lib/db/index";
 import { TRPCError } from "@trpc/server";
 import { and, eq } from "drizzle-orm";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
-const userId = "a2136270-6628-418e-b9f5-8892ba5c79f2"; // TODO: Replace with actual user ID from session
+// const userId = "a2136270-6628-418e-b9f5-8892ba5c79f2"; // TODO: Replace with actual user ID from session
 
 export const userSetRouter = createTRPCRouter({
-  create: publicProcedure
+  create: protectedProcedure
     .input(z.object({ name: z.string().min(1), cardIds: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {
       const userSet = await ctx.db
         .insert(userSetsTable)
         .values({
           name: input.name,
-          user_id: userId,
+          user_id: ctx.session.user.id,
         })
         .returning({
           id: userSetsTable.id,
@@ -32,7 +32,7 @@ export const userSetRouter = createTRPCRouter({
       return userSet.id;
     }),
 
-  getById: publicProcedure
+  getById: protectedProcedure
     .input(z.object({ id: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
       const data = await ctx.db
@@ -55,7 +55,7 @@ export const userSetRouter = createTRPCRouter({
 
       const { userId: userSetUserId, ...userSet } = data;
 
-      if (userSetUserId !== userId) {
+      if (userSetUserId !== ctx.session.user.id) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "You do not have permission to access this user set",
@@ -73,7 +73,7 @@ export const userSetRouter = createTRPCRouter({
       };
     }),
 
-  update: publicProcedure
+  update: protectedProcedure
     .input(
       z.object({
         id: z.string().uuid(),
@@ -98,7 +98,7 @@ export const userSetRouter = createTRPCRouter({
         });
       }
 
-      if (userSet.userId !== userId) {
+      if (userSet.userId !== ctx.session.user.id) {
         throw new TRPCError({
           code: "FORBIDDEN",
           message: "You do not have permission to update this user set",
@@ -109,7 +109,10 @@ export const userSetRouter = createTRPCRouter({
         .update(userSetsTable)
         .set({ name: input.name })
         .where(
-          and(eq(userSetsTable.id, input.id), eq(userSetsTable.user_id, userId))
+          and(
+            eq(userSetsTable.id, input.id),
+            eq(userSetsTable.user_id, ctx.session.user.id)
+          )
         )
         .returning({
           id: userSetsTable.id,
@@ -131,14 +134,14 @@ export const userSetRouter = createTRPCRouter({
       return userSet;
     }),
 
-  getList: publicProcedure.query(async ({ ctx }) => {
+  getList: protectedProcedure.query(async ({ ctx }) => {
     const userSets = await ctx.db
       .select({
         id: userSetsTable.id,
         name: userSetsTable.name,
       })
       .from(userSetsTable)
-      .where(eq(userSetsTable.user_id, userId))
+      .where(eq(userSetsTable.user_id, ctx.session.user.id))
       .orderBy(userSetsTable.created_at);
 
     return userSets ?? null;

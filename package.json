@@ -10,6 +10,7 @@
     "db:push": "drizzle-kit push --config ./drizzle.config.ts"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.11.0",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-checkbox": "^1.3.2",
     "@radix-ui/react-dialog": "^1.1.14",
@@ -37,6 +38,7 @@
     "drizzle-orm": "^0.44.6",
     "lucide-react": "^0.517.0",
     "next": "15.3.4",
+    "next-auth": "5.0.0-beta.29",
     "next-plausible": "^3.12.4",
     "pg": "^8.16.3",
     "pokemon-tcg-sdk-typescript": "^1.3.4",
