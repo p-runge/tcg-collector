@@ -1,4 +1,5 @@
 import { createCallerFactory, createTRPCRouter } from "@/lib/api/trpc";
+import { setRouter } from "./set";
 import { userSetRouter } from "./user-set";
 
 /**
@@ -7,6 +8,7 @@ import { userSetRouter } from "./user-set";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  set: setRouter,
   userSet: userSetRouter,
 });
 

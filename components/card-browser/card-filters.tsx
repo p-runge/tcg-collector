@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -10,9 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { api } from "@/lib/api/react";
 import { X } from "lucide-react";
-import type { Set } from "@/lib/db";
+import { useState } from "react";
 
 type CardFiltersProps = {
   onFilterChange: (filters: FilterState) => void;
@@ -36,7 +36,6 @@ const RARITIES = [
 ];
 
 export function CardFilters({ onFilterChange }: CardFiltersProps) {
-  const [sets, setSets] = useState<Set[]>([]);
   const [filters, setFilters] = useState<FilterState>({
     setId: "",
     rarity: "",
@@ -45,12 +44,8 @@ export function CardFilters({ onFilterChange }: CardFiltersProps) {
     releaseDateTo: "",
   });
 
-  useEffect(() => {
-    fetch("/api/sets")
-      .then((res) => res.json() as Promise<Set[]>)
-      .then((data) => setSets(data))
-      .catch((err) => console.error("Error loading sets:", err));
-  }, []);
+  const { data: setListData } = api.set.getList.useQuery();
+  const sets = setListData || [];
 
   const updateFilter = (key: keyof FilterState, value: string) => {
     const newFilters = { ...filters, [key]: value };
