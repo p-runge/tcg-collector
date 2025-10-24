@@ -65,64 +65,60 @@ export default function NewSetPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="border-b border-border">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-4 mb-6">
-            <Link href="/collection">
-              <Button variant="ghost" size="icon">
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            </Link>
-            <div>
-              <h1 className="text-3xl font-bold">Create New Set</h1>
-              <p className="text-muted-foreground mt-1">
-                Name your set and select cards to add
-              </p>
-            </div>
-          </div>
-
-          <Card className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4 items-end">
-              <div className="flex-1 space-y-2">
-                <Label htmlFor="set-name">Set Name</Label>
-                <Input
-                  id="set-name"
-                  placeholder="My Awesome Set"
-                  value={setName}
-                  onChange={(e) => setSetName(e.target.value)}
-                  className="text-lg"
-                />
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="text-sm text-muted-foreground">
-                  <span className="font-semibold text-foreground">
-                    {selectedCards.size}
-                  </span>{" "}
-                  cards selected
-                </div>
-                <Button
-                  onClick={handleCreateSet}
-                  disabled={
-                    isCreating || !setName.trim() || selectedCards.size === 0
-                  }
-                  size="lg"
-                >
-                  <Plus className="h-5 w-5 mr-2" />
-                  {isCreating ? "Creating..." : "Create Set"}
-                </Button>
-              </div>
-            </div>
-          </Card>
+    <>
+      <div className="flex items-center gap-4 mb-6">
+        <Link href="/collection">
+          <Button variant="ghost" size="icon">
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+        </Link>
+        <div>
+          <h1 className="text-3xl font-bold">Create New Set</h1>
+          <p className="text-muted-foreground mt-1">
+            Name your set and select cards to add
+          </p>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <CardBrowser
-          selectedCards={selectedCards}
-          onCardToggle={handleCardToggle}
-        />
-      </div>
-    </div>
+      <Card className="p-6 mb-6">
+        <div className="flex flex-col sm:flex-row gap-4 items-end">
+          <div className="flex-1 space-y-2">
+            <Label htmlFor="set-name">Set Name</Label>
+            <Input
+              id="set-name"
+              placeholder="My Awesome Set"
+              value={setName}
+              onChange={(e) => setSetName(e.target.value)}
+              className="text-lg"
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-sm text-muted-foreground">
+              <span className="font-semibold text-foreground">
+                {selectedCards.size}
+              </span>{" "}
+              cards selected
+            </div>
+            <Button
+              onClick={handleCreateSet}
+              disabled={
+                isCreating || !setName.trim() || selectedCards.size === 0
+              }
+              size="lg"
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              {isCreating ? "Creating..." : "Create Set"}
+            </Button>
+          </div>
+        </div>
+      </Card>
+
+      <hr className="mb-6" />
+
+      <CardBrowser
+        selectedCards={selectedCards}
+        onCardToggle={handleCardToggle}
+      />
+    </>
   );
 }

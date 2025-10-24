@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/navigation";
 import pokemonAPI from "@/lib/pokemon-api";
 import Content from "./_components/content";
 
@@ -13,10 +12,6 @@ export default async function SetsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navigation />
-
-      <Content sets={sets} />
-    </div>
+    <Content sets={sets} />
   );
 }

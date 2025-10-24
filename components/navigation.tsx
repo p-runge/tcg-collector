@@ -8,12 +8,12 @@ export async function Navigation() {
   const session = await auth();
 
   return (
-    <header className="bg-white shadow-sm border-b">
+    <header className="shadow-sm border-b">
       <div className="container mx-auto px-4 py-4">
         <nav className="flex justify-between items-center">
           <Link
             href="/"
-            className="flex items-center text-2xl font-bold text-gray-900 gap-2"
+            className="flex items-center text-2xl font-bold gap-2"
           >
             <Image
               src="/logo.png"

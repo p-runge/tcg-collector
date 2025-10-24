@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -34,8 +33,8 @@ export default function Content({ sets }: Props) {
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Browse Sets</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold mb-2">Browse Sets</h1>
+        <p className="text-muted-foreground">
           Browse all available Pokémon card sets. Click on a set to view its
           cards or mark sets you&apos;re actively collecting.
         </p>
@@ -55,7 +54,7 @@ export default function Content({ sets }: Props) {
         .filter(([, seriesSets]) => seriesSets.length > 0)
         .map(([series, seriesSets]) => (
           <div key={series} className="mb-10">
-            <div className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 flex items-center">
+            <div className="text-xl font-semibold mb-4 border-b pb-2 flex items-center">
               {seriesSets[0]!.logo && (
                 <Image
                   src={seriesSets[0]!.logo}
@@ -69,7 +68,7 @@ export default function Content({ sets }: Props) {
               <span>{series}</span>
 
               {/* year range */}
-              <span className="text-gray-500 ml-2">
+              <span className="text-muted-foreground ml-2">
                 ({new Date(seriesSets[0]!.releaseDate).getFullYear()} -{" "}
                 {new Date(
                   seriesSets[seriesSets.length - 1]!.releaseDate
@@ -79,64 +78,56 @@ export default function Content({ sets }: Props) {
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {seriesSets.map((set) => (
-                <Card
-                  key={set.id}
-                  className="hover:shadow-lg transition-shadow"
-                >
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg flex items-center">
-                          {set.logo && (
+                <Link href={`/sets/${set.id}`} key={set.id}>
+                  <Card
+                    className="hover:shadow-lg transition-shadow h-full flex flex-col justify-between"
+                  >
+                    <CardHeader>
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg flex items-center">
+                            {set.logo && (
+                              <Image
+                                src={set.logo}
+                                alt={`${set.name}`}
+                                width={48}
+                                height={48}
+                                className="inline-block w-12 h-12 object-contain object-center mr-2"
+                              />
+                            )}
+                            <span>{set.name}</span>
+                          </CardTitle>
+                          <CardDescription className="mt-1 flex items-center">
+                            <Calendar className="w-4 h-4 mr-1" />
+                            {`${new Date(set.releaseDate).getFullYear()}`}
+                          </CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div className="text-sm flex items-center">
+                          {set.symbol && (
                             <Image
-                              src={set.logo}
-                              alt={`${set.name}`}
-                              width={48}
-                              height={48}
-                              className="inline-block w-12 h-12 object-contain object-center mr-2"
+                              src={set.symbol}
+                              alt={`${set.name} symbol`}
+                              width={24}
+                              height={24}
+                              className="inline-block w-6 h-6 object-contain object-center mr-2"
                             />
                           )}
-                          <span>{set.name}</span>
-                        </CardTitle>
-                        <CardDescription className="mt-1 flex items-center">
-                          <Calendar className="w-4 h-4 mr-1" />
-                          {`${new Date(set.releaseDate).getFullYear()}`}
-                        </CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="text-sm text-gray-600 flex items-center">
-                        {set.symbol && (
-                          <Image
-                            src={set.symbol}
-                            alt={`${set.name} symbol`}
-                            width={24}
-                            height={24}
-                            className="inline-block w-6 h-6 object-contain object-center mr-2"
-                          />
-                        )}
-                        <span>
-                          {set.total &&
-                            `${set.total}${
-                              set.totalWithSecretRares > set.total
+                          <span>
+                            {set.total &&
+                              `${set.total}${set.totalWithSecretRares > set.total
                                 ? ` (+${set.totalWithSecretRares - set.total})`
                                 : ""
-                            } cards`}
-                        </span>
+                              } cards`}
+                          </span>
+                        </div>
                       </div>
-
-                      <div className="flex gap-2">
-                        <Link href={`/sets/${set.id}`} className="flex-1">
-                          <Button variant="outline" className="w-full">
-                            View Cards
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>

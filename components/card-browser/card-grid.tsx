@@ -52,7 +52,7 @@ export function CardGrid({
                 />
                 {isSelected && (
                   <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
-                    <div className="bg-primary rounded-full p-2">
+                    <div className="bg-primary rounded-full p-2 border-black border">
                       <Check className="h-6 w-6 text-primary-foreground" />
                     </div>
                   </div>

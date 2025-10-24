@@ -327,13 +327,13 @@ export default function Content({ set, cards }: Props) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
+    <div className="space-y-6">
       {/* Header */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>
-              <div className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 flex items-center">
+              <div className="text-xl font-semibold mb-4 border-b pb-2 flex items-center">
                 {set.logo && (
                   <Image
                     src={set.logo}
@@ -347,9 +347,9 @@ export default function Content({ set, cards }: Props) {
 
                 <div className="text-2xl font-bold">
                   <div className="mb-1">
-                    <span>{set.name}</span>
+                    <h1 className="inline">{set.name}</h1>
 
-                    <span className="text-gray-500 ml-2">
+                    <span className="text-muted-foreground ml-2">
                       ({new Date(set.releaseDate).getFullYear()})
                     </span>
                   </div>
@@ -585,9 +585,8 @@ export default function Content({ set, cards }: Props) {
                               >
                                 <div className="flex items-center gap-2">
                                   <div
-                                    className={`w-3 h-3 rounded-full ${
-                                      condition.color.split(" ")[0]
-                                    }`}
+                                    className={`w-3 h-3 rounded-full ${condition.color.split(" ")[0]
+                                      }`}
                                   />
                                   {condition.label}
                                 </div>
@@ -670,9 +669,8 @@ export default function Content({ set, cards }: Props) {
               {filteredCards.map((card) => (
                 <Card
                   key={card.id}
-                  className={`transition-all ${
-                    selectedCards.has(card.id) ? "ring-2 ring-primary" : ""
-                  } ${viewMode === "list" ? "p-2" : ""}`}
+                  className={`transition-all ${selectedCards.has(card.id) ? "ring-2 ring-primary" : ""
+                    } ${viewMode === "list" ? "p-2" : ""}`}
                 >
                   <CardContent className={viewMode === "grid" ? "p-4" : "p-2"}>
                     <div className="flex items-start gap-3">
@@ -835,11 +833,10 @@ export default function Content({ set, cards }: Props) {
                                                       >
                                                         <div className="flex items-center gap-1">
                                                           <div
-                                                            className={`w-2 h-2 rounded-full ${
-                                                              condition.color.split(
-                                                                " "
-                                                              )[0]
-                                                            }`}
+                                                            className={`w-2 h-2 rounded-full ${condition.color.split(
+                                                              " "
+                                                            )[0]
+                                                              }`}
                                                           />
                                                           <span>
                                                             {condition.value}
@@ -916,12 +913,11 @@ export default function Content({ set, cards }: Props) {
                                               className="h-6 w-6 p-0"
                                             >
                                               <Edit3
-                                                className={`h-3 w-3 ${
-                                                  entry.note ||
+                                                className={`h-3 w-3 ${entry.note ||
                                                   entry.photos.length > 0
-                                                    ? "text-primary"
-                                                    : "text-muted-foreground"
-                                                }`}
+                                                  ? "text-primary"
+                                                  : "text-muted-foreground"
+                                                  }`}
                                               />
                                             </Button>
                                           </DialogTrigger>
@@ -965,40 +961,39 @@ export default function Content({ set, cards }: Props) {
                                                   />
                                                   {editForm.photos.length >
                                                     0 && (
-                                                    <div className="grid grid-cols-3 gap-2">
-                                                      {editForm.photos.map(
-                                                        (photo, index) => (
-                                                          <div
-                                                            key={index}
-                                                            className="relative"
-                                                          >
-                                                            <Image
-                                                              src={photo}
-                                                              alt={`Photo ${
-                                                                index + 1
-                                                              }`}
-                                                              // width and height don't matter for base64 images
-                                                              width={0}
-                                                              height={0}
-                                                              className="w-full h-20 object-cover rounded border"
-                                                            />
-                                                            <Button
-                                                              size="sm"
-                                                              variant="destructive"
-                                                              onClick={() =>
-                                                                removePhoto(
-                                                                  index
-                                                                )
-                                                              }
-                                                              className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full"
+                                                      <div className="grid grid-cols-3 gap-2">
+                                                        {editForm.photos.map(
+                                                          (photo, index) => (
+                                                            <div
+                                                              key={index}
+                                                              className="relative"
                                                             >
-                                                              <X className="h-3 w-3" />
-                                                            </Button>
-                                                          </div>
-                                                        )
-                                                      )}
-                                                    </div>
-                                                  )}
+                                                              <Image
+                                                                src={photo}
+                                                                alt={`Photo ${index + 1
+                                                                  }`}
+                                                                // width and height don't matter for base64 images
+                                                                width={0}
+                                                                height={0}
+                                                                className="w-full h-20 object-cover rounded border"
+                                                              />
+                                                              <Button
+                                                                size="sm"
+                                                                variant="destructive"
+                                                                onClick={() =>
+                                                                  removePhoto(
+                                                                    index
+                                                                  )
+                                                                }
+                                                                className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full"
+                                                              >
+                                                                <X className="h-3 w-3" />
+                                                              </Button>
+                                                            </div>
+                                                          )
+                                                        )}
+                                                      </div>
+                                                    )}
                                                 </div>
                                               </div>
 
