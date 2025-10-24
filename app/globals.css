@@ -107,7 +107,52 @@
 ------------------------------ */
 
 .dark {
-  /* TODO: add dark mode styles */
+  /* Base surfaces */
+  --background: oklch(0.18 0.02 270);
+  --foreground: oklch(0.88 0.05 85);
+
+  --card: oklch(0.22 0.02 270);
+  --card-foreground: oklch(0.88 0.05 85);
+
+  --popover: oklch(0.22 0.02 270);
+  --popover-foreground: oklch(0.88 0.05 85);
+
+  /* Brand colors */
+  --primary: oklch(0.75 0.12 80); /* Muted gold */
+  --primary-foreground: oklch(0.18 0.02 270);
+
+  --secondary: oklch(0.78 0.14 25); /* Warm pink */
+  --secondary-foreground: oklch(0.15 0.02 270);
+
+  /* Supporting tones */
+  --muted: oklch(0.3 0.02 270);
+  --muted-foreground: oklch(0.75 0.08 85);
+
+  --accent: oklch(0.78 0.14 25);
+  --accent-foreground: oklch(0.15 0.02 270);
+
+  /* Destructive & borders */
+  --destructive: oklch(0.65 0.18 30);
+  --border: oklch(0.32 0.02 270);
+  --input: oklch(0.32 0.02 270);
+  --ring: oklch(0.75 0.12 80);
+
+  /* Charts */
+  --chart-1: oklch(0.65 0.14 85);
+  --chart-2: oklch(0.6 0.09 180);
+  --chart-3: oklch(0.4 0.07 250);
+  --chart-4: oklch(0.78 0.18 60);
+  --chart-5: oklch(0.72 0.16 35);
+
+  /* Sidebar */
+  --sidebar: oklch(0.24 0.02 270);
+  --sidebar-foreground: oklch(0.88 0.05 85);
+  --sidebar-primary: oklch(0.75 0.12 80);
+  --sidebar-primary-foreground: oklch(0.18 0.02 270);
+  --sidebar-accent: oklch(0.78 0.14 25);
+  --sidebar-accent-foreground: oklch(0.18 0.02 270);
+  --sidebar-border: oklch(0.32 0.02 270);
+  --sidebar-ring: oklch(0.75 0.12 80);
 }
 
 /* -----------------------------
