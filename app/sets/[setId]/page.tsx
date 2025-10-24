@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectTrigger } from "@/components/ui/select";
 import { TooltipProvider } from "@/components/ui/tooltip";
