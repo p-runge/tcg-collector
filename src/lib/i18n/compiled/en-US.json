@@ -1,2 +1,32 @@
 {
+  "home.browseSets": [
+    {
+      "type": 0,
+      "value": "Browse Sets"
+    }
+  ],
+  "home.description": [
+    {
+      "type": 0,
+      "value": "The easiest way to track your Pokémon card collection. Manage sets in multiple languages, variants, and conditions with ease."
+    }
+  ],
+  "home.signIn": [
+    {
+      "type": 0,
+      "value": "Sign In"
+    }
+  ],
+  "home.signInPrompt": [
+    {
+      "type": 0,
+      "value": "Want to keep track of your own collection?"
+    }
+  ],
+  "home.viewCollection": [
+    {
+      "type": 0,
+      "value": "My Collection"
+    }
+  ]
 }

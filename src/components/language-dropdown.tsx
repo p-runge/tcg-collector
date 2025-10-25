@@ -7,7 +7,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import { Locale, LOCALES, useLanguageStore } from "@/lib/i18n"
+import { Locale, LOCALES } from "@/lib/i18n"
+import { useLanguageStore } from "@/lib/i18n/client"
 import { Globe } from "lucide-react"
 
 export function LanguageDropdown() {

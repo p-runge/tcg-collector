@@ -1,1 +1,7 @@
-{}
+{
+  "home.browseSets": "Sets durchsuchen",
+  "home.description": "Die einfachste Möglichkeit, deine Pokémon-Kartensammlung zu verwalten. Verwalte Sets in mehreren Sprachen, Varianten und Zuständen mit Leichtigkeit.",
+  "home.signIn": "Anmelden",
+  "home.signInPrompt": "Möchtest du deine eigene Sammlung verfolgen?",
+  "home.viewCollection": "Meine Sammlung"
+}

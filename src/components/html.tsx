@@ -1,6 +1,6 @@
 "use client"
 
-import { useLanguageStore } from "@/lib/i18n";
+import { useLanguageStore } from "@/lib/i18n/client";
 
 export default function HTML({ children }: { children: React.ReactNode }) {
   const { locale } = useLanguageStore();

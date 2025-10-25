@@ -1,2 +1,7 @@
 {
+  "home.browseSets": "Browse Sets",
+  "home.description": "The easiest way to track your Pokémon card collection. Manage sets in multiple languages, variants, and conditions with ease.",
+  "home.signIn": "Sign In",
+  "home.signInPrompt": "Want to keep track of your own collection?",
+  "home.viewCollection": "My Collection"
 }
