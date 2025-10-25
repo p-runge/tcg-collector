@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -5,10 +7,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import { LOCALES } from "@/lib/i18n"
+import { Locale, LOCALES, useLanguageStore } from "@/lib/i18n"
 import { Globe } from "lucide-react"
 
 export function LanguageDropdown() {
+  const { setLocale } = useLanguageStore();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -17,12 +21,17 @@ export function LanguageDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
-        {LOCALES.map((locale) => (
-          <DropdownMenuItem key={locale}>
-            {locale}
+        {LOCALES.map((l) => (
+          <DropdownMenuItem key={l} onClick={() => setLocale(l)}>
+            {localeLabelMap[l]}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )
+}
+
+const localeLabelMap: Record<Locale, string> = {
+  "en-US": "English",
+  "de-DE": "Deutsch",
 }

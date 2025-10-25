@@ -6,6 +6,7 @@ import PlausibleProvider from "next-plausible";
 import type React from "react";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
+import HTML from "@/components/html";
 
 export const metadata: Metadata = {
   title: "TCG Collector",
@@ -19,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <HTML>
       <body>
         <PlausibleProvider domain="tcg.p6.gg">
           <TRPCReactProvider>
@@ -35,6 +36,6 @@ export default function RootLayout({
         </PlausibleProvider>
         <SpeedInsights />
       </body>
-    </html>
+    </HTML>
   );
 }
