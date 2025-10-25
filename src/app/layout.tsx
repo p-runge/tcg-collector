@@ -1,11 +1,12 @@
-import HTML from "@/components/html";
 import { TRPCReactProvider } from "@/lib/api/react";
+import { DEFAULT_LOCALE } from "@/lib/i18n";
 import { I18nProvider } from "@/lib/i18n/client";
 import { ThemeProvider } from "@/providers/theme-provider";
 import "@total-typescript/ts-reset";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import PlausibleProvider from "next-plausible";
+import { cookies } from "next/headers";
 import type React from "react";
 import "./globals.css";
 
@@ -15,13 +16,17 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.png" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const preferredLocale = cookieStore.get("preferred-locale")?.value || DEFAULT_LOCALE;
+  const lang = preferredLocale.substring(0, 2);
+
   return (
-    <HTML>
+    <html lang={lang} suppressHydrationWarning>
       <body>
         <PlausibleProvider domain="tcg.p6.gg">
           <TRPCReactProvider>
@@ -37,6 +42,6 @@ export default function RootLayout({
         </PlausibleProvider>
         <SpeedInsights />
       </body>
-    </HTML>
+    </html>
   );
 }
