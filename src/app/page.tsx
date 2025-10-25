@@ -16,7 +16,7 @@ export default async function HomePage() {
         <div className="max-w-1/2 min-w-[300px] flex justify-end">
           <Image src="/bulkratte_logo.png" alt="TCG Collector Logo" width={500} height={500} className="" />
         </div>
-        <div className="flex flex-col max-w-2xl">
+        <div className="max-w-2xl">
           <div className="mb-6 flex gap-4">
             <LanguageDropdown />
             <DarkModeToggle />
@@ -53,8 +53,8 @@ export default async function HomePage() {
                 }
               )}
             </p>
-            <Link href="/api/auth/signin" passHref className="mb-6">
-              <Button className="cursor-pointer" variant="default" size="sm">
+            <Link href="/api/auth/signin" passHref>
+              <Button className="cursor-pointer" variant="default" size="lg">
                 {intl.formatMessage({
                   id: "home.cta",
                   defaultMessage: "Sign Up Now",
@@ -63,7 +63,7 @@ export default async function HomePage() {
             </Link>
           </>}
 
-          <hr className="mb-6" />
+          <hr className="my-6" />
 
           <div className="flex gap-3">
             <Link href="/sets" passHref className="mb-4">
