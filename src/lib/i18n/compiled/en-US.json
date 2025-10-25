@@ -350,25 +350,55 @@
   "home.browseSets": [
     {
       "type": 0,
-      "value": "Browse Sets"
+      "value": "Browse Card Sets"
+    }
+  ],
+  "home.cta": [
+    {
+      "type": 0,
+      "value": "Sign Up Now"
+    }
+  ],
+  "home.ctaIntroduction": [
+    {
+      "type": 0,
+      "value": "Not a "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "Bulkratte"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": " yet? Create an account and start organizing your collection today – 100% for free!"
     }
   ],
   "home.description": [
     {
-      "type": 0,
-      "value": "The easiest way to track your Pokémon card collection. Manage sets in multiple languages, variants, and conditions with ease."
-    }
-  ],
-  "home.signIn": [
+      "children": [
+        {
+          "type": 1,
+          "value": "siteName"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
     {
       "type": 0,
-      "value": "Sign In"
+      "value": " is the easiest way to track your Pokémon card collection. Manage sets in multiple languages, variants, and conditions with ease."
     }
   ],
-  "home.signInPrompt": [
+  "home.title": [
     {
       "type": 0,
-      "value": "Want to keep track of your own collection?"
+      "value": "Your TCG collection under control"
     }
   ],
   "home.viewCollection": [

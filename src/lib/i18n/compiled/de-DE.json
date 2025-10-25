@@ -353,22 +353,52 @@
       "value": "Sets durchsuchen"
     }
   ],
+  "home.cta": [
+    {
+      "type": 0,
+      "value": "Jetzt Anmelden"
+    }
+  ],
+  "home.ctaIntroduction": [
+    {
+      "type": 0,
+      "value": "Noch keine "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "Bulkratte"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
+    {
+      "type": 0,
+      "value": "? Erstelle ein Konto und beginne noch heute, deine Sammlung zu organisieren!"
+    }
+  ],
   "home.description": [
     {
-      "type": 0,
-      "value": "Die einfachste Möglichkeit, deine Pokémon-Kartensammlung zu organisieren. Verwalte mit Leichtigkeit Sets in mehreren Sprachen, Varianten und Zuständen."
-    }
-  ],
-  "home.signIn": [
+      "children": [
+        {
+          "type": 1,
+          "value": "siteName"
+        }
+      ],
+      "type": 8,
+      "value": "i"
+    },
     {
       "type": 0,
-      "value": "Melde dich an!"
+      "value": " ist die einfachste Möglichkeit, deine Pokémon-Kartensammlung zu organisieren. Verwalte Sets mit Leichtigkeit in mehreren Sprachen, Varianten und Zuständen."
     }
   ],
-  "home.signInPrompt": [
+  "home.title": [
     {
       "type": 0,
-      "value": "Möchtest du deine eigene Sammlung anlegen?"
+      "value": "Deine TCG-Sammlung im Griff"
     }
   ],
   "home.viewCollection": [
@@ -387,6 +417,46 @@
     {
       "type": 0,
       "value": "Einzelmodus"
+    }
+  ],
+  "navigation.collection": [
+    {
+      "type": 0,
+      "value": "Meine Sammlung"
+    }
+  ],
+  "navigation.home": [
+    {
+      "type": 0,
+      "value": "Startseite"
+    }
+  ],
+  "navigation.logoAlt": [
+    {
+      "type": 1,
+      "value": "logoName"
+    },
+    {
+      "type": 0,
+      "value": " Logo"
+    }
+  ],
+  "navigation.sets": [
+    {
+      "type": 0,
+      "value": "Sets"
+    }
+  ],
+  "navigation.signIn": [
+    {
+      "type": 0,
+      "value": "Anmelden"
+    }
+  ],
+  "navigation.signOut": [
+    {
+      "type": 0,
+      "value": "Abmelden"
     }
   ],
   "noCardsFound": [

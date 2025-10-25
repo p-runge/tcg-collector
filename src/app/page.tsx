@@ -3,6 +3,7 @@ import { LanguageDropdown } from "@/components/language-dropdown";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { getIntl } from "@/lib/i18n/server";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function HomePage() {
@@ -10,60 +11,83 @@ export default async function HomePage() {
   const intl = await getIntl();
 
   return (
-    <main className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
-      <h1 className="text-4xl font-bold mb-4 text-primary">TCG Collector</h1>
-      <p className="text-lg text-muted-foreground mb-8 max-w-xl text-center">
-        {intl.formatMessage({
-          id: "home.description",
-          defaultMessage:
-            "The easiest way to track your Pokémon card collection. Manage sets in multiple languages, variants, and conditions with ease.",
-        })}
-      </p>
+    <main className="min-h-screen flex flex-col justify-center items-center px-4">
+      <div className="flex flex-col lg:flex-row lg:gap-12 items-center">
+        <div className="max-w-1/2 min-w-[300px] flex justify-end">
+          <Image src="/bulkratte_logo.png" alt="TCG Collector Logo" width={500} height={500} className="" />
+        </div>
+        <div className="flex flex-col max-w-2xl">
+          <div className="mb-6 flex gap-4">
+            <LanguageDropdown />
+            <DarkModeToggle />
+          </div>
 
-      <div className="mb-6 flex gap-4">
-        <LanguageDropdown />
-        <DarkModeToggle />
-      </div>
-
-      <div className="flex gap-4">
-        <Link href="/sets" passHref className="mb-8">
-          <Button className="cursor-pointer" variant="outline">
+          <h1 className="text-4xl lg:text-6xl font-bold mb-4 text-primary capitalize">{
+            intl.formatMessage({
+              id: "home.title",
+              defaultMessage: "Your TCG collection under control",
+            })
+          }</h1>
+          <p className="text-lg text-muted-foreground mb-6"
+          >
             {intl.formatMessage({
-              id: "home.browseSets",
-              defaultMessage: "Browse Sets",
-            })}
-          </Button>
-        </Link>
-        {session && (
-          <Link href="/collection" passHref>
-            <Button className="cursor-pointer">
-              {intl.formatMessage({
-                id: "home.viewCollection",
-                defaultMessage: "My Collection",
-              })}
-            </Button>
-          </Link>
-        )}
-      </div>
-
-      {!session && (
-        <>
-          <p className="text-lg text-muted-foreground mb-4 max-w-xl text-center">
-            {intl.formatMessage({
-              id: "home.signInPrompt",
-              defaultMessage: "Want to keep track of your own collection?",
-            })}
+              id: "home.description",
+              defaultMessage:
+                "<i>{siteName}</i> is the easiest way to track your Pokémon card collection. Manage sets in multiple languages, variants, and conditions with ease.",
+            },
+              {
+                i: (chunks) => <i key="home.description.siteName">{chunks}</i>,
+                siteName: "Bulkratte"
+              }
+            )}
           </p>
-          <Link href="/api/auth/signin" passHref>
-            <Button className="cursor-pointer" variant="default">
+
+          {!session && <>
+            <p className="mb-3 text-sm">
               {intl.formatMessage({
-                id: "home.signIn",
-                defaultMessage: "Sign In",
-              })}
-            </Button>
-          </Link>
-        </>
-      )}
+                id: "home.ctaIntroduction",
+                defaultMessage: "Not a <i>Bulkratte</i> yet? Create an account and start organizing your collection today – 100% for free!",
+              },
+                {
+                  i: (chunks) => <i key="home.ctaIntroduction.siteName">{chunks}</i>,
+                }
+              )}
+            </p>
+            <Link href="/api/auth/signin" passHref className="mb-6">
+              <Button className="cursor-pointer" variant="default" size="sm">
+                {intl.formatMessage({
+                  id: "home.cta",
+                  defaultMessage: "Sign Up Now",
+                })}
+              </Button>
+            </Link>
+          </>}
+
+          <hr className="mb-6" />
+
+          <div className="flex gap-3">
+            <Link href="/sets" passHref className="mb-4">
+              <Button className="cursor-pointer" variant="outline">
+                {intl.formatMessage({
+                  id: "home.browseSets",
+                  defaultMessage: "Browse Card Sets",
+                })}
+              </Button>
+            </Link>
+
+            {session && (
+              <Link href="/collection" passHref>
+                <Button className="cursor-pointer">
+                  {intl.formatMessage({
+                    id: "home.viewCollection",
+                    defaultMessage: "My Collection",
+                  })}
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
