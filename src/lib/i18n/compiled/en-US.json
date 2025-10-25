@@ -389,6 +389,46 @@
       "value": "Individual"
     }
   ],
+  "navigation.collection": [
+    {
+      "type": 0,
+      "value": "My Collection"
+    }
+  ],
+  "navigation.home": [
+    {
+      "type": 0,
+      "value": "Home"
+    }
+  ],
+  "navigation.logoAlt": [
+    {
+      "type": 1,
+      "value": "logoName"
+    },
+    {
+      "type": 0,
+      "value": " Logo"
+    }
+  ],
+  "navigation.sets": [
+    {
+      "type": 0,
+      "value": "Sets"
+    }
+  ],
+  "navigation.signIn": [
+    {
+      "type": 0,
+      "value": "Sign In"
+    }
+  ],
+  "navigation.signOut": [
+    {
+      "type": 0,
+      "value": "Sign Out"
+    }
+  ],
   "noCardsFound": [
     {
       "type": 0,

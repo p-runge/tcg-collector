@@ -105,6 +105,66 @@
       "value": "Einstellungen"
     }
   ],
+  "cardFilter.button.clearSelection": [
+    {
+      "type": 0,
+      "value": "Auswahl aufheben"
+    }
+  ],
+  "cardFilter.date.from": [
+    {
+      "type": 0,
+      "value": "Veröffentlichung ab"
+    }
+  ],
+  "cardFilter.date.placeholder": [
+    {
+      "type": 0,
+      "value": "Bis"
+    }
+  ],
+  "cardFilter.date.to": [
+    {
+      "type": 0,
+      "value": "Veröffentlichung bis"
+    }
+  ],
+  "cardFilter.filter.title": [
+    {
+      "type": 0,
+      "value": "Karten filtern"
+    }
+  ],
+  "cardFilter.rarity.all": [
+    {
+      "type": 0,
+      "value": "Alle Seltenheiten"
+    }
+  ],
+  "cardFilter.rarity.label": [
+    {
+      "type": 0,
+      "value": "Seltenheit"
+    }
+  ],
+  "cardFilter.search.placeholder": [
+    {
+      "type": 0,
+      "value": "Kartenname oder -nummer..."
+    }
+  ],
+  "cardFilter.set.all": [
+    {
+      "type": 0,
+      "value": "Alle Sets"
+    }
+  ],
+  "cardFilter.set.label": [
+    {
+      "type": 0,
+      "value": "Set"
+    }
+  ],
   "collection.actions.addFirstSet": [
     {
       "type": 0,
@@ -526,7 +586,7 @@
   "userSet.subtitle": [
     {
       "type": 0,
-      "value": "Benennen dein Set und wähle Karten zum Hinzufügen aus"
+      "value": "Benenne dein Set und wähle Karten zum Hinzufügen aus"
     }
   ],
   "userSet.title.edit": [

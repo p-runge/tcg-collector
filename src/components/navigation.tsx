@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { DarkModeToggle } from "./dark-mode-toggle";
 import { LanguageDropdown } from "./language-dropdown";
+import { getIntl } from "@/lib/i18n/server";
 
 export async function Navigation() {
   const session = await auth();
+  const intl = await getIntl();
 
   return (
     <header className="shadow-sm border-b">
@@ -18,7 +20,9 @@ export async function Navigation() {
           >
             <Image
               src="/logo.png"
-              alt="TCG Collector Logo"
+              alt={
+                intl.formatMessage({ id: "navigation.logoAlt", defaultMessage: "{logoName} Logo" }, { logoName: "TCG Collector" })
+              }
               width={75}
               height={60}
             />
@@ -30,24 +34,34 @@ export async function Navigation() {
 
           <div className="flex items-center gap-4">
             <Link href="/">
-              <Button variant="ghost">Start</Button>
+              <Button variant="ghost">
+                {intl.formatMessage({ id: "navigation.home", defaultMessage: "Home" })}
+              </Button>
             </Link>
             <Link href="/sets">
-              <Button variant="ghost">Sets</Button>
+              <Button variant="ghost">
+                {intl.formatMessage({ id: "navigation.sets", defaultMessage: "Sets" })}
+              </Button>
             </Link>
             {session && (
               <Link href="/collection">
-                <Button variant="ghost">My Collection</Button>
+                <Button variant="ghost">
+                  {intl.formatMessage({ id: "navigation.collection", defaultMessage: "My Collection" })}
+                </Button>
               </Link>
             )}
 
             {session ? (
               <Link href="/api/auth/signout">
-                <Button variant="default">Sign Out</Button>
+                <Button variant="default">
+                  {intl.formatMessage({ id: "navigation.signOut", defaultMessage: "Sign Out" })}
+                </Button>
               </Link>
             ) : (
               <Link href="/api/auth/signin">
-                <Button variant="default">Sign In</Button>
+                <Button variant="default">
+                  {intl.formatMessage({ id: "navigation.signIn", defaultMessage: "Sign In" })}
+                </Button>
               </Link>
             )}
           </div>
