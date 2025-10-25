@@ -1,8 +1,32 @@
 {
+  "addCard.conditionLabel": [
+    {
+      "type": 0,
+      "value": "Karte mit Zustand hinzufügen:"
+    }
+  ],
+  "addCard.selectLanguage": [
+    {
+      "type": 0,
+      "value": "Sprache auswählen:"
+    }
+  ],
+  "addCard.selectLanguageHint": [
+    {
+      "type": 0,
+      "value": "Sprache wählen und dann auf Zustand klicken, um hinzuzufügen"
+    }
+  ],
+  "addCard.title": [
+    {
+      "type": 0,
+      "value": "Karte hinzufügen"
+    }
+  ],
   "breadcrumb.label": [
     {
       "type": 0,
-      "value": "Breadcrumb"
+      "value": "Pfadnavigation"
     }
   ],
   "browseSets.description": [
@@ -15,6 +39,252 @@
     {
       "type": 0,
       "value": "Sets durchsuchen"
+    }
+  ],
+  "bulk.helper": [
+    {
+      "type": 0,
+      "value": "Wähle Karten mit den Kontrollkästchen aus, um sie mit denselben Einstellungen in großen Mengen hinzuzufügen."
+    }
+  ],
+  "bulk.selectVariant": [
+    {
+      "type": 0,
+      "value": "Variante auswählen"
+    }
+  ],
+  "bulk.selectedCount": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " Karten ausgewählt"
+    }
+  ],
+  "button.addToCollection": [
+    {
+      "type": 0,
+      "value": "Zur Sammlung hinzufügen"
+    }
+  ],
+  "button.cancel": [
+    {
+      "type": 0,
+      "value": "Abbrechen"
+    }
+  ],
+  "button.clearSelection": [
+    {
+      "type": 0,
+      "value": "Auswahl löschen"
+    }
+  ],
+  "button.close": [
+    {
+      "type": 0,
+      "value": "Schließen"
+    }
+  ],
+  "button.saveChanges": [
+    {
+      "type": 0,
+      "value": "Änderungen speichern"
+    }
+  ],
+  "button.selectAllVisible": [
+    {
+      "type": 0,
+      "value": "Alle sichtbaren auswählen"
+    }
+  ],
+  "button.settings": [
+    {
+      "type": 0,
+      "value": "Einstellungen"
+    }
+  ],
+  "collection.actions.addFirstSet": [
+    {
+      "type": 0,
+      "value": "Füge dein erstes Set hinzu"
+    }
+  ],
+  "collection.actions.addNewSet": [
+    {
+      "type": 0,
+      "value": "Neues Set hinzufügen"
+    }
+  ],
+  "collection.card.qty": [
+    {
+      "type": 0,
+      "value": "Anz."
+    }
+  ],
+  "collection.cards.noneDescription": [
+    {
+      "type": 0,
+      "value": "Beginne damit, Karten hinzuzufügen, um deine Pokémon-Sammlung zu verfolgen!"
+    }
+  ],
+  "collection.cards.noneTitle": [
+    {
+      "type": 0,
+      "value": "Noch keine Karten in deiner Sammlung"
+    }
+  ],
+  "collection.cards.owned": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " Karten im Besitz"
+    }
+  ],
+  "collection.description": [
+    {
+      "type": 0,
+      "value": "Verwalte und verfolge deine Pokémon-Kartensammlung"
+    }
+  ],
+  "collection.sets.cardDescription": [
+    {
+      "type": 0,
+      "value": "Karten in diesem Set anzeigen und verwalten."
+    }
+  ],
+  "collection.sets.noneDescription": [
+    {
+      "type": 0,
+      "value": "Füge dein erstes Set hinzu!"
+    }
+  ],
+  "collection.sets.noneTitle": [
+    {
+      "type": 0,
+      "value": "Noch keine Sets vorhanden"
+    }
+  ],
+  "collection.tabs.cards": [
+    {
+      "type": 0,
+      "value": "Meine Karten"
+    }
+  ],
+  "collection.tabs.sets": [
+    {
+      "type": 0,
+      "value": "Meine Sets"
+    }
+  ],
+  "collection.title": [
+    {
+      "type": 0,
+      "value": "Meine Sammlung"
+    }
+  ],
+  "editCard.noteLabel": [
+    {
+      "type": 0,
+      "value": "Notiz"
+    }
+  ],
+  "editCard.notePlaceholder": [
+    {
+      "type": 0,
+      "value": "Füge eine Notiz zu dieser Karte hinzu..."
+    }
+  ],
+  "editCard.photoAlt": [
+    {
+      "type": 0,
+      "value": "Foto "
+    },
+    {
+      "type": 1,
+      "value": "index"
+    }
+  ],
+  "editCard.photosLabel": [
+    {
+      "type": 0,
+      "value": "Fotos"
+    }
+  ],
+  "editCard.remove": [
+    {
+      "type": 0,
+      "value": "Karte entfernen"
+    }
+  ],
+  "editCard.title": [
+    {
+      "type": 0,
+      "value": "Karte bearbeiten - "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "variant"
+    },
+    {
+      "type": 0,
+      "value": " - "
+    },
+    {
+      "type": 1,
+      "value": "condition"
+    },
+    {
+      "type": 0,
+      "value": " - "
+    },
+    {
+      "type": 1,
+      "value": "language"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "header.ownedOverTotal": [
+    {
+      "type": 1,
+      "value": "owned"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " Karten"
+    }
+  ],
+  "header.totalCards": [
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " Karten insgesamt"
     }
   ],
   "home.browseSets": [
@@ -47,10 +317,50 @@
       "value": "Meine Sammlung"
     }
   ],
+  "mode.bulk": [
+    {
+      "type": 0,
+      "value": "Massenmodus"
+    }
+  ],
+  "mode.individual": [
+    {
+      "type": 0,
+      "value": "Einzelmodus"
+    }
+  ],
+  "noCardsFound": [
+    {
+      "type": 0,
+      "value": "Keine Karten gefunden, die deinen Suchkriterien entsprechen."
+    }
+  ],
+  "photos.alt": [
+    {
+      "type": 0,
+      "value": "Kartenfoto "
+    },
+    {
+      "type": 1,
+      "value": "index"
+    }
+  ],
+  "photos.title": [
+    {
+      "type": 0,
+      "value": "Kartenfotos"
+    }
+  ],
+  "rarity.all": [
+    {
+      "type": 0,
+      "value": "Alle Seltenheiten"
+    }
+  ],
   "search.placeholder": [
     {
       "type": 0,
-      "value": "Suche nach Setnamen..."
+      "value": "Karten suchen..."
     }
   ],
   "series.logoAlt": [
@@ -60,7 +370,7 @@
     },
     {
       "type": 0,
-      "value": " Logo"
+      "value": "-Logo"
     }
   ],
   "set.cardsCount": [
@@ -98,7 +408,7 @@
     },
     {
       "type": 0,
-      "value": " Logo"
+      "value": "-Logo"
     }
   ],
   "set.notFound": [
@@ -128,7 +438,53 @@
   "sets.label": [
     {
       "type": 0,
-      "value": "Sets"
+      "value": "Kartensets"
+    }
+  ],
+  "settings.defaultLanguage": [
+    {
+      "type": 0,
+      "value": "Standardsprache"
+    }
+  ],
+  "settings.title": [
+    {
+      "type": 0,
+      "value": "Einstellungen"
+    }
+  ],
+  "tooltip.bulkDesc": [
+    {
+      "type": 0,
+      "value": "Wähle mehrere Karten mit den Kontrollkästchen aus und füge dann für alle gleichzeitig dieselbe Variante/Zustand/Sprache hinzu. Perfekt, um viele ähnliche Karten schnell hinzuzufügen."
+    }
+  ],
+  "tooltip.bulkTitle": [
+    {
+      "type": 0,
+      "value": "Massenmodus:"
+    }
+  ],
+  "tooltip.individualDesc": [
+    {
+      "type": 0,
+      "value": "Füge Karten einzeln über das +-Menü auf jeder Karte hinzu. Ideal, um bestimmte Karten mit unterschiedlichen Zuständen hinzuzufügen."
+    }
+  ],
+  "tooltip.individualTitle": [
+    {
+      "type": 0,
+      "value": "Einzelmodus:"
+    }
+  ],
+  "variant.total": [
+    {
+      "type": 0,
+      "value": "Gesamt: "
+    },
+    {
+      "type": 1,
+      "value": "count"
     }
   ]
 }

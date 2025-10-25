@@ -105,6 +105,88 @@
       "value": "Settings"
     }
   ],
+  "collection.actions.addFirstSet": [
+    {
+      "type": 0,
+      "value": "Add Your First Set"
+    }
+  ],
+  "collection.actions.addNewSet": [
+    {
+      "type": 0,
+      "value": "Add New Set"
+    }
+  ],
+  "collection.card.qty": [
+    {
+      "type": 0,
+      "value": "Qty"
+    }
+  ],
+  "collection.cards.noneDescription": [
+    {
+      "type": 0,
+      "value": "Start adding cards to your collection!"
+    }
+  ],
+  "collection.cards.noneTitle": [
+    {
+      "type": 0,
+      "value": "No cards in your collection yet"
+    }
+  ],
+  "collection.cards.owned": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " cards owned"
+    }
+  ],
+  "collection.description": [
+    {
+      "type": 0,
+      "value": "Track and manage your Pokémon card collection"
+    }
+  ],
+  "collection.sets.cardDescription": [
+    {
+      "type": 0,
+      "value": "View and manage cards in this set."
+    }
+  ],
+  "collection.sets.noneDescription": [
+    {
+      "type": 0,
+      "value": "Add your first set!"
+    }
+  ],
+  "collection.sets.noneTitle": [
+    {
+      "type": 0,
+      "value": "No sets added yet"
+    }
+  ],
+  "collection.tabs.cards": [
+    {
+      "type": 0,
+      "value": "My Cards"
+    }
+  ],
+  "collection.tabs.sets": [
+    {
+      "type": 0,
+      "value": "My Sets"
+    }
+  ],
+  "collection.title": [
+    {
+      "type": 0,
+      "value": "My Collection"
+    }
+  ],
   "editCard.noteLabel": [
     {
       "type": 0,

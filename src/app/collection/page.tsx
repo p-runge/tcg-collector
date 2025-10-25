@@ -9,19 +9,28 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { api } from "@/lib/api/server";
+import { getIntl } from "@/lib/i18n/server";
 import { BookHeart, Library, Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function CollectionPage() {
+  const intl = await getIntl();
+
   return (
     <>
       <div className="mb-8 flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold mb-2">
-            My Collection
+            {intl.formatMessage({
+              id: "collection.title",
+              defaultMessage: "My Collection",
+            })}
           </h1>
           <p className="text-muted-foreground">
-            Track and manage your Pokémon card collection
+            {intl.formatMessage({
+              id: "collection.description",
+              defaultMessage: "Track and manage your Pokémon card collection",
+            })}
           </p>
         </div>
       </div>
@@ -30,13 +39,19 @@ export default async function CollectionPage() {
           <TabsTrigger value="collections">
             <span className="inline-flex items-center gap-2">
               <BookHeart className="w-4 h-4" />
-              My Sets
+              {intl.formatMessage({
+                id: "collection.tabs.sets",
+                defaultMessage: "My Sets",
+              })}
             </span>
           </TabsTrigger>
           <TabsTrigger value="my-cards">
             <span className="inline-flex items-center gap-2">
               <Library className="w-4 h-4" />
-              My Cards
+              {intl.formatMessage({
+                id: "collection.tabs.cards",
+                defaultMessage: "My Cards",
+              })}
             </span>
           </TabsTrigger>
         </TabsList>
@@ -48,6 +63,7 @@ export default async function CollectionPage() {
 }
 
 async function MySetsTab() {
+  const intl = await getIntl();
   const userSets = await api.userSet.getList();
 
   return (
@@ -56,7 +72,10 @@ async function MySetsTab() {
         <Link href="/collection/new-set">
           <Button>
             <Plus className="w-4 h-4 mr-2" />
-            Add New Set
+            {intl.formatMessage({
+              id: "collection.actions.addNewSet",
+              defaultMessage: "Add New Set",
+            })}
           </Button>
         </Link>
       </div>
@@ -64,12 +83,25 @@ async function MySetsTab() {
         // No sets
         <Card className="text-center py-12">
           <CardContent>
-            <h3 className="text-lg font-semibold mb-2">No sets added yet</h3>
-            <p className="mb-6 text-muted-foreground">Add your first set!</p>
+            <h3 className="text-lg font-semibold mb-2">
+              {intl.formatMessage({
+                id: "collection.sets.noneTitle",
+                defaultMessage: "No sets added yet",
+              })}
+            </h3>
+            <p className="mb-6 text-muted-foreground">
+              {intl.formatMessage({
+                id: "collection.sets.noneDescription",
+                defaultMessage: "Add your first set!",
+              })}
+            </p>
             <Link href="/collection/new-set">
               <Button>
                 <Plus className="w-4 h-4 mr-2" />
-                Add Your First Set
+                {intl.formatMessage({
+                  id: "collection.actions.addFirstSet",
+                  defaultMessage: "Add Your First Set",
+                })}
               </Button>
             </Link>
           </CardContent>
@@ -89,7 +121,10 @@ async function MySetsTab() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    View and manage cards in this set.
+                    {intl.formatMessage({
+                      id: "collection.sets.cardDescription",
+                      defaultMessage: "View and manage cards in this set.",
+                    })}
                   </p>
                 </CardContent>
               </Card>
@@ -101,7 +136,9 @@ async function MySetsTab() {
   );
 }
 
-function MyCardsTab() {
+async function MyCardsTab() {
+  const intl = await getIntl();
+
   const groupedCards: {
     id: number;
     card_id: number;
@@ -124,10 +161,17 @@ function MyCardsTab() {
         <Card className="text-center py-12">
           <CardContent>
             <h3 className="text-lg font-semibold mb-2">
-              No cards in your collection yet
+              {intl.formatMessage({
+                id: "collection.cards.noneTitle",
+                defaultMessage: "No cards in your collection yet",
+              })}
             </h3>
             <p className="text-muted-foreground mb-6">
-              Start adding cards to track your Pokémon collection!
+              {intl.formatMessage({
+                id: "collection.cards.noneDescription",
+                defaultMessage:
+                  "Start adding cards to your collection!",
+              })}
             </p>
             {/* // TODO: show a version of the card browser here */}
           </CardContent>
@@ -139,7 +183,15 @@ function MyCardsTab() {
             <Card key={setName}>
               <CardHeader>
                 <CardTitle>{setName}</CardTitle>
-                <CardDescription>{cards.length} cards owned</CardDescription>
+                <CardDescription>
+                  {intl.formatMessage(
+                    {
+                      id: "collection.cards.owned",
+                      defaultMessage: "{count} cards owned",
+                    },
+                    { count: cards.length }
+                  )}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
@@ -162,7 +214,17 @@ function MyCardsTab() {
                         <div className="text-sm text-muted-foreground mt-1">
                           {card.language_name} • {card.variant_name} •{" "}
                           {card.condition_name}
-                          {card.quantity > 1 && ` • Qty: ${card.quantity}`}
+                          {card.quantity > 1 && (
+                            <>
+                              {" "}
+                              •{" "}
+                              {intl.formatMessage({
+                                id: "collection.card.qty",
+                                defaultMessage: "Qty",
+                              })}
+                              : {card.quantity}
+                            </>
+                          )}
                         </div>
                         {card.notes && (
                           <div className="text-sm text-muted-foreground mt-1 italic">
