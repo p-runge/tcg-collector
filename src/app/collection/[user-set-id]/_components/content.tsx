@@ -10,9 +10,11 @@ import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useIntl } from "react-intl";
 
 export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
   const router = useRouter();
+  const intl = useIntl();
 
   const [userSetName, setUserSetName] = useState("");
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
@@ -85,9 +87,17 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
           </Button>
         </Link>
         <div>
-          <h1 className="text-3xl font-bold">Create New Set</h1>
+          <h1 className="text-3xl font-bold">
+            {intl.formatMessage({
+              id: "userSet.title.edit",
+              defaultMessage: "Edit Set",
+            })}
+          </h1>
           <p className="text-muted-foreground mt-1">
-            Name your set and select cards to add
+            {intl.formatMessage({
+              id: "userSet.subtitle",
+              defaultMessage: "Name your set and select cards to add",
+            })}
           </p>
         </div>
       </div>
@@ -95,10 +105,18 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
       <Card className="p-6 mb-6">
         <div className="flex flex-col sm:flex-row gap-4 items-end">
           <div className="flex-1 space-y-2">
-            <Label htmlFor="user-set-name">Set Name</Label>
+            <Label htmlFor="user-set-name">
+              {intl.formatMessage({
+                id: "userSet.nameLabel",
+                defaultMessage: "Set Name",
+              })}
+            </Label>
             <Input
               id="user-set-name"
-              placeholder="Set Name"
+              placeholder={intl.formatMessage({
+                id: "userSet.namePlaceholder",
+                defaultMessage: "My Awesome Set",
+              })}
               value={userSetName}
               onChange={(e) => setUserSetName(e.target.value)}
               className="text-lg"
@@ -109,7 +127,13 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
               <span className="font-semibold text-foreground">
                 {selectedCards.size}
               </span>{" "}
-              cards selected
+              {intl.formatMessage(
+                {
+                  id: "userSet.cardsSelected",
+                  defaultMessage: "{count} cards selected",
+                },
+                { count: selectedCards.size }
+              )}
             </div>
             <Button
               onClick={handleSaveUserSet}
@@ -119,7 +143,15 @@ export function EditUserSetPageContent({ userSetId }: { userSetId: string }) {
               size="lg"
             >
               <Save className="h-5 w-5 mr-2" />
-              {isSaving ? "Saving..." : "Save Changes"}
+              {isSaving
+                ? intl.formatMessage({
+                  id: "userSet.saving",
+                  defaultMessage: "Saving...",
+                })
+                : intl.formatMessage({
+                  id: "userSet.save",
+                  defaultMessage: "Save Changes",
+                })}
             </Button>
           </div>
         </div>

@@ -477,6 +477,70 @@
       "value": "Individual Mode:"
     }
   ],
+  "userSet.cardsSelected": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " cards selected"
+    }
+  ],
+  "userSet.createButton": [
+    {
+      "type": 0,
+      "value": "Create Set"
+    }
+  ],
+  "userSet.creating": [
+    {
+      "type": 0,
+      "value": "Creating..."
+    }
+  ],
+  "userSet.nameLabel": [
+    {
+      "type": 0,
+      "value": "Set Name"
+    }
+  ],
+  "userSet.namePlaceholder": [
+    {
+      "type": 0,
+      "value": "My Awesome Set"
+    }
+  ],
+  "userSet.save": [
+    {
+      "type": 0,
+      "value": "Save Changes"
+    }
+  ],
+  "userSet.saving": [
+    {
+      "type": 0,
+      "value": "Saving..."
+    }
+  ],
+  "userSet.subtitle": [
+    {
+      "type": 0,
+      "value": "Name your set and select cards to add"
+    }
+  ],
+  "userSet.title.edit": [
+    {
+      "type": 0,
+      "value": "Edit Set"
+    }
+  ],
+  "userSet.title.new": [
+    {
+      "type": 0,
+      "value": "Create New Set"
+    }
+  ],
   "variant.total": [
     {
       "type": 0,

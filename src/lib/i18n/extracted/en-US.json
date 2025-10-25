@@ -62,5 +62,15 @@
   "tooltip.bulkTitle": "Bulk Mode:",
   "tooltip.individualDesc": "Add cards one by one using the + dropdown on each card. Perfect for adding specific cards with different conditions.",
   "tooltip.individualTitle": "Individual Mode:",
+  "userSet.cardsSelected": "{count} cards selected",
+  "userSet.createButton": "Create Set",
+  "userSet.creating": "Creating...",
+  "userSet.nameLabel": "Set Name",
+  "userSet.namePlaceholder": "My Awesome Set",
+  "userSet.save": "Save Changes",
+  "userSet.saving": "Saving...",
+  "userSet.subtitle": "Name your set and select cards to add",
+  "userSet.title.edit": "Edit Set",
+  "userSet.title.new": "Create New Set",
   "variant.total": "Total: {count}"
 }

@@ -62,5 +62,15 @@
   "tooltip.bulkTitle": "Massenmodus:",
   "tooltip.individualDesc": "Füge Karten einzeln über das +-Menü auf jeder Karte hinzu. Ideal, um bestimmte Karten mit unterschiedlichen Zuständen hinzuzufügen.",
   "tooltip.individualTitle": "Einzelmodus:",
+  "userSet.cardsSelected": "{count} Karten ausgewählt",
+  "userSet.createButton": "Set erstellen",
+  "userSet.creating": "Wird erstellt...",
+  "userSet.nameLabel": "Set Name",
+  "userSet.namePlaceholder": "Mein tolles Set",
+  "userSet.save": "Änderungen speichern",
+  "userSet.saving": "Wird gespeichert...",
+  "userSet.subtitle": "Benennen dein Set und wähle Karten zum Hinzufügen aus",
+  "userSet.title.edit": "Set bearbeiten",
+  "userSet.title.new": "Neues Set erstellen",
   "variant.total": "Gesamt: {count}"
 }
