@@ -42,7 +42,10 @@ export const useLanguageStore = create<LanguageState>()(
         // used for server-side rendering to detect preferred locale
         document.cookie = `preferred-locale=${locale}; path=/`;
 
-        return set({ locale: validLocale });
+        set({ locale: validLocale });
+
+        // Trigger a page reload to re-render server components
+        window.location.reload();
       },
     }),
     {
