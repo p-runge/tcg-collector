@@ -1,8 +1,8 @@
 import fs from "node:fs/promises";
 
+import { DEFAULT_LOCALE, LOCALES } from "@/lib/i18n";
 import dotenv from "dotenv";
 import OpenAI from "openai";
-import { BROWSER_LANGUAGES } from "@/providers/i18n-provider";
 
 dotenv.config();
 
@@ -15,26 +15,30 @@ const client = process.env.OPENAI_API_KEY
 async function run() {
   if (!client) {
     console.error("Env var OPENAI_API_KEY is not set");
+
+    // Just copy the source file to the translated folder
+    const data = await fs.readFile(
+      `src/lib/i18n/extracted/${DEFAULT_LOCALE}.json`,
+      "utf-8"
+    );
+    fs.writeFile(`src/lib/i18n/translated/${DEFAULT_LOCALE}.json`, data);
+    console.log(`Written to src/lib/i18n/translated/${DEFAULT_LOCALE}.json`);
     return;
   }
 
-  const sourceLocale = "en-US";
-
   const data = await fs.readFile(
-    `src/lib/i18n/extracted/${sourceLocale}.json`,
+    `src/lib/i18n/extracted/${DEFAULT_LOCALE}.json`,
     "utf-8"
   );
   const messages = JSON.parse(data) as Record<string, string>;
   console.log("Translating", Object.keys(messages).length, "messages");
 
-  const targetLocales = Object.values(BROWSER_LANGUAGES).filter(
-    (locale) => locale !== sourceLocale
-  );
+  const targetLocales = LOCALES.filter((locale) => locale !== DEFAULT_LOCALE);
   console.log("Target locales:", targetLocales);
 
   await Promise.all(targetLocales.map((locale) => translate(locale, data)));
-  fs.writeFile(`src/lib/i18n/translated/${sourceLocale}.json`, data);
-  console.log(`Written to src/lib/i18n/translated/${sourceLocale}.json`);
+  fs.writeFile(`src/lib/i18n/translated/${DEFAULT_LOCALE}.json`, data);
+  console.log(`Written to src/lib/i18n/translated/${DEFAULT_LOCALE}.json`);
 }
 
 async function translate(locale: string, data: string) {

@@ -1,3 +1,5 @@
+import { DarkModeToggle } from "@/components/dark-mode-toggle";
+import { LanguageDropdown } from "@/components/language-dropdown";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
@@ -12,6 +14,12 @@ export default async function HomePage() {
         The easiest way to track your Pokémon card collection. Manage sets in
         multiple languages, variants, and conditions with ease.
       </p>
+
+      <div className="mb-6 flex gap-4">
+        <LanguageDropdown />
+        <DarkModeToggle />
+      </div>
+
       <div className="flex gap-4">
         <Link href="/sets" passHref className="mb-8">
           <Button className="cursor-pointer" variant="outline">

@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { DarkModeToggle } from "./dark-mode-toggle";
+import { LanguageDropdown } from "./language-dropdown";
 
 export async function Navigation() {
   const session = await auth();
@@ -23,7 +24,10 @@ export async function Navigation() {
             />
             TCG Collector
           </Link>
+
+          <LanguageDropdown />
           <DarkModeToggle />
+
           <div className="flex items-center gap-4">
             <Link href="/">
               <Button variant="ghost">Start</Button>
