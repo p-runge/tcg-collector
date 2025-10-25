@@ -6,7 +6,7 @@ import { DarkModeToggle } from "./dark-mode-toggle";
 import { LanguageDropdown } from "./language-dropdown";
 import { getIntl } from "@/lib/i18n/server";
 
-export async function Navigation() {
+export async function Header() {
   const session = await auth();
   const intl = await getIntl();
 
