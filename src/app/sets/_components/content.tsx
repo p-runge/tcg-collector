@@ -23,7 +23,9 @@ export default function Content({ sets }: Props) {
 
   const filteredSets = sets.filter((set) =>
     set.name.toLowerCase().includes(search.toLowerCase())
-  );
+  ).sort((a, b) => {
+    return b.releaseDate.localeCompare(a.releaseDate);
+  });
 
   // Group sets by series (using map + filter)
   const seriesList = Array.from(new Set(filteredSets.map((s) => s.series)));
@@ -91,8 +93,8 @@ export default function Content({ sets }: Props) {
 
               {/* year range */}
               <span className="text-muted-foreground ml-2">
-                {`(${new Date(seriesSets[0]!.releaseDate).getFullYear()} - ${new Date(
-                  seriesSets[seriesSets.length - 1]!.releaseDate
+                {`(${new Date(seriesSets[seriesSets.length - 1]!.releaseDate).getFullYear()} - ${new Date(
+                  seriesSets[0]!.releaseDate
                 ).getFullYear()
                   })`}
               </span>
