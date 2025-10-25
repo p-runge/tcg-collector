@@ -1,4 +1,22 @@
 {
+  "breadcrumb.label": [
+    {
+      "type": 0,
+      "value": "Breadcrumb"
+    }
+  ],
+  "browseSets.description": [
+    {
+      "type": 0,
+      "value": "Durchsuche alle verfügbaren Pokémon-Kartensets. Klicke auf ein Set, um seine Karten anzuzeigen oder um Sets zu markieren, die du aktiv sammelst."
+    }
+  ],
+  "browseSets.title": [
+    {
+      "type": 0,
+      "value": "Sets durchsuchen"
+    }
+  ],
   "home.browseSets": [
     {
       "type": 0,
@@ -8,25 +26,109 @@
   "home.description": [
     {
       "type": 0,
-      "value": "Die einfachste Möglichkeit, deine Pokémon-Kartensammlung zu verwalten. Verwalte Sets in mehreren Sprachen, Varianten und Zuständen mit Leichtigkeit."
+      "value": "Die einfachste Möglichkeit, deine Pokémon-Kartensammlung zu organisieren. Verwalte mit Leichtigkeit Sets in mehreren Sprachen, Varianten und Zuständen."
     }
   ],
   "home.signIn": [
     {
       "type": 0,
-      "value": "Anmelden"
+      "value": "Melde dich an!"
     }
   ],
   "home.signInPrompt": [
     {
       "type": 0,
-      "value": "Möchtest du deine eigene Sammlung verfolgen?"
+      "value": "Möchtest du deine eigene Sammlung anlegen?"
     }
   ],
   "home.viewCollection": [
     {
       "type": 0,
       "value": "Meine Sammlung"
+    }
+  ],
+  "search.placeholder": [
+    {
+      "type": 0,
+      "value": "Suche nach Setnamen..."
+    }
+  ],
+  "series.logoAlt": [
+    {
+      "type": 1,
+      "value": "series"
+    },
+    {
+      "type": 0,
+      "value": " Logo"
+    }
+  ],
+  "set.cardsCount": [
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " Karten"
+    }
+  ],
+  "set.cardsCountWithExtras": [
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " (+"
+    },
+    {
+      "type": 1,
+      "value": "extras"
+    },
+    {
+      "type": 0,
+      "value": ") Karten"
+    }
+  ],
+  "set.logoAlt": [
+    {
+      "type": 1,
+      "value": "setName"
+    },
+    {
+      "type": 0,
+      "value": " Logo"
+    }
+  ],
+  "set.notFound": [
+    {
+      "type": 0,
+      "value": "Set mit der ID "
+    },
+    {
+      "type": 1,
+      "value": "setId"
+    },
+    {
+      "type": 0,
+      "value": " nicht gefunden"
+    }
+  ],
+  "set.symbolAlt": [
+    {
+      "type": 1,
+      "value": "setName"
+    },
+    {
+      "type": 0,
+      "value": " Symbol"
+    }
+  ],
+  "sets.label": [
+    {
+      "type": 0,
+      "value": "Sets"
     }
   ]
 }

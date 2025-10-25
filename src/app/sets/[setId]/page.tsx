@@ -1,6 +1,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectTrigger } from "@/components/ui/select";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { getIntl } from "@/lib/i18n/server";
 import pokemonAPI from "@/lib/pokemon-api";
 import Link from "next/link";
 import Content from "./_components/content";
@@ -11,12 +12,18 @@ export default async function SetIdPage({
   params: Promise<{ setId: string }>;
 }) {
   const { setId } = await params;
+  const intl = await getIntl();
 
   // Pokemon API data
   const sets = await pokemonAPI.fetchPokemonSets();
   const selectedSet = sets.find((s) => s.id === setId);
   if (!selectedSet) {
-    throw new Error(`Set with ID ${setId} not found`);
+    throw new Error(
+      intl.formatMessage(
+        { id: "set.notFound", defaultMessage: "Set with ID {setId} not found" },
+        { setId }
+      )
+    );
   }
 
   const cards = await pokemonAPI.fetchPokemonCards(setId);
@@ -24,11 +31,17 @@ export default async function SetIdPage({
   return (
     <TooltipProvider>
       {/* breadcrumb */}
-      <nav className="text-sm mb-4" aria-label="Breadcrumb">
+      <nav
+        className="text-sm mb-4"
+        aria-label={intl.formatMessage({
+          id: "breadcrumb.label",
+          defaultMessage: "Breadcrumb",
+        })}
+      >
         <ol className="list-reset flex text-muted-foreground">
           <li>
             <Link href="/sets" className="hover:underline">
-              Sets
+              {intl.formatMessage({ id: "sets.label", defaultMessage: "Sets" })}
             </Link>
           </li>
           <li className="font-semibold flex">
@@ -59,8 +72,5 @@ export default async function SetIdPage({
       </nav>
       <Content set={selectedSet} cards={cards} />
     </TooltipProvider>
-  );
-}
-
-// cache for 1 day
-export const revalidate = 86400;
+  )
+};

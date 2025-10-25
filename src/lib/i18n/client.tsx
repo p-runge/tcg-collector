@@ -1,6 +1,6 @@
 "use client"
 
-import { BROWSER_LANGUAGES, Locale, messages } from '@/lib/i18n';
+import { BROWSER_LANGUAGES, DEFAULT_LOCALE, Locale, messages } from '@/lib/i18n';
 import { IntlProvider } from 'react-intl';
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -13,7 +13,14 @@ export function I18nProvider({
   const locale = useLanguageStore((state) => state.locale)
 
   return (
-    <IntlProvider locale={locale} messages={messages[locale]}>
+    <IntlProvider locale={locale} messages={messages[locale]} defaultLocale={DEFAULT_LOCALE} onError={(error) => {
+      if (error.code === 'MISSING_TRANSLATION') {
+        // Suppress missing translation errors
+        return;
+      }
+
+      console.error(error);
+    }}>
       {children}
     </IntlProvider>
   )

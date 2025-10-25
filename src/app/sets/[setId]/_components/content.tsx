@@ -58,6 +58,7 @@ import Image from "next/image";
 import { Rarity } from "pokemon-tcg-sdk-typescript/dist/sdk";
 import { ReactNode, useEffect, useState } from "react";
 import CardImage from "./card-image";
+import { useIntl } from 'react-intl';
 
 type CardEntry = {
   id: string; // Unique ID for each individual card
@@ -81,6 +82,8 @@ type Props = {
   cards: PokemonCard[];
 };
 export default function Content({ set, cards }: Props) {
+  const intl = useIntl();
+
   // Collection state
   const [collection, setCollection] = useState<CardCollection>({});
   useEffect(() => {
@@ -355,10 +358,16 @@ export default function Content({ set, cards }: Props) {
                   </div>
                   <div className="flex gap-2">
                     <Badge variant="secondary">
-                      {getUniqueCardsOwned()}/{set.total} Cards
+                      {intl.formatMessage(
+                        { id: "header.ownedOverTotal", defaultMessage: "{owned}/{total} Cards" },
+                        { owned: getUniqueCardsOwned(), total: set.total }
+                      )}
                     </Badge>
                     <Badge variant="outline">
-                      {getTotalOwned()} Total Cards
+                      {intl.formatMessage(
+                        { id: "header.totalCards", defaultMessage: "{total} Total Cards" },
+                        { total: getTotalOwned() }
+                      )}
                     </Badge>
                   </div>
                 </div>
@@ -371,7 +380,7 @@ export default function Content({ set, cards }: Props) {
                 onClick={() => setShowSettings(true)}
               >
                 <Settings className="h-4 w-4 mr-2" />
-                Settings
+                {intl.formatMessage({ id: "button.settings", defaultMessage: "Settings" })}
               </Button>
             </div>
           </div>
@@ -384,11 +393,11 @@ export default function Content({ set, cards }: Props) {
       <Dialog open={showSettings} onOpenChange={setShowSettings}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Settings</DialogTitle>
+            <DialogTitle>{intl.formatMessage({ id: "settings.title", defaultMessage: "Settings" })}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="defaultLanguage">Default Language</Label>
+              <Label htmlFor="defaultLanguage">{intl.formatMessage({ id: "settings.defaultLanguage", defaultMessage: "Default Language" })}</Label>
               <Select
                 value={defaultLanguage}
                 onValueChange={setDefaultLanguage}
@@ -409,7 +418,7 @@ export default function Content({ set, cards }: Props) {
               </Select>
             </div>
             <div className="flex justify-end">
-              <Button onClick={() => setShowSettings(false)}>Close</Button>
+              <Button onClick={() => setShowSettings(false)}>{intl.formatMessage({ id: "button.close", defaultMessage: "Close" })}</Button>
             </div>
           </div>
         </DialogContent>
@@ -422,7 +431,7 @@ export default function Content({ set, cards }: Props) {
       >
         <DialogContent className="max-w-4xl">
           <DialogHeader>
-            <DialogTitle>Card Photos</DialogTitle>
+            <DialogTitle>{intl.formatMessage({ id: "photos.title", defaultMessage: "Card Photos" })}</DialogTitle>
           </DialogHeader>
           <ScrollArea className="max-h-96">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-1">
@@ -433,7 +442,7 @@ export default function Content({ set, cards }: Props) {
                   // width and height don't matter for base64 images
                   width={0}
                   height={0}
-                  alt={`Card photo ${index + 1}`}
+                  alt={intl.formatMessage({ id: "photos.alt", defaultMessage: "Card photo {index}" }, { index: index + 1 })}
                   className="w-full rounded border"
                 />
               ))}
@@ -452,7 +461,7 @@ export default function Content({ set, cards }: Props) {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                     <Input
-                      placeholder="Search cards..."
+                      placeholder={intl.formatMessage({ id: "search.placeholder", defaultMessage: "Search cards..." })}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-10 w-64"
@@ -464,7 +473,7 @@ export default function Content({ set, cards }: Props) {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Rarities</SelectItem>
+                      <SelectItem value="all">{intl.formatMessage({ id: "rarity.all", defaultMessage: "All Rarities" })}</SelectItem>
                       {pokemonAPI.rarities.map((rarity) => (
                         <SelectItem key={rarity} value={rarity}>
                           {rarity}
@@ -487,7 +496,7 @@ export default function Content({ set, cards }: Props) {
                         size="sm"
                       >
                         <User className="h-3 w-3 mr-1" />
-                        Individual
+                        {intl.formatMessage({ id: "mode.individual", defaultMessage: "Individual" })}
                       </Toggle>
                       <Toggle
                         pressed={addingMode === "bulk"}
@@ -495,7 +504,7 @@ export default function Content({ set, cards }: Props) {
                         size="sm"
                       >
                         <Users className="h-3 w-3 mr-1" />
-                        Bulk
+                        {intl.formatMessage({ id: "mode.bulk", defaultMessage: "Bulk" })}
                       </Toggle>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -510,15 +519,10 @@ export default function Content({ set, cards }: Props) {
                         <TooltipContent className="max-w-xs">
                           <div className="space-y-2 text-sm">
                             <div>
-                              <strong>Individual Mode:</strong> Add cards one by
-                              one using the + dropdown on each card. Perfect for
-                              adding specific cards with different conditions.
+                              <strong>{intl.formatMessage({ id: "tooltip.individualTitle", defaultMessage: "Individual Mode:" })}</strong> {intl.formatMessage({ id: "tooltip.individualDesc", defaultMessage: "Add cards one by one using the + dropdown on each card. Perfect for adding specific cards with different conditions." })}
                             </div>
                             <div>
-                              <strong>Bulk Mode:</strong> Select multiple cards
-                              with checkboxes, then add the same
-                              variant/condition/language to all at once. Great
-                              for adding many similar cards quickly.
+                              <strong>{intl.formatMessage({ id: "tooltip.bulkTitle", defaultMessage: "Bulk Mode:" })}</strong> {intl.formatMessage({ id: "tooltip.bulkDesc", defaultMessage: "Select multiple cards with checkboxes, then add the same variant/condition/language to all at once. Great for adding many similar cards quickly." })}
                             </div>
                           </div>
                         </TooltipContent>
@@ -553,14 +557,17 @@ export default function Content({ set, cards }: Props) {
                     <AlertDescription>
                       <div className="flex items-center gap-4 flex-wrap">
                         <span className="text-sm font-medium">
-                          {selectedCards.size} cards selected
+                          {intl.formatMessage(
+                            { id: "bulk.selectedCount", defaultMessage: "{count} cards selected" },
+                            { count: selectedCards.size }
+                          )}
                         </span>
                         <Select
                           value={bulkVariant}
                           onValueChange={setBulkVariant}
                         >
                           <SelectTrigger className="w-40">
-                            <SelectValue placeholder="Select variant" />
+                            <SelectValue placeholder={intl.formatMessage({ id: "bulk.selectVariant", defaultMessage: "Select variant" })} />
                           </SelectTrigger>
                           <SelectContent>
                             {set.variants.map((variant: string) => (
@@ -619,10 +626,10 @@ export default function Content({ set, cards }: Props) {
                           onClick={bulkAddVariant}
                           disabled={!bulkVariant}
                         >
-                          Add to Collection
+                          {intl.formatMessage({ id: "button.addToCollection", defaultMessage: "Add to Collection" })}
                         </Button>
                         <Button variant="outline" onClick={clearSelection}>
-                          Clear Selection
+                          {intl.formatMessage({ id: "button.clearSelection", defaultMessage: "Clear Selection" })}
                         </Button>
                       </div>
                     </AlertDescription>
@@ -637,8 +644,7 @@ export default function Content({ set, cards }: Props) {
                   <Alert>
                     <Info className="h-4 w-4" />
                     <AlertDescription>
-                      Select cards using the checkboxes to add them in bulk with
-                      the same settings.
+                      {intl.formatMessage({ id: "bulk.helper", defaultMessage: "Select cards using the checkboxes to add them in bulk with the same settings." })}
                     </AlertDescription>
                   </Alert>
                 </>
@@ -647,10 +653,10 @@ export default function Content({ set, cards }: Props) {
               {addingMode === "bulk" && (
                 <div className="mt-4 flex gap-2">
                   <Button variant="outline" size="sm" onClick={selectAllCards}>
-                    Select All Visible
+                    {intl.formatMessage({ id: "button.selectAllVisible", defaultMessage: "Select All Visible" })}
                   </Button>
                   <Button variant="outline" size="sm" onClick={clearSelection}>
-                    Clear Selection
+                    {intl.formatMessage({ id: "button.clearSelection", defaultMessage: "Clear Selection" })}
                   </Button>
                 </div>
               )}
@@ -740,7 +746,10 @@ export default function Content({ set, cards }: Props) {
                                   </span>
                                   <div className="flex items-center gap-2">
                                     <span className="text-sm text-muted-foreground">
-                                      Total: {totalQuantity}
+                                      {intl.formatMessage(
+                                        { id: "variant.total", defaultMessage: "Total: {count}" },
+                                        { count: totalQuantity }
+                                      )}
                                     </span>
 
                                     {/* Individual Add Dropdown - Only show in individual mode */}
@@ -758,18 +767,17 @@ export default function Content({ set, cards }: Props) {
                                         <DropdownMenuContent className="w-80 p-3">
                                           <div className="space-y-3">
                                             <div className="text-sm font-medium text-center">
-                                              Add Card
+                                              {intl.formatMessage({ id: "addCard.title", defaultMessage: "Add Card" })}
                                             </div>
                                             <Separator />
 
                                             <div className="space-y-3">
                                               <div>
                                                 <Label className="text-xs text-muted-foreground">
-                                                  Select Language:
+                                                  {intl.formatMessage({ id: "addCard.selectLanguage", defaultMessage: "Select Language:" })}
                                                 </Label>
                                                 <p className="text-xs text-muted-foreground mb-2 italic">
-                                                  Choose language, then click
-                                                  condition to add
+                                                  {intl.formatMessage({ id: "addCard.selectLanguageHint", defaultMessage: "Choose language, then click condition to add" })}
                                                 </p>
                                                 <RadioGroup
                                                   value={selectedQuickLanguage}
@@ -812,7 +820,7 @@ export default function Content({ set, cards }: Props) {
 
                                               <div>
                                                 <Label className="text-xs text-muted-foreground mb-2 block">
-                                                  Add Card with Condition:
+                                                  {intl.formatMessage({ id: "addCard.conditionLabel", defaultMessage: "Add Card with Condition:" })}
                                                 </Label>
                                                 <div className="grid grid-cols-4 gap-1">
                                                   {pokemonAPI.conditions.map(
@@ -924,16 +932,25 @@ export default function Content({ set, cards }: Props) {
                                           <DialogContent className="max-w-2xl">
                                             <DialogHeader>
                                               <DialogTitle>
-                                                Edit Card - {card.name} (
-                                                {variant} -{" "}
-                                                {conditionInfo.label} -{" "}
-                                                {languageInfo.name})
+                                                {intl.formatMessage(
+                                                  {
+                                                    id: "editCard.title",
+                                                    defaultMessage:
+                                                      "Edit Card - {name} ({variant} - {condition} - {language})",
+                                                  },
+                                                  {
+                                                    name: card.name,
+                                                    variant,
+                                                    condition: conditionInfo.label,
+                                                    language: languageInfo.name,
+                                                  }
+                                                )}
                                               </DialogTitle>
                                             </DialogHeader>
                                             <div className="space-y-4">
                                               <div className="space-y-2">
                                                 <Label htmlFor="note">
-                                                  Note
+                                                  {intl.formatMessage({ id: "editCard.noteLabel", defaultMessage: "Note" })}
                                                 </Label>
                                                 <Textarea
                                                   id="note"
@@ -944,13 +961,13 @@ export default function Content({ set, cards }: Props) {
                                                       note: e.target.value,
                                                     }))
                                                   }
-                                                  placeholder="Add a note about this specific card..."
+                                                  placeholder={intl.formatMessage({ id: "editCard.notePlaceholder", defaultMessage: "Add a note about this specific card..." })}
                                                   rows={3}
                                                 />
                                               </div>
 
                                               <div className="space-y-2">
-                                                <Label>Photos</Label>
+                                                <Label>{intl.formatMessage({ id: "editCard.photosLabel", defaultMessage: "Photos" })}</Label>
                                                 <div className="space-y-2">
                                                   <Input
                                                     type="file"
@@ -970,8 +987,7 @@ export default function Content({ set, cards }: Props) {
                                                             >
                                                               <Image
                                                                 src={photo}
-                                                                alt={`Photo ${index + 1
-                                                                  }`}
+                                                                alt={intl.formatMessage({ id: "editCard.photoAlt", defaultMessage: "Photo {index}" }, { index: index + 1 })}
                                                                 // width and height don't matter for base64 images
                                                                 width={0}
                                                                 height={0}
@@ -1009,19 +1025,19 @@ export default function Content({ set, cards }: Props) {
                                                     cancelCardEdit();
                                                   }}
                                                 >
-                                                  Remove Card
+                                                  {intl.formatMessage({ id: "editCard.remove", defaultMessage: "Remove Card" })}
                                                 </Button>
                                                 <div className="flex gap-2">
                                                   <Button
                                                     variant="outline"
                                                     onClick={cancelCardEdit}
                                                   >
-                                                    Cancel
+                                                    {intl.formatMessage({ id: "button.cancel", defaultMessage: "Cancel" })}
                                                   </Button>
                                                   <Button
                                                     onClick={saveCardEdit}
                                                   >
-                                                    Save Changes
+                                                    {intl.formatMessage({ id: "button.saveChanges", defaultMessage: "Save Changes" })}
                                                   </Button>
                                                 </div>
                                               </div>
@@ -1054,7 +1070,7 @@ export default function Content({ set, cards }: Props) {
             <Card>
               <CardContent className="text-center py-12">
                 <p className="text-muted-foreground">
-                  No cards found matching your search criteria.
+                  {intl.formatMessage({ id: "noCardsFound", defaultMessage: "No cards found matching your search criteria." })}
                 </p>
               </CardContent>
             </Card>

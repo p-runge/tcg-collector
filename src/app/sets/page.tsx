@@ -1,8 +1,8 @@
-import pokemonAPI from "@/lib/pokemon-api";
+import { api } from "@/lib/api/server";
 import Content from "./_components/content";
 
 export default async function SetsPage() {
-  const sets = await pokemonAPI.fetchPokemonSets();
+  const sets = await api.set.getList();
 
   // Group sets by series
   const setsBySeries: Record<string, typeof sets> = {};
