@@ -105,6 +105,66 @@
       "value": "Settings"
     }
   ],
+  "cardFilter.button.clearSelection": [
+    {
+      "type": 0,
+      "value": "Clear"
+    }
+  ],
+  "cardFilter.date.from": [
+    {
+      "type": 0,
+      "value": "Release From"
+    }
+  ],
+  "cardFilter.date.placeholder": [
+    {
+      "type": 0,
+      "value": "To"
+    }
+  ],
+  "cardFilter.date.to": [
+    {
+      "type": 0,
+      "value": "Release To"
+    }
+  ],
+  "cardFilter.filter.title": [
+    {
+      "type": 0,
+      "value": "Filter Cards"
+    }
+  ],
+  "cardFilter.rarity.all": [
+    {
+      "type": 0,
+      "value": "All rarities"
+    }
+  ],
+  "cardFilter.rarity.label": [
+    {
+      "type": 0,
+      "value": "Rarity"
+    }
+  ],
+  "cardFilter.search.placeholder": [
+    {
+      "type": 0,
+      "value": "Card name or number..."
+    }
+  ],
+  "cardFilter.set.all": [
+    {
+      "type": 0,
+      "value": "All sets"
+    }
+  ],
+  "cardFilter.set.label": [
+    {
+      "type": 0,
+      "value": "Set"
+    }
+  ],
   "collection.actions.addFirstSet": [
     {
       "type": 0,

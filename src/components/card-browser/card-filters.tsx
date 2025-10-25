@@ -13,6 +13,7 @@ import {
 import { api } from "@/lib/api/react";
 import { X } from "lucide-react";
 import { useState } from "react";
+import { useIntl } from "react-intl";
 
 type CardFiltersProps = {
   onFilterChange: (filters: FilterState) => void;
@@ -36,6 +37,8 @@ const RARITIES = [
 ];
 
 export function CardFilters({ onFilterChange }: CardFiltersProps) {
+  const intl = useIntl();
+
   const [filters, setFilters] = useState<FilterState>({
     setId: "",
     rarity: "",
@@ -70,7 +73,7 @@ export function CardFilters({ onFilterChange }: CardFiltersProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-lg">Filter Cards</h3>
+        <h3 className="font-semibold text-lg">{intl.formatMessage({ id: "cardFilter.filter.title", defaultMessage: "Filter Cards" })}</h3>
         {hasActiveFilters && (
           <Button
             variant="ghost"
@@ -79,7 +82,7 @@ export function CardFilters({ onFilterChange }: CardFiltersProps) {
             className="h-8 px-2 text-muted-foreground hover:text-foreground"
           >
             <X className="h-4 w-4 mr-1" />
-            Clear
+            {intl.formatMessage({ id: "cardFilter.button.clearSelection", defaultMessage: "Clear" })}
           </Button>
         )}
       </div>
@@ -87,11 +90,11 @@ export function CardFilters({ onFilterChange }: CardFiltersProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="space-y-2">
           <Label htmlFor="search" className="text-sm text-muted-foreground">
-            Search
+            {intl.formatMessage({ id: "cardFilter.search.placeholder", defaultMessage: "Search" })}
           </Label>
           <Input
             id="search"
-            placeholder="Card name or number..."
+            placeholder={intl.formatMessage({ id: "cardFilter.search.placeholder", defaultMessage: "Card name or number..." })}
             value={filters.search}
             onChange={(e) => updateFilter("search", e.target.value)}
             className="bg-background"
@@ -100,7 +103,7 @@ export function CardFilters({ onFilterChange }: CardFiltersProps) {
 
         <div className="space-y-2">
           <Label htmlFor="set" className="text-sm text-muted-foreground">
-            Set
+            {intl.formatMessage({ id: "cardFilter.set.label", defaultMessage: "Set" })}
           </Label>
           <Select
             value={filters.setId}
@@ -110,7 +113,7 @@ export function CardFilters({ onFilterChange }: CardFiltersProps) {
               <SelectValue placeholder="All sets" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All sets</SelectItem>
+              <SelectItem value="all">{intl.formatMessage({ id: "cardFilter.set.all", defaultMessage: "All sets" })}</SelectItem>
               {sets.map((set) => (
                 <SelectItem key={set.id} value={set.id}>
                   {set.name}
@@ -122,7 +125,7 @@ export function CardFilters({ onFilterChange }: CardFiltersProps) {
 
         <div className="space-y-2">
           <Label htmlFor="rarity" className="text-sm text-muted-foreground">
-            Rarity
+            {intl.formatMessage({ id: "cardFilter.rarity.label", defaultMessage: "Rarity" })}
           </Label>
           <Select
             value={filters.rarity}
@@ -132,7 +135,7 @@ export function CardFilters({ onFilterChange }: CardFiltersProps) {
               <SelectValue placeholder="All rarities" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All rarities</SelectItem>
+              <SelectItem value="all">{intl.formatMessage({ id: "cardFilter.rarity.all", defaultMessage: "All rarities" })}</SelectItem>
               {RARITIES.map((rarity) => (
                 <SelectItem key={rarity} value={rarity.toLowerCase()}>
                   {rarity}
@@ -144,12 +147,12 @@ export function CardFilters({ onFilterChange }: CardFiltersProps) {
 
         <div className="space-y-2">
           <Label htmlFor="date-from" className="text-sm text-muted-foreground">
-            Release From
+            {intl.formatMessage({ id: "cardFilter.date.from", defaultMessage: "Release From" })}
           </Label>
           <Input
             id="date-from"
             type="date"
-            placeholder="From"
+            placeholder={intl.formatMessage({ id: "cardFilter.date.placeholder", defaultMessage: "From" })}
             value={filters.releaseDateFrom}
             onChange={(e) => updateFilter("releaseDateFrom", e.target.value)}
             className="bg-background"
@@ -158,12 +161,12 @@ export function CardFilters({ onFilterChange }: CardFiltersProps) {
 
         <div className="space-y-2">
           <Label htmlFor="date-to" className="text-sm text-muted-foreground">
-            Release To
+            {intl.formatMessage({ id: "cardFilter.date.to", defaultMessage: "Release To" })}
           </Label>
           <Input
             id="date-to"
             type="date"
-            placeholder="To"
+            placeholder={intl.formatMessage({ id: "cardFilter.date.placeholder", defaultMessage: "To" })}
             value={filters.releaseDateTo}
             onChange={(e) => updateFilter("releaseDateTo", e.target.value)}
             className="bg-background"

@@ -112,9 +112,6 @@ export default function NewSetPage() {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-sm text-muted-foreground">
-              <span className="font-semibold text-foreground">
-                {selectedCards.size}
-              </span>{" "}
               {intl.formatMessage({
                 id: "userSet.cardsSelected",
                 defaultMessage: "{count} cards selected",

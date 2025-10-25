@@ -477,6 +477,70 @@
       "value": "Einzelmodus:"
     }
   ],
+  "userSet.cardsSelected": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " Karten ausgewählt"
+    }
+  ],
+  "userSet.createButton": [
+    {
+      "type": 0,
+      "value": "Set erstellen"
+    }
+  ],
+  "userSet.creating": [
+    {
+      "type": 0,
+      "value": "Wird erstellt..."
+    }
+  ],
+  "userSet.nameLabel": [
+    {
+      "type": 0,
+      "value": "Set Name"
+    }
+  ],
+  "userSet.namePlaceholder": [
+    {
+      "type": 0,
+      "value": "Mein tolles Set"
+    }
+  ],
+  "userSet.save": [
+    {
+      "type": 0,
+      "value": "Änderungen speichern"
+    }
+  ],
+  "userSet.saving": [
+    {
+      "type": 0,
+      "value": "Wird gespeichert..."
+    }
+  ],
+  "userSet.subtitle": [
+    {
+      "type": 0,
+      "value": "Benennen dein Set und wähle Karten zum Hinzufügen aus"
+    }
+  ],
+  "userSet.title.edit": [
+    {
+      "type": 0,
+      "value": "Set bearbeiten"
+    }
+  ],
+  "userSet.title.new": [
+    {
+      "type": 0,
+      "value": "Neues Set erstellen"
+    }
+  ],
   "variant.total": [
     {
       "type": 0,
