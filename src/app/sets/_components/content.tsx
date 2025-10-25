@@ -101,7 +101,6 @@ export default function Content({ sets }: Props) {
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {seriesSets.map((set) => {
-                const year = new Date(set.releaseDate).getFullYear();
                 const extras =
                   (set.totalWithSecretRares ?? 0) - (set.total ?? 0);
                 const cardsText =
@@ -149,7 +148,13 @@ export default function Content({ sets }: Props) {
                             </CardTitle>
                             <CardDescription className="mt-1 flex items-center">
                               <Calendar className="w-4 h-4 mr-1" />
-                              {year}
+                              {
+                                intl.formatDate(new Date(set.releaseDate), {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })
+                              }
                             </CardDescription>
                           </div>
                         </div>
