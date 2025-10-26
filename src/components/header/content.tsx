@@ -37,7 +37,7 @@ export default function HeaderContent({ session }: {
               }
               width={80}
               height={80}
-              className="-my-4"
+              className="-my-4 drop-shadow-[0_0_3px] drop-shadow-primary"
             />
           </Link>
           {/* Only show on md+ */}

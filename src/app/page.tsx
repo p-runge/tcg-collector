@@ -14,7 +14,7 @@ export default async function HomePage() {
     <main className="min-h-screen flex flex-col justify-center items-center px-4">
       <div className="flex flex-col lg:flex-row lg:gap-12 items-center">
         <div className="max-w-1/2 min-w-[300px] flex justify-end">
-          <Image src="/bulkratte_logo.png" alt="TCG Collector Logo" width={500} height={500} className="" />
+          <Image src="/bulkratte_logo.png" alt="TCG Collector Logo" width={500} height={500} className="drop-shadow-[0_0_10px] drop-shadow-primary" />
         </div>
         <div className="max-w-2xl">
           <div className="mb-6 flex gap-4">
