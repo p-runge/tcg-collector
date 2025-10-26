@@ -28,7 +28,7 @@ export default function HeaderContent({ session }: {
             className="flex items-center text-2xl font-bold gap-2"
           >
             <Image
-              src="/bulkratte_logo.png"
+              src="/bulkratte_head_logo.png"
               alt={
                 intl.formatMessage(
                   { id: "navigation.logoAlt", defaultMessage: "{logoName} Logo" },

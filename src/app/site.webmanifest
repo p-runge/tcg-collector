@@ -1,0 +1,19 @@
+{
+  "name": "Bulkratte",
+  "short_name": "Bulkratte",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "oklch(0.75 0.12 80)",
+  "background_color": "oklch(0.18 0.02 270)",
+  "display": "standalone"
+}

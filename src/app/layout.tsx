@@ -13,7 +13,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "TCG Collector",
   description: "The easiest way to track your Pokémon card collection",
-  icons: [{ rel: "icon", url: "/favicon.png" }],
+  icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
 export default async function RootLayout({
