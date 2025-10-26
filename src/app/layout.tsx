@@ -28,7 +28,7 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <body>
-        <PlausibleProvider domain="tcg.p6.gg">
+        <PlausibleProvider domain="bulkratte.de">
           <TRPCReactProvider>
             <ThemeProvider
               attribute="class"
