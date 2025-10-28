@@ -11,8 +11,8 @@ import type React from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "TCG Collector",
-  description: "The easiest way to track your Pokémon card collection",
+  title: "Bulkratte",
+  description: "Bulkratte is the easiest way to track your Pokémon card collection. Manage sets in multiple languages, variants, and conditions with ease.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
