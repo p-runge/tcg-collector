@@ -1,6 +1,6 @@
 "use client"
 
-import { BROWSER_LANGUAGES, DEFAULT_LOCALE, Locale, messages } from '@/lib/i18n';
+import { BROWSER_LANGUAGES, DEFAULT_LOCALE, Locale, LOCALES, messages } from '@/lib/i18n';
 import { IntlProvider } from 'react-intl';
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -28,8 +28,17 @@ export function I18nProvider({
 
 
 function getInitialLocale() {
-  const browserLocale = navigator.language.split("_")[0]!;
-  return BROWSER_LANGUAGES[browserLocale] || "en-US";
+  let locale: Locale;
+
+  if (LOCALES.includes(navigator.language as Locale)) {
+    locale = navigator.language as Locale;
+  } else {
+    const languageCode = navigator.language.split("-")[0]!;
+    locale =
+      BROWSER_LANGUAGES[languageCode] || DEFAULT_LOCALE;
+  }
+
+  return locale;
 }
 
 type LanguageState = {
