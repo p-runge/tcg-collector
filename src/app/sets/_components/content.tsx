@@ -57,6 +57,7 @@ export default function Content({ sets }: Props) {
         {/* --- Search Bar --- */}
         <input
           type="text"
+          autoFocus
           placeholder={intl.formatMessage({
             id: "search.placeholder",
             defaultMessage: "Search set names...",
